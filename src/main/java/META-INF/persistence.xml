@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="project2">
+		<class>org.fpoly.nhom2.entiry.Address</class>
+		<class>org.fpoly.nhom2.entiry.Benefit</class>
+		<class>org.fpoly.nhom2.entiry.BenefitOfJob</class>
+		<class>org.fpoly.nhom2.entiry.Category</class>
+		<class>org.fpoly.nhom2.entiry.CityOrDist</class>
+		<class>org.fpoly.nhom2.entiry.Commune</class>
+		<class>org.fpoly.nhom2.entiry.Company</class>
+		<class>org.fpoly.nhom2.entiry.CompanyAdmin</class>
+		<class>org.fpoly.nhom2.entiry.CompanyCategory</class>
+		<class>org.fpoly.nhom2.entiry.Cv</class>
+		<class>org.fpoly.nhom2.entiry.Education</class>
+		<class>org.fpoly.nhom2.entiry.FollowedCompany</class>
+		<class>org.fpoly.nhom2.entiry.Job</class>
+		<class>org.fpoly.nhom2.entiry.Post</class>
+		<class>org.fpoly.nhom2.entiry.Product</class>
+		<class>org.fpoly.nhom2.entiry.ProductPicture</class>
+		<class>org.fpoly.nhom2.entiry.Profile</class>
+		<class>org.fpoly.nhom2.entiry.ProvinceOrCity</class>
+		<class>org.fpoly.nhom2.entiry.Report</class>
+		<class>org.fpoly.nhom2.entiry.Review</class>
+		<class>org.fpoly.nhom2.entiry.Role</class>
+		<class>org.fpoly.nhom2.entiry.SavedJob</class>
+		<class>org.fpoly.nhom2.entiry.Skill</class>
+		<class>org.fpoly.nhom2.entiry.SkillList</class>
+		<class>org.fpoly.nhom2.entiry.Tag</class>
+		<class>org.fpoly.nhom2.entiry.TagOfJob</class>
+		<class>org.fpoly.nhom2.entiry.User</class>
+	</persistence-unit>
+</persistence>
