@@ -33,6 +33,11 @@ public class CompanyCategory implements Serializable {
 	public CompanyCategory() {
 	}
 
+	public CompanyCategory(Company company, Category category) {
+		this.company = company;
+		this.category = category;
+	}
+
 	public int getComCatId() {
 		return this.comCatId;
 	}

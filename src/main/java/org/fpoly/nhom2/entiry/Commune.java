@@ -2,6 +2,9 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -23,10 +26,12 @@ public class Commune implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Address
+	@JsonIgnore
 	@OneToMany(mappedBy="commune")
 	private List<Address> addresses;
 
 	//bi-directional many-to-one association to CityOrDist
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="city_or_dist_id")
 	private CityOrDist cityOrDist;

@@ -1,10 +1,23 @@
 package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 /**
@@ -31,9 +44,11 @@ public class Company implements Serializable {
 	@Column(name="contact_phone")
 	private String contactPhone;
 
-	@Column(name="date_added")
+	@CreationTimestamp
+	@Column(name="date_added", updatable=false)
 	private Timestamp dateAdded;
 
+	@UpdateTimestamp
 	@Column(name="date_updated")
 	private Timestamp dateUpdated;
 
@@ -42,9 +57,8 @@ public class Company implements Serializable {
 
 	private String email;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="established_year")
-	private Date establishedYear;
+	private int establishedYear;
 
 	private String logo;
 
@@ -52,7 +66,7 @@ public class Company implements Serializable {
 
 	private String phone;
 
-	private byte status;
+	private boolean status;
 
 	@Column(name="url_name")
 	private String urlName;
@@ -159,11 +173,11 @@ public class Company implements Serializable {
 		this.email = email;
 	}
 
-	public Date getEstablishedYear() {
+	public int getEstablishedYear() {
 		return this.establishedYear;
 	}
 
-	public void setEstablishedYear(Date establishedYear) {
+	public void setEstablishedYear(int establishedYear) {
 		this.establishedYear = establishedYear;
 	}
 
@@ -191,11 +205,11 @@ public class Company implements Serializable {
 		this.phone = phone;
 	}
 
-	public byte getStatus() {
+	public boolean getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(byte status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

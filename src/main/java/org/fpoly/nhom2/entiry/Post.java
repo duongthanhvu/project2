@@ -2,6 +2,10 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.sql.Timestamp;
 
 
@@ -23,9 +27,11 @@ public class Post implements Serializable {
 	@Lob
 	private String content;
 
-	@Column(name="date_created")
+	@CreationTimestamp
+	@Column(name="date_created",updatable=false)
 	private Timestamp dateCreated;
 
+	@UpdateTimestamp
 	@Column(name="date_updated")
 	private Timestamp dateUpdated;
 

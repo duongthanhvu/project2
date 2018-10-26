@@ -2,6 +2,9 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.sql.Timestamp;
 
 
@@ -20,7 +23,8 @@ public class Cv implements Serializable {
 	@Column(name="cv_id")
 	private int cvId;
 
-	@Column(name="date_uploaded")
+	@CreationTimestamp
+	@Column(name="date_uploaded",updatable=false)
 	private Timestamp dateUploaded;
 
 	@Column(name="original_filename")

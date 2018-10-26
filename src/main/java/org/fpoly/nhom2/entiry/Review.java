@@ -2,6 +2,9 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.sql.Timestamp;
 
 
@@ -20,7 +23,8 @@ public class Review implements Serializable {
 	@Column(name="review_id")
 	private int reviewId;
 
-	@Column(name="date_reviewed")
+	@CreationTimestamp
+	@Column(name="date_reviewed", updatable=false)
 	private Timestamp dateReviewed;
 
 	@Lob

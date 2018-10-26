@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+
+<body>
+  <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse" th:fragment="header-bottom">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-3 ml-auto">
+          <form class="input-icon my-3 my-lg-0">
+            <input type="search" class="form-control header-search" placeholder="Tìm kiếm&hellip;" tabindex="1">
+            <div class="input-icon-addon">
+              <i class="fe fe-search"></i>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg order-lg-first">
+          <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+            <li class="nav-item">
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/index')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-home"></i> Trang chủ</a>
+            </li>
+            <li class="nav-item">
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/job/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-briefcase"></i> Tuyển dụng</a>
+            </li>
+            <li class="nav-item">
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/company/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-map-pin"></i> Công ty</a>
+            </li>
+            <li class="nav-item">
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/product/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-shopping-bag"></i> Sản phẩm - Dịch vụ</a>
+            </li>
+            <li class="nav-item">
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/contact/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-info"></i> Liên hệ</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

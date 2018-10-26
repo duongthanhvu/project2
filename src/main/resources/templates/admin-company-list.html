@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="page-header">
+                        <h1 class="page-title">
+                            Danh sách doanh nghiệp
+                        </h1>
+                        <div class="page-subtitle" th:text="${page.number*page.size+1}+' - '+${page.number*page.size+page.size}+' trong tổng số ' +${page.totalElements}+ ' công ty'">1 - 12 trong
+                            tổng số 1713 công ty</div>
+                        <div class="page-options d-flex">
+                            <a href="/admin/company/add" class="btn btn-secondary"><i class="fe fe-plus mr-2"></i>Thêm
+                                công ty</a>
+                            <div class="dropdown ml-2">
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fe fe-list mr-2"></i><th:block th:text="${page.sort.getOrderFor('companyId').getDirection().toString() == 'ASC'} ? 'Cũ nhất' : 'Mới nhất'"></th:block>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="?sort=DESC">Mới nhất</a>
+                                    <a class="dropdown-item" href="?sort=ASC">Cũ nhất</a>
+                                </div>
+                            </div>
+                            <div class="input-icon ml-2">
+                                <span class="input-icon-addon">
+                                    <i class="fe fe-search"></i>
+                                </span>
+                                <input type="text" class="form-control w-10" placeholder="Tìm kiếm doanh nghiệp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-outline table-vcenter card-table">
+                                        <thead class="text-nowrap">
+                                            <tr>
+                                                <th class="text-center w-1"><i class="icon-people"></i></th>
+                                                <th>Công ty</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Số điện thoại</th>
+                                                <th class="text-center">Năm thành lập</th>
+                                                <th>Hoạt động</th>
+                                                <th class="text-center">Quản trị viên</th>
+                                                <th class="text-center"><i class="icon-settings"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <script>
+                                                require(['jquery', 'timeago'], function ($, timeago) {
+                                                    jQuery(document).ready(function () {
+                                                        $("time.timeago").timeago();
+                                                    });
+                                                });
+                                            </script>
+                                            <tr th:each="company : ${page.content}">
+                                                <td class="text-center">
+                                                    <div class="avatar d-block" th:style="'background-image: url('+@{/file/}+${company.logo}+')'">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div><a href="#" th:text="${company.name}">Trung Nguyên</a></div>
+                                                    <!--trỏ tới trang quản trị doanh nghiệp-->
+                                                    <div class="small text-muted" th:text="'Ngày tạo: ' + ${#calendars.format(company.dateAdded,'dd MMMM yyyy')}">
+                                                        Ngày tạo: 19 tháng 3, 2018
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div th:text="${company.address.street}+', '+${company.address.commune.name}+', '+${company.address.commune.cityOrDist.name}+', '+${company.address.commune.cityOrDist.provinceOrCity.name}">27
+                                                        Nguyễn Tất Thành, phường Tự An, tp. Buôn Ma Thuột, Đăk
+                                                        Lăk</div>
+                                                </td>
+                                                <td>
+                                                    <div th:text="${company.phone}">098 539 0133</div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div th:text="${company.establishedYear}">2001</div>
+                                                </td>
+                                                <td>
+                                                    <div class="small text-muted">Đã cập nhật</div>
+                                                    <div class="small"><time class="timeago" th:datetime="${company.dateUpdated}" th:text="${company.dateUpdated}"></time></div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="avatar-list avatar-list-stacked">
+                                                        <span class="avatar" style="background-image: url(/demo/faces/female/12.jpg)"></span>
+                                                        <span class="avatar" style="background-image: url(/demo/faces/female/21.jpg)"></span>
+                                                        <span class="avatar">+3</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="item-action dropdown">
+                                                        <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i
+                                                                class="fe fe-more-vertical"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a th:href="'/admin/company/detail?company='+${company.companyId}"
+                                                                class="dropdown-item"><i class="dropdown-icon fe fe-tag"></i>
+                                                                Chi tiết </a>
+                                                            <a th:href="'/admin/company/edit?company='+${company.companyId}"
+                                                                class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i>
+                                                                Chỉnh sửa </a>
+                                                            <a th:href="'/admin/company/delete?company='+${company.companyId}"
+                                                                class="dropdown-item"><i class="dropdown-icon fe fe-message-square"></i>
+                                                                Xóa</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a href="javascript:void(0)" class="dropdown-item"><i class="dropdown-icon fe fe-link"></i>
+                                                                Separated link</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <ul class="pagination justify-content-center">
+                                <li th:class="${page.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/admin/company/list(page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('companyId').getDirection()})}" tabindex="-1">Trang trước</a>
+                                </li>
+                                <th:block  th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                                <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link" th:href="@{/admin/company/list(page=${i},size=${page.size},sort=${page.sort.getOrderFor('companyId').getDirection()})}">[[${i}+1]]</a></li>
+                                </th:block>
+                                <li th:class="${page.hasNext()} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/admin/company/list(page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('companyId').getDirection()})}">Trang sau</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

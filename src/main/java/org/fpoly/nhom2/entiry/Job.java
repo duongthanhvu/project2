@@ -2,6 +2,10 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,12 +25,14 @@ public class Job implements Serializable {
 	@Column(name="job_id")
 	private int jobId;
 
-	@Column(name="date_created")
+	@CreationTimestamp
+	@Column(name="date_created",updatable=false)
 	private Timestamp dateCreated;
 
 	@Column(name="date_expired")
 	private Timestamp dateExpired;
 
+	@UpdateTimestamp
 	@Column(name="date_updated")
 	private Timestamp dateUpdated;
 

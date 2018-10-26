@@ -2,6 +2,10 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,9 +25,11 @@ public class User implements Serializable {
 	@Column(name="user_id")
 	private int userId;
 
-	@Column(name="date_registered")
+	@CreationTimestamp
+	@Column(name="date_registered", updatable=false)
 	private Timestamp dateRegistered;
 
+	@UpdateTimestamp
 	@Column(name="date_updated")
 	private Timestamp dateUpdated;
 
@@ -32,6 +38,8 @@ public class User implements Serializable {
 	private String password;
 
 	private String username;
+	
+	private boolean enabled;
 
 	//bi-directional many-to-one association to CompanyAdmin
 	@OneToMany(mappedBy="user")
@@ -111,6 +119,14 @@ public class User implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public List<CompanyAdmin> getCompanyAdmins() {

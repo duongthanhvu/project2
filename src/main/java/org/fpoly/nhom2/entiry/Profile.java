@@ -2,6 +2,10 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,13 +29,15 @@ public class Profile implements Serializable {
 	@Column(name="avatar_picture")
 	private String avatarPicture;
 
-	@Column(name="date_created")
+	@CreationTimestamp
+	@Column(name="date_created",updatable=false)
 	private Timestamp dateCreated;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="date_of_birth")
 	private Date dateOfBirth;
 
+	@UpdateTimestamp
 	@Column(name="date_updated")
 	private Timestamp dateUpdated;
 
