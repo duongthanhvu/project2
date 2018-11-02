@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+
+<body>
+    <div class="py-3 py-md-5" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg); background-size: cover; background-attachment: fixed;"
+        th:fragment="search-block">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9 col-md-12">
+                    <form class="card my-3 my-md-5 bg-blue-lighter">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 px-3">
+                                    <h4>Cùng bạn tìm kiếm công việc mơ ước</h4>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Vị trí, công ty, chức danh, kỹ năng">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="form-control">
+                                            <option value="">Ngành nghề</option>
+                                            <option th:each="tag : ${tags}" th:value="${tag.tagId}"
+                                                th:text="${tag.title}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="form-control">
+                                            <option value="">Địa phương</option>
+                                            <option th:each="province : ${provinces}" th:value="${province.pocId}"
+                                                th:text="${province.name}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="submit" class="form-control btn btn-primary" value="Tìm kiếm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

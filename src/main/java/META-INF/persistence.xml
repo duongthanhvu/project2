@@ -28,5 +28,6 @@
 		<class>org.fpoly.nhom2.entiry.Tag</class>
 		<class>org.fpoly.nhom2.entiry.TagOfJob</class>
 		<class>org.fpoly.nhom2.entiry.User</class>
+		<class>org.fpoly.nhom2.entiry.PoCompany</class>
 	</persistence-unit>
 </persistence>

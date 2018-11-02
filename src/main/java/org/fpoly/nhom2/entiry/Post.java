@@ -37,6 +37,9 @@ public class Post implements Serializable {
 
 	private String title;
 
+	@Column(name="url_title")
+	private String urlTitle;
+
 	//bi-directional many-to-one association to Company
 	@ManyToOne
 	@JoinColumn(name="company_id")
@@ -85,6 +88,20 @@ public class Post implements Serializable {
 		this.title = title;
 	}
 
+	/**
+	 * @return the urlTitle
+	 */
+	public String getUrlTitle() {
+		return urlTitle;
+	}
+
+	/**
+	 * @param urlTitle the urlTitle to set
+	 */
+	public void setUrlTitle(String urlTitle) {
+		this.urlTitle = urlTitle;
+	}
+	
 	public Company getCompany() {
 		return this.company;
 	}

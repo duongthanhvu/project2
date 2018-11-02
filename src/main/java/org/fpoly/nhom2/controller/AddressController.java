@@ -15,14 +15,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * AddressController
+ * 
  * @author Vu Duong
  */
 @Controller
 public class AddressController {
 
-    @Autowired POCRepository pOCRepository;
+    @Autowired
+    private POCRepository pOCRepository;
 
-    @Autowired CityOrDistRepository districtRepository;
+    @Autowired
+    private CityOrDistRepository districtRepository;
 
     @ResponseBody
     @RequestMapping(value = "/api/get-district", method = RequestMethod.GET)

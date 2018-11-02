@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: ca-header-top"></div>
+            <div th:replace="fragments/header-bottom :: ca-header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-6">
+                            <form class="card" th:action="@{/ca/job/add}" th:object="${job}" method="post"
+                                enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <h3 class="card-title">Tạo tin tuyển dụng mới</h3>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Tiêu đề</label>
+                                                <input type="text" class="form-control" placeholder="Tên công việc, vị trí tuyển dụng"
+                                                    th:field="*{title}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Địa điểm làm việc</label>
+                                                <select class="form-control" th:field="*{provinceOrCity}" required>
+                                                    <option value="">Chọn địa điểm làm việc</option>
+                                                    <option th:each="province : ${provinces}" th:value="${province.pocId}" th:text="${province.name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Ngành nghề</label>
+                                                <select class="form-control" multiple id="input-tags" value="" name="tags"
+                                                    placeholder="Chọn lĩnh vực của công việc">
+                                                    <option th:each="tag : ${tags}" th:value="${tag.tagId}"
+                                                        th:text="${tag.title}"></option>
+                                                </select>
+                                            </div>
+                                            <script>
+                                                require(['jquery', 'selectize'], function ($, selectize) {
+                                                    $(document).ready(function () {
+                                                        $('#input-tags').selectize({
+                                                            plugins: ['remove_button'],
+                                                            delimiter: ',',
+                                                            persist: false,
+                                                            create: false,
+                                                            maxItems: 5
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Mô tả về công việc</label>
+                                                <textarea rows="5" class="form-control" placeholder="Mô tả về công việc"
+                                                    th:field="*{description}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Yêu cầu của nhà tuyển dụng</label>
+                                                <textarea rows="5" class="form-control" placeholder="Yêu cầu của nhà tuyển dụng"
+                                                    th:field="*{requirement}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Mức lương</label>
+                                                <input type="text" class="form-control" placeholder="Mức lương đề xuất" th:field="*{salary}">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Chế độ phúc lợi</label>
+                                                <input type="text" class="form-control" name="benefit">
+                                                <input type="text" class="form-control" name="benefit">
+                                                <input type="text" class="form-control" name="benefit">
+                                                <input type="text" class="form-control" name="benefit">
+                                                <input type="text" class="form-control" name="benefit">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Ngày hết hạn nộp hồ sơ</label>
+                                                <input type="date" class="form-control" pattern="dd/MM/yyyy" th:field="*{dateExpired}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Đăng tin</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

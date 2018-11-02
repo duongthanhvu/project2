@@ -1,5 +1,7 @@
 package org.fpoly.nhom2.repository;
 
+import java.util.List;
+
 import org.fpoly.nhom2.entiry.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.Nullable;
@@ -10,4 +12,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Nullable
 	User findFirstByUsernameOrEmail(String username, String email);
+
+	List<User> findTop10ByUsernameContainingIgnoreCase(String username);
+
+	List<User> findByEmail(String email);
 }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FileController {
 
     @Autowired
-    FileUtil fileUtil;
+    private FileUtil fileUtil;
 
     @RequestMapping(value = "/file/{fileName}", method = RequestMethod.GET)
     public ResponseEntity<InputStreamResource> requestMethodName(@PathVariable("fileName") String fileName) {

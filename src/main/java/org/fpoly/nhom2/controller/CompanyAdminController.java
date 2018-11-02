@@ -49,7 +49,7 @@ public class CompanyAdminController {
     @Autowired
     private CompanyCategoryRepository compCatRepository;
 
-    @RequestMapping(value = "/admin/company/list", method = RequestMethod.GET)
+    @RequestMapping(value = { "/admin/company/list", "/admin/company" }, method = RequestMethod.GET)
     public String showCompanyList(Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
@@ -64,11 +64,12 @@ public class CompanyAdminController {
         Pageable pageable = PageRequest.of(page, size, sortable);
         model.addAttribute("page", companyRepository.findAll(pageable));
         return "admin-company-list";
+        //TODO Thêm thông báo khi thêm hoặc chỉnh sửa thành công
     }
 
     @RequestMapping(value = "/admin/company/detail", method = RequestMethod.GET)
-    public String showCompanyDetail(@RequestParam("company") Integer companyId) {
-        // TODO hiển thị chi tiết công ty
+    public String showCompanyDetail(Model model, @RequestParam("company") Integer companyId) {
+        model.addAttribute("company", companyRepository.getOne(companyId));
         return "admin-company-detail";
     }
 
@@ -85,7 +86,7 @@ public class CompanyAdminController {
             @RequestParam(value = "categories") List<Category> categories,
             @RequestParam(value = "logo-file") MultipartFile logo) {
 
-        company.setLogo(fileUtil.saveFile(logo));
+        company.setLogo(fileUtil.saveFile(logo, FileUtil.LOGO));
         addressRepository.save(company.getAddress());
         company.setStatus(true);
         companyRepository.save(company);
@@ -115,7 +116,7 @@ public class CompanyAdminController {
             @RequestParam(value = "logo-file") MultipartFile logo) {
 
         if (!logo.isEmpty()) {
-            company.setLogo(fileUtil.saveFile(logo));
+            company.setLogo(fileUtil.saveFile(logo, FileUtil.LOGO));
         }
         addressRepository.save(company.getAddress());
         companyRepository.save(company);

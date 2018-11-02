@@ -106,6 +106,10 @@ public class Company implements Serializable {
 	@OneToMany(mappedBy="company")
 	private List<Review> reviews;
 
+	 //bi-directional many-to-one association to PoCompany
+	@OneToMany(mappedBy="company")
+	private List<PoCompany> poCompanies;
+
 	public Company() {
 	}
 
@@ -391,4 +395,31 @@ public class Company implements Serializable {
 		return review;
 	}
 
+	/**
+	 * @return the poCompanies
+	 */
+	public List<PoCompany> getPoCompanies() {
+		return poCompanies;
+	}
+
+	/**
+	 * @param poCompanies the poCompanies to set
+	 */
+	public void setPoCompanies(List<PoCompany> poCompanies) {
+		this.poCompanies = poCompanies;
+	}
+
+	public PoCompany addPoCompany(PoCompany poCompnay) {
+		getPoCompanies().add(poCompnay);
+		poCompnay.setCompany(this);
+
+		return poCompnay;
+	}
+
+	public PoCompany removePoCompany(PoCompany poCompany) {
+		getPoCompanies().remove(poCompany);
+		poCompany.setCompany(null);
+
+		return poCompany;
+	}
 }

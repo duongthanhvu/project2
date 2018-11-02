@@ -16,14 +16,16 @@
                         <h1 class="page-title">
                             Danh sách tài khoản
                         </h1>
-                        <div class="page-subtitle" th:text="${page.number*page.size+1}+' - '+${page.number*page.size+page.size}+' trong tổng số ' +${page.totalElements}+ ' tài khoản'">1 - 12 trong
+                        <div class="page-subtitle" th:text="${page.number*page.size+1}+' - '+${page.number*page.size+page.size}+' trong tổng số ' +${page.totalElements}+ ' tài khoản'">1
+                            - 12 trong
                             tổng số 1713 công ty</div>
                         <div class="page-options d-flex">
                             <a href="/admin/user/add" class="btn btn-secondary"><i class="fe fe-plus mr-2"></i>Thêm
                                 tài khoản</a>
                             <div class="dropdown ml-2">
                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fe fe-list mr-2"></i><th:block th:text="${page.sort.getOrderFor('userId').getDirection().toString() == 'ASC'} ? 'Cũ nhất' : 'Mới nhất'"></th:block>
+                                    <i class="fe fe-list mr-2"></i>
+                                    <th:block th:text="${page.sort.getOrderFor('userId').getDirection().toString() == 'ASC'} ? 'Cũ nhất' : 'Mới nhất'"></th:block>
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="?sort=DESC">Mới nhất</a>
@@ -71,18 +73,24 @@
                                                 </td>
                                                 <td>
                                                     <div class="small text-muted">Đã mã hóa</div>
-                                                    <a class="btn btn-secondary btn-sm" th:href="'/admin/user/edit?user='+${user.userId}">Thay đổi mật khẩu</a>
+                                                    <a class="btn btn-secondary btn-sm" th:href="'/admin/user/edit?user='+${user.userId}">Thay
+                                                        đổi mật khẩu</a>
                                                 </td>
                                                 <td>
-                                                    <span class="tag tag-red" th:if="${user.role.name} == 'admin'" th:text="${user.role.name}"></span>
-                                                    <span class="tag tag-dark" th:if="${user.role.name} == 'user'" th:text="${user.role.name}"></span>
+                                                    <span class="tag tag-red" th:if="${user.role.name} == 'admin'"
+                                                        th:text="${user.role.name}"></span>
+                                                    <span class="tag tag-dark" th:if="${user.role.name} == 'user'"
+                                                        th:text="${user.role.name}"></span>
+                                                    <span class="tag tag-blue" th:if="${user.role.name} == 'ca'"
+                                                        th:text="'company_mod'"></span>
                                                 </td>
                                                 <th>
                                                     <div th:text="${#calendars.format(user.dateRegistered,'dd MMMM yyyy')}"></div>
                                                 </th>
                                                 <td>
                                                     <div class="small text-muted">Đã cập nhật</div>
-                                                    <div class="small"><time class="timeago" th:datetime="${user.dateUpdated}" th:text="${user.dateUpdated}"></time></div>
+                                                    <div class="small"><time class="timeago" th:datetime="${user.dateUpdated}"
+                                                            th:text="${user.dateUpdated}"></time></div>
                                                 </td>
                                                 <td>
                                                     <th:block th:if="${user.enabled}">
@@ -100,15 +108,26 @@
                                                             <a th:href="'/admin/user/detail?user='+${user.userId}"
                                                                 class="dropdown-item"><i class="dropdown-icon fe fe-tag"></i>
                                                                 Chi tiết </a>
-                                                            <a th:href="'/admin/user/edit?user='+${user.userId}"
-                                                                class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i>
+                                                            <a th:href="'/admin/user/edit?user='+${user.userId}" class="dropdown-item"><i
+                                                                    class="dropdown-icon fe fe-edit-2"></i>
                                                                 Chỉnh sửa </a>
                                                             <a th:href="'/admin/user/delete?user='+${user.userId}"
                                                                 class="dropdown-item"><i class="dropdown-icon fe fe-message-square"></i>
                                                                 Xóa</a>
                                                             <div class="dropdown-divider"></div>
-                                                            <a href="javascript:void(0)" class="dropdown-item"><i class="dropdown-icon fe fe-link"></i>
-                                                                Separated link</a>
+                                                            <th:block th:if="${user.profile} != null">
+                                                                <a th:href="'/admin/profile/detail?profile='+${user.profile.profileId}"
+                                                                    class="dropdown-item"><i class="dropdown-icon fe fe-link"></i>Xem
+                                                                    hồ sơ</a>
+                                                                <a th:href="'/admin/profile/edit?profile='+${user.profile.profileId}"
+                                                                    class="dropdown-item"><i class="dropdown-icon fe fe-link"></i>
+                                                                    Chỉnh sửa hồ sơ</a>
+                                                            </th:block>
+                                                            <th:block th:if="${user.profile} == null">
+                                                                <a th:href="'/admin/profile/add?user='+${user.userId}"
+                                                                    class="dropdown-item"><i class="dropdown-icon fe fe-link"></i>Thêm
+                                                                    hồ sơ</a>
+                                                            </th:block>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -119,13 +138,16 @@
                             </div>
                             <ul class="pagination justify-content-center">
                                 <li th:class="${page.hasPrevious()} ? 'page-item' : 'page-item disabled'">
-                                    <a class="page-link" th:href="@{/admin/user/list(page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('userId').getDirection()})}" tabindex="-1">Trang trước</a>
+                                    <a class="page-link" th:href="@{/admin/user/list(page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('userId').getDirection()})}"
+                                        tabindex="-1">Trang trước</a>
                                 </li>
-                                <th:block  th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
-                                <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link" th:href="@{/admin/user/list(page=${i},size=${page.size},sort=${page.sort.getOrderFor('userId').getDirection()})}">[[${i}+1]]</a></li>
+                                <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                                    <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link"
+                                            th:href="@{/admin/user/list(page=${i},size=${page.size},sort=${page.sort.getOrderFor('userId').getDirection()})}">[[${i}+1]]</a></li>
                                 </th:block>
                                 <li th:class="${page.hasNext()} ? 'page-item' : 'page-item disabled'">
-                                    <a class="page-link" th:href="@{/admin/user/list(page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('userId').getDirection()})}">Trang sau</a>
+                                    <a class="page-link" th:href="@{/admin/user/list(page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('userId').getDirection()})}">Trang
+                                        sau</a>
                                 </li>
                             </ul>
                         </div>

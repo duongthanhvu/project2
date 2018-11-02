@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: ca-header-top"></div>
+            <div th:replace="fragments/header-bottom :: ca-header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-6">
+                            <form class="card" th:action="@{/ca/product/add}" th:object="${product}" method="post" enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <h3 class="card-title">Thêm sản phẩm hoặc dịch vụ</h3>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Tên sản phẩm hoặc dịch vụ</label>
+                                                <input type="text" class="form-control" placeholder="Tên sản phẩm hoặc dịch vụ"
+                                                    th:field="*{name}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Mô tả</label>
+                                                <textarea rows="5" class="form-control" placeholder="Mô tả về sản phẩm hoặc dịch vụ" th:field="*{description}"
+                                                    required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Hình ảnh sản phẩm</label>
+                                                <input type="file" class="form-control" placeholder="Mô tả về sản phẩm hoặc dịch vụ" name="product_photo" multiple accept="image/jpeg,image/png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

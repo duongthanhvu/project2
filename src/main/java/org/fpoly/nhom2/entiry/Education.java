@@ -2,6 +2,9 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 
@@ -21,6 +24,7 @@ public class Education implements Serializable {
 	private int eduId;
 
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM")
 	@Column(name="from_month")
 	private Date fromMonth;
 
@@ -31,6 +35,7 @@ public class Education implements Serializable {
 	private String subject;
 
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM")
 	@Column(name="to_month")
 	private Date toMonth;
 

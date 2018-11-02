@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div th:replace="fragments/user-page-sidebar :: sidebar"></div>
+                        <div class="col-lg-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-wrap p-lg-6">
+                                        <h2 class="mt-0 mb-4">Hồ sơ</h2> <a class="btn btn-secondary" href="/user/profile/edit">Chỉnh sửa</a>
+                                        <p class="text-muted">(Ngày tạo: [[${#calendars.format(user.profile.dateCreated,'dd/MM/yyyy HH:ssa')}]], đã cập nhật
+                                            <time class="timeago" th:datetime="${user.profile.dateUpdated}" th:text="${user.profile.dateUpdated}"></time>)</p>
+                                        <p th:text="'Họ và tên:' + ${user.profile.fullname}"></p>
+                                        <p th:text="'Chức vụ:' + ${user.profile.professionalTitle}"></p>
+                                        <p th:text="'Cấp bậc:' + ${user.profile.jobLevel}"></p>
+                                        <p th:text="'Địa chỉ: ' + ${user.profile.address.street}+', '+${user.profile.address.commune.name}+', '+${user.profile.address.commune.cityOrDist.name}+', '+${user.profile.address.commune.cityOrDist.provinceOrCity.name}"></p>
+                                        <p th:text="'Số điện thoại: ' + ${user.profile.phone}"></p>
+                                        <p th:text="'Email: ' + ${user.email}"></p>
+                                        <p>Giới tính: [[${user.profile.gender == 'M'} ? 'Nam' : 'Nữ']]</p>
+                                        <p>Tình trạng hôn nhân: [[${user.profile.martialStatus} ? 'Đã kết hôn' : 'Độc thân']]</p>
+                                        <p th:text="'Ngày sinh: ' + ${#calendars.format(user.profile.dateOfBirth,'dd-MM-yyyy')}"></p>
+                                        <p>Giới thiệu bản thân: [[${user.profile.summary}]]</p>
+                                        <div class="card" th:each="education : ${user.profile.educations}">
+                                            <h4>[[${education.subject}]]</h4>
+                                            <p>[[${education.school}]]</p>
+                                            <p>[[${education.qualification}]]</p>
+                                            <p>[[${#calendars.format(education.fromMonth,'MM/yyyy')}]] - [[${#calendars.format(education.toMonth,'MM/yyyy')}]]</p>
+                                        </div>
+                                        <p>Kinh nghiệm làm việc: [[${user.profile.employmentHistory}]]</p>
+                                        <p>Kỹ năng nghề nghiệp:</p>
+                                            <div class="tags">
+                                                <span class="tag" th:each="skillList : ${user.profile.skillLists}">[[${skillList.skill.title}]]</span> 
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                require(['jquery', 'timeago'], function ($, timeago) {
+                                    jQuery(document).ready(function () {
+                                        $("time.timeago").timeago();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

@@ -25,6 +25,9 @@ public class Product implements Serializable {
 
 	private String name;
 
+	@Column(name="url_name")
+	private String urlName;
+
 	//bi-directional many-to-one association to Company
 	@ManyToOne
 	@JoinColumn(name="company_id")
@@ -61,6 +64,20 @@ public class Product implements Serializable {
 		this.name = name;
 	}
 
+	/**
+	 * @return the urlName
+	 */
+	public String getUrlName() {
+		return urlName;
+	}
+
+	/**
+	 * @param urlName the urlName to set
+	 */
+	public void setUrlName(String urlName) {
+		this.urlName = urlName;
+	}
+	
 	public Company getCompany() {
 		return this.company;
 	}

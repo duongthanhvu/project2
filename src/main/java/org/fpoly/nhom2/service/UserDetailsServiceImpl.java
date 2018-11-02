@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.fpoly.nhom2.entiry.CompanyAdmin;
 import org.fpoly.nhom2.entiry.User;
+import org.fpoly.nhom2.repository.CompanyAdminRepository;
 import org.fpoly.nhom2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +20,10 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
+	@Autowired
+	private CompanyAdminRepository caRepository;
+
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,56 +32,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("user that has username or email " + username + " was not found on the db");
 		}
 		System.out.println("found user with username/email " + username);
+		List<CompanyAdmin> ca = caRepository.findByUser(user);
 		List<GrantedAuthority> grantList = new ArrayList<>();
 		grantList.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().getName()));
-		UserDetails userDetail = new UserDetails() {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isEnabled() {
-				return user.isEnabled();
-			}
-			
-			@Override
-			public boolean isCredentialsNonExpired() {
-				return true;
-			}
-			
-			@Override
-			public boolean isAccountNonLocked() {
-				return true;
-			}
-			
-			@Override
-			public boolean isAccountNonExpired() {
-				return true;
-			}
-			
-			@Override
-			public String getUsername() {
-				return user.getUsername();
-			}
-			
-			@Override
-			public String getPassword() {
-				return user.getPassword();
-			}
-			
-			@Override
-			public Collection<? extends GrantedAuthority> getAuthorities() {
-				return grantList;
-			}
-			
-			/** dùng cho việc truy cập các thông tin khác của user đã đăng nhập*/
-			public User getUser() {
-				return user;
-			}
-		};
+		UserDetails userDetail = new CustomUser(user.getUsername(), user.getPassword(), grantList, user.isEnabled() ,user,ca);
 		return userDetail;
 	}
-
 }

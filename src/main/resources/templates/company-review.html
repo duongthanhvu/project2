@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div th:replace="fragments/company-page-sidebar :: sidebar"></div>
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="h5">Đánh giá</div>
+                                                    <div class="display-4 font-weight-bold mb-4" th:text="${#numbers.formatDecimal(ratingAvg,1,1)}"></div>
+                                                    <div class="text-muted">Tổng số đánh giá: [[${reviews.size()}]]</div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="my-3">
+                                                        <div class="clearfix">
+                                                            <div class="float-left text-muted">5★</div>
+                                                            <div class="float-right text-muted" th:text="${stars[4]}"></div>
+                                                        </div>
+                                                        <div class="progress progress-xs">
+                                                            <div class="progress-bar" th:if="${reviews.size() != 0}"
+                                                                th:styleappend="'width: ' + ${#numbers.formatDecimal((stars[4] * 100)/ reviews.size(),1,0)} +'%'"
+                                                                style="background-color: #57bb8a;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <div class="clearfix">
+                                                            <div class="float-left text-muted">4★</div>
+                                                            <div class="float-right text-muted" th:text="${stars[3]}"></div>
+                                                        </div>
+                                                        <div class="progress progress-xs">
+                                                            <div class="progress-bar" th:if="${reviews.size() != 0}"
+                                                                th:styleappend="'width: ' + ${#numbers.formatDecimal((stars[3] * 100)/ reviews.size(),1,0)} +'%'"
+                                                                style="background-color: #9ace6a;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <div class="clearfix">
+                                                            <div class="float-left text-muted">3★</div>
+                                                            <div class="float-right text-muted" th:text="${stars[2]}"></div>
+                                                        </div>
+                                                        <div class="progress progress-xs">
+                                                            <div class="progress-bar" th:if="${reviews.size() != 0}"
+                                                                th:styleappend="'width: ' + ${#numbers.formatDecimal((stars[2] *100)/ reviews.size(),1,0)} +'%'"
+                                                                style="background-color: #ffcf02;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <div class="clearfix">
+                                                            <div class="float-left text-muted">2★</div>
+                                                            <div class="float-right text-muted" th:text="${stars[1]}"></div>
+                                                        </div>
+                                                        <div class="progress progress-xs">
+                                                            <div class="progress-bar" th:if="${reviews.size() != 0}"
+                                                                th:styleappend="'width: ' + ${#numbers.formatDecimal((stars[1] *100)/ reviews.size(),1,0)} +'%'"
+                                                                style="background-color: #ff9f02;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <div class="clearfix">
+                                                            <div class="float-left text-muted">1★</div>
+                                                            <div class="float-right text-muted" th:text="${stars[0]}"></div>
+                                                        </div>
+                                                        <div class="progress progress-xs">
+                                                            <div class="progress-bar" th:if="${reviews.size() != 0}"
+                                                                th:styleappend="'width: ' + ${#numbers.formatDecimal((stars[0] *100)/ reviews.size(),1,0)} +'%'"
+                                                                style="background-color: #ff6f31;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 order-md-first">
+                                    <script type="text/javascript">
+                                        function loadCSS(filename) {
+                                            var file = document.createElement("link");
+                                            file.setAttribute("rel", "stylesheet");
+                                            file.setAttribute("href", filename);
+                                            document.head.appendChild(file);
+                                        }
+                                        loadCSS("/assets/css/star_rate.css");
+                                    </script>
+                                    <div class="alert alert-info" th:if="${#request.userPrincipal} == null">
+                                        Vui lòng <a class="text-primary" href="/login">đăng
+                                            nhập</a> để có thể đánh giá doanh nghiệp
+                                    </div>
+                                    <form class="card" th:action="@{/company/__${company.urlName}__/review}" th:object="${review}"
+                                        method="post" th:if="${#request.userPrincipal} != null">
+                                        <div class="card-body">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Nhận xét & đánh giá"
+                                                    th:field="*{description}">
+                                                <div class="input-group-append">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fe fe-send"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="rate">
+                                                    <input type="radio" id="star5" th:field="*{rating}" value="5" />
+                                                    <label for="star5" title="Cực kỳ tốt">5 stars</label>
+                                                    <input type="radio" id="star4" th:field="*{rating}" value="4" />
+                                                    <label for="star4" title="Tốt">4 stars</label>
+                                                    <input type="radio" id="star3" th:field="*{rating}" value="3" />
+                                                    <label for="star3" title="Tạm được">3 stars</label>
+                                                    <input type="radio" id="star2" th:field="*{rating}" value="2" />
+                                                    <label for="star2" title="Tệ">2 stars</label>
+                                                    <input type="radio" id="star1" th:field="*{rating}" value="1" />
+                                                    <label for="star1" title="Rất tệ">1 star</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title"><i class="fe fe-star mr-2"></i>Đánh giá của người dùng</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group card-list-group">
+                                                <li class="list-group-item py-5" th:each="review : ${reviews}">
+                                                    <div class="media">
+                                                        <div class="media-object avatar avatar-md mr-4" th:style="${review.user.profile != null} ? 'background-image: url(/file/'+${review.user.profile.avatarPicture}+')':''"></div>
+                                                        <div class="media-body">
+                                                            <div class="media-heading">
+                                                                <small class="float-right text-muted"><time class="timeago"
+                                                                        th:datetime="${review.dateReviewed}"></time></small>
+                                                                <h5>[[${review.user.profile !=
+                                                                    null}?${review.user.profile.fullname}:${review.user.username}]]<span
+                                                                        class="font-weight-light"> - đã
+                                                                        đánh giá <span class="badge badge-primary">[[${review.rating}]]
+                                                                            ★</span></span></h5>
+                                                            </div>
+                                                            <div th:text="${review.description}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <script>
+                                                require(['jquery', 'timeago'], function ($, timeago) {
+                                                    jQuery(document).ready(function () {
+                                                        $("time.timeago").timeago();
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>
