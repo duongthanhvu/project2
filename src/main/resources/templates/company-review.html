@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div th:replace="fragments/company-page-sidebar :: sidebar"></div>
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="h5">Đánh giá</div>
+                                                    <div class="display-4 font-weight-bold mb-4">3,5</div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="clearfix">
+                                                        <div class="float-left">5★</div>
+                                                        <div class="float-right">12</div>
+                                                    </div>
+                                                    <div class="progress progress-xs">
+                                                        <div class="progress-bar" style="width: 30%; background-color: #57bb8a"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>
