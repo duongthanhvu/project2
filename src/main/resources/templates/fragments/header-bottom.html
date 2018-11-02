@@ -20,19 +20,44 @@
         <div class="col-lg order-lg-first">
           <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
             <li class="nav-item">
-              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/index')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-home"></i> Trang chủ</a>
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/index') or #strings.endsWith(#httpServletRequest.requestURI,'/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-home"></i> Trang chủ</a>
             </li>
             <li class="nav-item">
-              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/job/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-briefcase"></i> Tuyển dụng</a>
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/job')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-briefcase"></i> Tuyển dụng</a>
             </li>
             <li class="nav-item">
-              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/company/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-map-pin"></i> Công ty</a>
+              <a href="/company" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/company')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-map-pin"></i> Công ty</a>
             </li>
             <li class="nav-item">
-              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/product/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-shopping-bag"></i> Sản phẩm - Dịch vụ</a>
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/product')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-shopping-bag"></i> Sản phẩm - Dịch vụ</a>
             </li>
             <li class="nav-item">
-              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/contact/')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-info"></i> Liên hệ</a>
+              <a href="/index.html" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/contact')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-info"></i> Liên hệ</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse" th:fragment="ca-header-bottom">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg order-lg-first">
+          <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+            <li class="nav-item">
+              <a href="/ca/home" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/ca/home') or #strings.endsWith(#httpServletRequest.requestURI,'/ca')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-home"></i> Tổng quan</a>
+            </li>
+            <li class="nav-item">
+              <a href="/ca/info" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/ca/info')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-briefcase"></i> Thông tin</a>
+            </li>
+            <li class="nav-item">
+              <a href="/ca/product" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/ca/product')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-map-pin"></i> Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+              <a href="/ca/job" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/ca/job')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-shopping-bag"></i> Tuyển dụng</a>
+            </li>
+            <li class="nav-item">
+              <a href="/ca/post" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/ca/post')} ? 'nav-link active' : 'nav-link'"><i class="fe fe-info"></i> Bài đăng</a>
             </li>
           </ul>
         </div>

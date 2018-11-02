@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: ca-header-top"></div>
+            <div th:replace="fragments/header-bottom :: ca-header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-6">
+                            <form class="card" th:action="@{/ca/post/add}" th:object="${post}" method="post">
+                                <div class="card-body">
+                                    <h3 class="card-title">Đăng bài mới</h3>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Tiêu đề</label>
+                                                <input type="text" class="form-control" placeholder="Tiêu đề của bài đăng"
+                                                    th:field="*{title}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Mô tả</label>
+                                                <textarea rows="10" class="form-control" placeholder="Nội dung" th:field="*{content}"
+                                                    required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Đăng bài</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

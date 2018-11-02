@@ -50,7 +50,7 @@
                                                 <label class="form-label">Địa chỉ trang</label>
                                                 <div class="input-group">
                                                     <span class="input-group-prepend" id="basic-addon3">
-                                                        <span class="input-group-text" th:text="${@environment.getProperty('domain-name') + '/c/'}"></span>
+                                                        <span class="input-group-text" th:text="${#httpServletRequest.serverName + '/company/'}"></span>
                                                     </span>
                                                     <input type="text" class="form-control" id="basic-url"
                                                         aria-describedby="basic-addon3" th:field="*{urlName}">
@@ -173,7 +173,7 @@
                                             <div class="form-group">
                                                 <label class="form-label">Giới thiệu về công ty</label>
                                                 <textarea rows="5" class="form-control" placeholder="Mô tả và giới thiệu về công ty"
-                                                    value="Mike" th:field="*{description}"></textarea>
+                                                     th:field="*{description}"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-4">

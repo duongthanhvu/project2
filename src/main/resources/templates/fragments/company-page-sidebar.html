@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+</head>
+
+<body>
+    <div class="col-lg-3 mb-4" th:fragment="sidebar">
+        <div class="card card-profile">
+            <div class="card-header" style="background-color: #467fcf"></div>
+            <div class="card-body text-center">
+                <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                <h3 class="mb-3" th:text="${company.name}">FPT Software</h3>
+                <p class="mb-4">
+
+                </p>
+                <button class="btn btn-outline-primary btn-sm">
+                    <span class="fa fa-plus"></span> Theo dõi
+                </button>
+            </div>
+        </div>
+        <!-- Getting started -->
+        <div class="list-group list-group-transparent mb-0">
+            <a th:href="'/company/'+${company.urlName}+'/about'" class="list-group-item list-group-item-action"
+                th:classappend="${#strings.endsWith(#httpServletRequest.requestURI,'/company/'+company.urlName) or #strings.startsWith(#httpServletRequest.requestURI,'/company/'+company.urlName+'/about')} ? 'active'"><span
+                    class="icon mr-3"><i class="fe fe-info"></i></span>Giới thiệu</a>
+        </div>
+        <!-- Components -->
+        <div class="list-group list-group-transparent mb-0">
+            <a th:href="'/company/'+${company.urlName}+'/product'" class="list-group-item list-group-item-action"
+                th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/company/'+company.urlName+'/product')} ? 'active'"><span
+                    class="icon mr-3"><i class="fe fe-shopping-bag"></i></span>Sản phẩn & Dịch vụ</a>
+            <a th:href="'/company/'+${company.urlName}+'/career'" class="list-group-item list-group-item-action"
+                th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/company/'+company.urlName+'/career')} ? 'active'"><span
+                    class="icon mr-3"><i class="fe fe-briefcase"></i></span>Tuyển dụng</a>
+            <a th:href="'/company/'+${company.urlName}+'/post'" class="list-group-item list-group-item-action"
+                th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/company/'+company.urlName+'/post')} ? 'active'"><span
+                    class="icon mr-3"><i class="fe fe-file-text"></i></span>Bài đăng</a>
+            <a th:href="'/company/'+${company.urlName}+'/review'" class="list-group-item list-group-item-action"
+                th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/company/'+company.urlName+'/review')} ? 'active'"><span
+                    class="icon mr-3"><i class="fe fe-star"></i></span>Đánh giá</a>
+            <a href="javascript:void(0)" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Báo
+                cáo thông tin sai</a>
+        </div>
+    </div>
+</body>
+
+</html>

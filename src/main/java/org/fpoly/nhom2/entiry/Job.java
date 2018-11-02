@@ -5,8 +5,10 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,8 +31,9 @@ public class Job implements Serializable {
 	@Column(name="date_created",updatable=false)
 	private Timestamp dateCreated;
 
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Column(name="date_expired")
-	private Timestamp dateExpired;
+	private Date dateExpired;
 
 	@UpdateTimestamp
 	@Column(name="date_updated")
@@ -90,11 +93,11 @@ public class Job implements Serializable {
 		this.dateCreated = dateCreated;
 	}
 
-	public Timestamp getDateExpired() {
+	public Date getDateExpired() {
 		return this.dateExpired;
 	}
 
-	public void setDateExpired(Timestamp dateExpired) {
+	public void setDateExpired(Date dateExpired) {
 		this.dateExpired = dateExpired;
 	}
 

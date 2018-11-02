@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.sql.Timestamp;
@@ -21,8 +22,6 @@ public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROFILE_PROFILEID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROFILE_PROFILEID_GENERATOR")
 	@Column(name="profile_id")
 	private int profileId;
 
@@ -34,6 +33,7 @@ public class Profile implements Serializable {
 	private Timestamp dateCreated;
 
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="date_of_birth")
 	private Date dateOfBirth;
 
@@ -53,7 +53,7 @@ public class Profile implements Serializable {
 	private String jobLevel;
 
 	@Column(name="martial_status")
-	private byte martialStatus;
+	private Byte martialStatus;
 
 	private String phone;
 
@@ -163,11 +163,11 @@ public class Profile implements Serializable {
 		this.jobLevel = jobLevel;
 	}
 
-	public byte getMartialStatus() {
+	public Byte getMartialStatus() {
 		return this.martialStatus;
 	}
 
-	public void setMartialStatus(byte martialStatus) {
+	public void setMartialStatus(Byte martialStatus) {
 		this.martialStatus = martialStatus;
 	}
 

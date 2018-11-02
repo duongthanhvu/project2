@@ -3,6 +3,8 @@ package org.fpoly.nhom2.entiry;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -33,8 +35,10 @@ public class User implements Serializable {
 	@Column(name="date_updated")
 	private Timestamp dateUpdated;
 
+	@JsonIgnore
 	private String email;
 
+	@JsonIgnore
 	private String password;
 
 	private String username;
@@ -42,30 +46,37 @@ public class User implements Serializable {
 	private boolean enabled;
 
 	//bi-directional many-to-one association to CompanyAdmin
+	@JsonIgnore
 	@OneToMany(mappedBy="user")
 	private List<CompanyAdmin> companyAdmins;
 
 	//bi-directional many-to-one association to FollowedCompany
+	@JsonIgnore
 	@OneToMany(mappedBy="user")
 	private List<FollowedCompany> followedCompanies;
 
 	//bi-directional one-to-one association to Profile
+	@JsonIgnore
 	@OneToOne(mappedBy="user")
 	private Profile profile;
 
 	//bi-directional many-to-one association to Report
+	@JsonIgnore
 	@OneToMany(mappedBy="user")
 	private List<Report> reports;
 
 	//bi-directional many-to-one association to Review
+	@JsonIgnore
 	@OneToMany(mappedBy="user")
 	private List<Review> reviews;
 
 	//bi-directional many-to-one association to SavedJob
+	@JsonIgnore
 	@OneToMany(mappedBy="user")
 	private List<SavedJob> savedJobs;
 
 	//bi-directional many-to-one association to Role
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;

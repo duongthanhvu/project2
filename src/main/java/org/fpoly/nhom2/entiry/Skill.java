@@ -2,6 +2,9 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -23,6 +26,7 @@ public class Skill implements Serializable {
 	private String title;
 
 	//bi-directional many-to-one association to SkillList
+	@JsonIgnore
 	@OneToMany(mappedBy="skill")
 	private List<SkillList> skillLists;
 

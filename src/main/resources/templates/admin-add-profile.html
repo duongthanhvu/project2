@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <form class="card" th:action="@{/admin/profile/add}" th:object="${profile}" method="post"
+                                enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <h3 class="card-title" th:text="'Thêm hồ sơ cho tài khoản: '+${profile.user.username} "></h3>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Ảnh đại diện</label>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" onchange="readURL(this)"
+                                                        accept="image/jpeg,image/png" name="avatar-file">
+                                                    <label class="custom-file-label">
+                                                        Chọn file
+                                                    </label>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-md-4 mt-2">
+                                                        <img id="logo-preview" class="img-fluid img-thumbnail" src="/logo/blank.png"
+                                                            alt="logo">
+                                                    </div>
+                                                </div>
+                                                <script>
+                                                    function readURL(input) {
+                                                        if (input.files && input.files[0]) {
+                                                            var reader = new FileReader();
+
+                                                            reader.onload = function (e) {
+                                                                $('#logo-preview')
+                                                                    .attr('src', e.target.result);
+                                                            };
+
+                                                            reader.readAsDataURL(input.files[0]);
+                                                        }
+                                                    }
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label class="form-label">Tên đầy đủ</label>
+                                                <input type="number" class="d-none" th:field="*{user.userId}">
+                                                <input type="text" class="form-control" placeholder="Tên đầy đủ"
+                                                    th:field="*{fullname}">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Số điện thoại</label>
+                                                <input type="text" class="form-control" placeholder="Số điện thoại"
+                                                    th:field="*{phone}">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Ngày sinh</label>
+                                                <input type="text" class="form-control" placeholder="Ngày sinh"
+                                                    th:field="*{dateOfBirth}">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Giới tính</label>
+                                                <div class="selectgroup selectgroup-pills w-100">
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" th:field="*{gender}" value="M" class="selectgroup-input"
+                                                            checked="checked">
+                                                        <span class="selectgroup-button">Nam</span>
+                                                    </label>
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" th:field="*{gender}" value="F" class="selectgroup-input">
+                                                        <span class="selectgroup-button">Nữ</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Chức danh</label>
+                                                <input type="text" class="form-control" placeholder="Chức danh"
+                                                    th:field="*{professionalTitle}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Giới thiệu</label>
+                                                <textarea rows="5" class="form-control" placeholder="Giới thiệu sơ qua về bản thân"
+                                                    th:field="*{summary}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">URL</label>
+                                                <input type="text" class="form-control" placeholder="url" th:field="*{urlName}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Tình trạng hôn nhân</label>
+                                                <select class="form-control" th:field="*{martialStatus}">
+                                                    <option value="">(Chọn một)</option>
+                                                    <option value="0">Độc thân</option>
+                                                    <option value="1">Đã kết hôn</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Cấp bậc hiện tại</label>
+                                                <select class="form-control" th:field="*{jobLevel}">
+                                                    <option value="">(Chọn một)</option>
+                                                    <option value="Mới tốt nghiệp">Mới tốt nghiệp</option>
+                                                    <option value="Nhân viên">Nhân viên</option>
+                                                    <option value="Trưởng phòng">Trưởng phòng</option>
+                                                    <option value="Giám đốc và cấp cao hơn">Giám đốc và cấp cao hơn</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Kinh nghiệm làm việc</label>
+                                                <textarea rows="5" class="form-control" placeholder="Kinh nghiệm làm việc"
+                                                    th:field="*{employmentHistory}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-lg-10">
+                                            <div class="form-group">
+                                                <label class="form-label">Địa chỉ</label>
+                                                <input type="text" class="form-control" placeholder="Số nhà và tên đường, vd. 27 Nguyễn Tất Thành"
+                                                    required th:field="*{address.street}">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Phường (xã)</label>
+                                                <select id="select-commune" class="form-control custom-select" th:field="*{address.commune.communeId}"
+                                                    required placeholder="Chọn phường (xã)">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Quận (huyện)</label>
+                                                <select id="select-city" class="form-control custom-select" required
+                                                    placeholder="Chọn quận (huyện)">
+                                                    <option value="">Cần chọn một tỉnh (thành phố)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Tỉnh (thành phố)</label>
+                                                <select id="select-state" class="form-control custom-select" required
+                                                    placeholder="Chọn tỉnh (thành phố)">
+                                                    <option value="">Chọn tỉnh (thành phố)</option>
+                                                    <option th:each="province : ${provinces}" th:text="${province.name}"
+                                                        th:value="${province.pocId}">Đăk Lăk</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            require(['jquery', 'selectize'], function ($, selectize) {
+                                                var xhr;
+                                                var select_state, $select_state;
+                                                var select_city, $select_city;
+                                                var select_commune, $select_commune;
+                                                $select_state = $('#select-state').selectize({
+                                                    onChange: function (value) {
+                                                        if (!value.length) return;
+                                                        select_city.disable();
+                                                        select_city.clearOptions();
+                                                        select_city.load(function (callback) {
+                                                            xhr && xhr.abort();
+                                                            xhr = $.ajax({
+                                                                url: '/api/get-district',
+                                                                data: {
+                                                                    provinceId: value,
+                                                                },
+                                                                success: function (results) {
+                                                                    console.log(results);
+                                                                    select_city.enable();
+                                                                    callback(results);
+                                                                },
+                                                                error: function () {
+                                                                    callback();
+                                                                }
+                                                            })
+                                                        });
+                                                    }
+                                                });
+                                                $select_city = $('#select-city').selectize({
+                                                    valueField: 'cityOrDistId',
+                                                    labelField: 'name',
+                                                    searchField: ['name'],
+                                                    onChange: function (value) {
+                                                        if (!value.length) return;
+                                                        select_commune.disable();
+                                                        select_commune.clearOptions();
+                                                        select_commune.load(function (callback) {
+                                                            xhr && xhr.abort();
+                                                            xhr = $.ajax({
+                                                                url: '/api/get-commune',
+                                                                data: {
+                                                                    distId: value,
+                                                                },
+                                                                success: function (results) {
+                                                                    console.log(results);
+
+                                                                    select_commune.enable();
+                                                                    callback(results);
+                                                                },
+                                                                error: function () {
+                                                                    callback();
+                                                                }
+                                                            })
+                                                        })
+                                                    }
+                                                });
+                                                $select_commune = $('#select-commune').selectize({
+                                                    valueField: 'communeId',
+                                                    labelField: 'name',
+                                                    searchField: ['name']
+                                                });
+                                                select_commune = $select_commune[0].selectize;
+                                                select_city = $select_city[0].selectize;
+                                                select_state = $select_state[0].selectize;
+                                                select_commune.disable();
+                                                select_city.disable();
+                                            });
+                                        </script>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Kỹ năng</label>
+                                                <select class="form-control" multiple id="input-tags" value="" name="categories"
+                                                    placeholder="Chọn kỹ năng">
+                                                </select>
+                                            </div>
+                                            <script>
+                                                require(['jquery', 'selectize'], function ($, selectize) {
+                                                    $(document).ready(function () {
+                                                        $('#input-tags').selectize({
+                                                            valueField: 'title',
+                                                            labelField: 'title',
+                                                            searchField: 'title',
+                                                            plugins: ['remove_button'],
+                                                            delimiter: ',',
+                                                            persist: false,
+                                                            create: true,
+                                                            load: function (query, callback) {
+                                                                if (!query.length) return callback();
+                                                                $.ajax({
+                                                                    url: '/api/skill/search',
+                                                                    type: 'GET',
+                                                                    data: {
+                                                                        q: query
+                                                                    },
+                                                                    error: function () {
+                                                                        callback();
+                                                                    },
+                                                                    success: function (res) {
+                                                                        console.log(res);
+                                                                        callback(res);
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">Học vấn và bằng cấp</h3>
+                                            <div class="container">
+                                                <div class="row" id="hocvan">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Chuyên ngành</label>
+                                                            <input type="text" class="form-control" placeholder="Ví dụ: Công Nghệ Thông Tin"
+                                                                th:field="*{educations[0].subject}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Trường</label>
+                                                            <input type="text" class="form-control" placeholder="Ví dụ: Đại học Tôn Đức Thắng"
+                                                                th:field="*{educations[0].school}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Bằng cấp</label>
+                                                            <select class="form-control" th:field="*{educations[0].qualification}">
+                                                                <option value="">Vui lòng chọn</option>
+                                                                <option value="Trung học">Trung học</option>
+                                                                <option value="Trung cấp">Trung cấp</option>
+                                                                <option value="Cao đẳng">Cao đẳng</option>
+                                                                <option value="Cử nhân">Cử nhân</option>
+                                                                <option value="Thạc sĩ">Thạc sĩ</option>
+                                                                <option value="Tiến sĩ">Tiến sĩ</option>
+                                                                <option value="Khác">Khác</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Từ tháng</label>
+                                                            <input type="text" class="form-control" th:field="*{educations[0].fromMonth}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Đến tháng</label>
+                                                            <input type="text" class="form-control" th:field="*{educations[0].toMonth}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="button" class="btn btn-primary btn-sm" id="btnAddressAdd"
+                                                value="Thêm học vấn và bằng cấp" />
+                                            <script>
+                                                (function () {
+                                                    var button = document.getElementById("btnAddressAdd");
+                                                    button.addEventListener("click", function () {
+                                                        var sourceNode = document.getElementById("hocvan");
+                                                        var node = duplicateNode(sourceNode, ["id", "name"]);
+                                                        sourceNode.parentNode.appendChild(node);
+                                                    }, false);
+                                                    var counter = 0;
+                                                    function duplicateNode(/*DOMNode*/sourceNode, /*Array*/attributesToBump) {
+                                                        counter++;
+                                                        var out = sourceNode.cloneNode(true);
+                                                        if (out.hasAttribute("id")) { out["id"] = bump(out["id"]); }
+                                                        var nodes = out.getElementsByTagName("*");
+                                                        for (var i = 0, len1 = nodes.length; i < len1; i++) {
+                                                            var node = nodes[i];
+                                                            for (var j = 0, len2 = attributesToBump.length; j < len2; j++) {
+                                                                var attribute = attributesToBump[j];
+                                                                if (node.hasAttribute(attribute)) {
+                                                                    node[attribute] = bump(node[attribute]);
+                                                                }
+                                                            }
+                                                        }
+                                                        function bump(/*String*/str) {
+                                                            return "educations[" + counter + "]." + str.substring((str.lastIndexOf(".")) + 1);
+                                                        }
+                                                        return out;
+                                                    }
+                                                })();
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Lưu hồ sơ</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

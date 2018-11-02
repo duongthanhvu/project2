@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div th:replace="fragments/company-search-block :: search-block"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title col-12 col-lg-6"><i class="fe fe-zap"></i> Các công ty đang
+                                        tuyển dụng</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="owl-carousel owl-theme">
+                                        <div class="card card-profile" th:each="company : ${companies}">
+                                            <div class="card-header" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg);"></div>
+                                            <div class="card-body text-center">
+                                                <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                                                <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT
+                                                        Software</a></h4>
+                                                <p class="mb-4">
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title col-12 col-lg-6"><i class="fe fe-zap"></i> Các công ty có số người theo dõi nhiều nhất</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="owl-carousel owl-theme">
+                                        <div class="card card-profile" th:each="company : ${companies}">
+                                            <div class="card-header" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg);"></div>
+                                            <div class="card-body text-center">
+                                                <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                                                <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT
+                                                        Software</a></h4>
+                                                <p class="mb-4">
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title col-12 col-lg-6"><i class="fe fe-zap"></i> Các công ty mới tham gia</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="owl-carousel owl-theme">
+                                        <div class="card card-profile" th:each="company : ${companies}">
+                                            <div class="card-header" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg);"></div>
+                                            <div class="card-body text-center">
+                                                <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                                                <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT
+                                                        Software</a></h4>
+                                                <p class="mb-4">
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        require(['jquery', 'owl-carousel'], function ($) {
+                            jQuery(document).ready(function () {
+                                $(".owl-carousel").owlCarousel({
+                                    margin: 10,
+                                    responsive: {
+                                        0: {
+                                            items: 1
+                                        },
+                                        768: {
+                                            items: 2
+                                        },
+                                        1000: {
+                                            items: 3
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

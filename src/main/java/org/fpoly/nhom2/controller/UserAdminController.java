@@ -28,7 +28,7 @@ public class UserAdminController {
     @Autowired
     private RoleRepository roleRepository;
 
-    @RequestMapping(value = "/admin/user/list", method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/user/list","/admin/user"}, method = RequestMethod.GET)
     public String showuserList(Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,

@@ -30,18 +30,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception{
-		/** tắt security để test
 		http.authorizeRequests().antMatchers("/admin/**").hasRole("admin");
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("admin, user");
+		http.authorizeRequests().antMatchers("/ca/**").hasRole("ca");
+		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 		http.authorizeRequests().and().formLogin().loginProcessingUrl("/login-process")
 		.loginPage("/login")
-		.defaultSuccessUrl("/default")
+		.defaultSuccessUrl("/")
 		.failureUrl("/login?message=error")
 		.usernameParameter("username")
 		.passwordParameter("password")
 		.and()
 		.logout().logoutUrl("/logout")
 		.logoutSuccessUrl("/login?message=logout");
-		*/
 	}
 }

@@ -2,6 +2,9 @@ package org.fpoly.nhom2.entiry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -25,6 +28,7 @@ public class Category implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to CompanyCategory
+	@JsonIgnore
 	@OneToMany(mappedBy="category")
 	private List<CompanyCategory> companyCategories;
 

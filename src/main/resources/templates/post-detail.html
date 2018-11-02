@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-wrap p-lg-6">
+                                        <h2 class="mt-0 mb-4" th:text="${post.title}"></h2>
+                                        <p class="text-muted my-0"><span class="avatar" th:style="'background-image: url(/file/'+${company.logo}+')'"></span>
+                                            [[${company.name}]] </p>
+                                        <small class="text-muted mb-5 d-block"><i class="fe fe-clock"></i> <time class="timeago"
+                                                th:datetime="${post.dateCreated}"></time></small>
+                                        <p th:text="${post.content}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Bài viết khác từ [[${company.name}]]</h3>
+                            <div>
+                                <div class="owl-carousel owl-theme">
+                                    <div class="card" th:each="post : ${suggestPosts}">
+                                        <div class="card-body d-flex flex-column">
+                                            <h4 style="display:block; height:80px !important;"><a th:href="'/post/'+${post.urlTitle}"
+                                                    th:text="${post.title}"></a></h4>
+                                            <div class="text-muted">[[${#strings.substring(post.content,0,150)} +
+                                                '...']]<a th:href="'/post/'+${post.urlTitle}">(chi tiết)</a></div>
+                                            <div class="d-flex align-items-center pt-5 mt-auto">
+                                                <div class="avatar avatar-md mr-3" th:style="'background-image: url(/file/'+${company.logo}+')'"></div>
+                                                <div>
+                                                    <a th:href="'/company/'+${company.urlName}" class="text-default"
+                                                        th:text="${company.name}"></a>
+                                                    <small class="d-block text-muted"><time class="timeago" th:datetime="${post.dateCreated}"
+                                                            th:text="${post.dateCreated}"></time></small>
+                                                </div>
+                                                <div class="ml-auto text-muted">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                require(['jquery', 'owl-carousel'], function ($) {
+                                    jQuery(document).ready(function () {
+                                        $(".owl-carousel").owlCarousel({
+                                            margin: 10,
+                                            responsive: {
+                                                0: {
+                                                    items: 1
+                                                },
+                                                768: {
+                                                    items: 2
+                                                },
+                                                1000: {
+                                                    items: 3
+                                                }
+                                            },
+                                        });
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <script>
+                            require(['jquery', 'timeago'], function ($, timeago) {
+                                jQuery(document).ready(function () {
+                                    $("time.timeago").timeago();
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

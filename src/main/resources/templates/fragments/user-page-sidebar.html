@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+</head>
+
+<body>
+    <div class="col-lg-3 mb-4" th:fragment="sidebar">
+        <div class="card card-profile">
+            <div class="card-header" style="background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);"></div>
+            <div class="card-body text-center">
+                <img class="card-profile-img" th:src="'/file/'+${user.profile.avatarPicture}">
+                <h3 class="mb-3" th:text="${user.profile != null} ? ${user.profile.fullname} : '(Chưa cập nhật hồ sơ)'"></h3>
+                <p class="mb-4">
+
+                </p>
+                <button class="btn btn-outline-primary btn-sm">
+                    <span class="fa fa-plus"></span> Cập nhật hồ sơ
+                </button>
+            </div>
+        </div>
+        <!-- Getting started -->
+        <div class="list-group list-group-transparent mb-0">
+            <a th:href="'/user'" th:class="${#strings.endsWith(#httpServletRequest.requestURI,'/user')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
+                    class="icon mr-3"><i class="fe fe-flag"></i></span>Tổng quan</a>
+        </div>
+        <!-- Components -->
+        <div class="list-group list-group-transparent mb-0">
+            <a th:href="'/user/profile'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/profile')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
+                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Hồ sơ</a>
+            <a th:href="'/user/job'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/job')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
+                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Việc làm</a>
+            <a th:href="'/user/subcribe'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/subcribe')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
+                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Theo dõi</a>
+        </div>
+    </div>
+</body>
+
+</html>
