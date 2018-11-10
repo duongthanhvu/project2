@@ -8,42 +8,46 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the post database table.
  * 
  */
 @Entity
-@NamedQuery(name="Post.findAll", query="SELECT p FROM Post p")
+@NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p")
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="POST_POSTID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="POST_POSTID_GENERATOR")
-	@Column(name="post_id")
+	@SequenceGenerator(name = "POST_POSTID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_POSTID_GENERATOR")
+	@Column(name = "post_id")
 	private int postId;
 
 	@Lob
 	private String content;
 
 	@CreationTimestamp
-	@Column(name="date_created",updatable=false)
+	@Column(name = "date_created", updatable = false)
 	private Timestamp dateCreated;
 
 	@UpdateTimestamp
-	@Column(name="date_updated")
+	@Column(name = "date_updated")
 	private Timestamp dateUpdated;
 
 	private String title;
 
-	@Column(name="url_title")
+	@Column(name = "url_title")
 	private String urlTitle;
 
-	//bi-directional many-to-one association to Company
+	// bi-directional many-to-one association to Company
 	@ManyToOne
-	@JoinColumn(name="company_id")
+	@JoinColumn(name = "company_id")
 	private Company company;
+
+	// bi-directional many-to-one association to View Count
+	@ManyToOne
+	@JoinColumn(name = "view_count_id",updatable=false)
+	private ViewCount viewCount;
 
 	public Post() {
 	}
@@ -101,7 +105,7 @@ public class Post implements Serializable {
 	public void setUrlTitle(String urlTitle) {
 		this.urlTitle = urlTitle;
 	}
-	
+
 	public Company getCompany() {
 		return this.company;
 	}
@@ -110,4 +114,17 @@ public class Post implements Serializable {
 		this.company = company;
 	}
 
+	/**
+	 * @return the viewCount
+	 */
+	public ViewCount getViewCount() {
+		return viewCount;
+	}
+
+	/**
+	 * @param viewCount the viewCount to set
+	 */
+	public void setViewCount(ViewCount viewCount) {
+		this.viewCount = viewCount;
+	}
 }

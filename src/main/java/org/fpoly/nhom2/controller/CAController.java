@@ -5,13 +5,16 @@ import java.util.List;
 
 import org.fpoly.nhom2.entiry.*;
 import org.fpoly.nhom2.repository.*;
+import org.fpoly.nhom2.service.EmailService;
 import org.fpoly.nhom2.service.FileUtil;
 import org.fpoly.nhom2.service.LoggedInUser;
 import org.fpoly.nhom2.service.UrlCreator;
+import org.fpoly.nhom2.service.ViewCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * CAController
@@ -51,11 +55,17 @@ public class CAController {
     @Autowired
     private TOJRepository tojRepository;
     @Autowired
+    private PictureOfCompanyRepo pictureOfCompanyRepo;
+    @Autowired
     private UrlCreator urlCreator;
     @Autowired
     private PostRepository postRepository;
     @Autowired
     private FileUtil fileUtil;
+    @Autowired
+    private ViewCountService viewCountService;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     @GetMapping(value = { "/ca/home", "/ca" })
     public String showCAHome(Model model) {
@@ -195,6 +205,7 @@ public class CAController {
         company.setCompanyId(loggedInUser.getDefaultCompanyId());
         job.setCompany(company);
         job.setUrlTitle(urlCreator.createUrl(job.getTitle()));
+        job.setViewCount(viewCountService.addNew());
         jobRepository.save(job);
         for (String ben : benefit) {
             if (!ben.isEmpty()) {
@@ -251,7 +262,95 @@ public class CAController {
         company.setCompanyId(loggedInUser.getDefaultCompanyId());
         post.setCompany(company);
         post.setUrlTitle(urlCreator.createUrl(post.getTitle()));
+        post.setViewCount(viewCountService.addNew());
         postRepository.save(post);
         return "redirect:/ca/post";
+    }
+
+    @GetMapping(value = "/ca/info/photo")
+    public String showCompanyPhoto(Model model) {
+        model.addAttribute("company", companyRepository.getOne(loggedInUser.getDefaultCompanyId()));
+        return "ca-photo";
+    }
+
+    @PostMapping(value = "/ca/info/photo/upload")
+    public String uploadNewPhoto(@RequestParam("photo") List<MultipartFile> photos) {
+        Company company = companyRepository.getOne(loggedInUser.getDefaultCompanyId());
+        for (MultipartFile photo : photos) {
+            PoCompany poc = new PoCompany();
+            poc.setPhoto(fileUtil.saveFile(photo, FileUtil.PHOTO));
+            poc.setCompany(company);
+            pictureOfCompanyRepo.save(poc);
+        }
+        return "redirect:/ca/info/photo";
+    }
+
+    @GetMapping(value = "/ca/info/photo/delete")
+    public String getMethodName(@RequestParam("photo") Integer poCompanyId) {
+        PoCompany po = pictureOfCompanyRepo.getOne(poCompanyId);
+        pictureOfCompanyRepo.delete(po);
+        return "redirect:/ca/info/photo";
+    }
+
+    @GetMapping(value = "/im-company-admin")
+    public String userChooseCompany() {
+        return "im-company-admin";
+    }
+
+    @Autowired
+    EmailService mailSender;
+
+    @PostMapping(value = "/claim-company")
+    public String submitToAdminForReview(@RequestParam("companyId") Company company) {
+        mailSender.sendEmailCapQuyen(loggedInUser.getUser(), company);
+        return "submit-being-review";
+    }
+
+    @GetMapping(value = "/submit-new-company")
+    public String submitNewCompany(Model model) {
+        model.addAttribute("provinces", pOCRepository.findAll());
+        model.addAttribute("categories", catRepository.findAll());
+        model.addAttribute("company", new Company());
+        return "submit-new-company";
+    }
+
+    @PostMapping(value = "/submit-new-company")
+    public String submitNewCompany(@ModelAttribute("company") Company company) {
+        mailSender.iWantToSubmitNewCompany(loggedInUser.getUser(), company);
+        return "submit-being-review";
+    }
+
+    @GetMapping(value = "/ca/search/profile")
+    public String searchForCompany(Model model,
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort,
+            @RequestParam(name = "location", required = false) Integer provinceId,
+            @RequestParam(name = "job_level", required = false, defaultValue = "") String jobLevel,
+            @RequestParam(name = "skills", required = false) List<Integer> skillIds,
+            @RequestParam(name = "school", required = false, defaultValue = "") String schoolName) {
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by("profileId").ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by("profileId").descending();
+        }
+        /*
+         * Wasted 5 hours then finally found the trick from this :)
+         * https://stackoverflow.com/questions/45164322/checking-for-null-on-a-
+         * collection-in-jpql-queries/51332354#51332354
+         */
+        int isSkillEmpty = 1;
+        if (skillIds != null && !skillIds.isEmpty()) {
+            isSkillEmpty = 0;
+        }
+        Pageable pageable = PageRequest.of(page, size, sortable);
+        model.addAttribute("company", companyRepository.getOne(loggedInUser.getDefaultCompanyId()));
+        model.addAttribute("page",
+                profileRepository.searchProfile(provinceId, schoolName, jobLevel, skillIds, isSkillEmpty, pageable));
+        model.addAttribute("provinces", pOCRepository.findAll());
+        model.addAttribute("pcount", profileRepository.count());
+        return "ca-search-profile-result";
     }
 }

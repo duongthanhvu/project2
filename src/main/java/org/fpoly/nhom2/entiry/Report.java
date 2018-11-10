@@ -30,7 +30,9 @@ public class Report implements Serializable {
 	@Lob
 	private String description;
 
-	private byte status;
+	private String url;
+
+	private boolean status;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -64,11 +66,25 @@ public class Report implements Serializable {
 		this.description = description;
 	}
 
-	public byte getStatus() {
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	public boolean getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(byte status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

@@ -11,82 +11,85 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-
 /**
  * The persistent class for the profile database table.
  * 
  */
 @Entity
-@NamedQuery(name="Profile.findAll", query="SELECT p FROM Profile p")
+@NamedQuery(name = "Profile.findAll", query = "SELECT p FROM Profile p")
 public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="profile_id")
+	@Column(name = "profile_id")
 	private int profileId;
 
-	@Column(name="avatar_picture")
+	@Column(name = "avatar_picture")
 	private String avatarPicture;
 
 	@CreationTimestamp
-	@Column(name="date_created",updatable=false)
+	@Column(name = "date_created", updatable = false)
 	private Timestamp dateCreated;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name="date_of_birth")
+	@Column(name = "date_of_birth")
 	private Date dateOfBirth;
 
 	@UpdateTimestamp
-	@Column(name="date_updated")
+	@Column(name = "date_updated")
 	private Timestamp dateUpdated;
 
 	@Lob
-	@Column(name="employment_history")
+	@Column(name = "employment_history")
 	private String employmentHistory;
 
 	private String fullname;
 
 	private String gender;
 
-	@Column(name="job_level")
+	@Column(name = "job_level")
 	private String jobLevel;
 
-	@Column(name="martial_status")
+	@Column(name = "martial_status")
 	private Byte martialStatus;
 
 	private String phone;
 
-	@Column(name="professional_title")
+	@Column(name = "professional_title")
 	private String professionalTitle;
 
 	@Lob
 	private String summary;
 
-	@Column(name="url_name")
+	@Column(name = "url_name")
 	private String urlName;
 
-	//bi-directional many-to-one association to Cv
-	@OneToMany(mappedBy="profile")
+	// bi-directional many-to-one association to Cv
+	@OneToMany(mappedBy = "profile")
 	private List<Cv> cvs;
 
-	//bi-directional many-to-one association to Education
-	@OneToMany(mappedBy="profile")
+	// bi-directional many-to-one association to Education
+	@OneToMany(mappedBy = "profile")
 	private List<Education> educations;
 
-	//bi-directional many-to-one association to Address
+	// bi-directional many-to-one association to Address
 	@ManyToOne
-	@JoinColumn(name="address_id")
+	@JoinColumn(name = "address_id")
 	private Address address;
 
-	//bi-directional one-to-one association to User
+	// bi-directional one-to-one association to User
 	@OneToOne
-	@JoinColumn(name="profile_id")
+	@JoinColumn(name = "profile_id")
 	private User user;
 
-	//bi-directional many-to-one association to SkillList
-	@OneToMany(mappedBy="profile")
+	// bi-directional many-to-one association to SkillList
+	@OneToMany(mappedBy = "profile")
 	private List<SkillList> skillLists;
+
+	// bi-directional many-to-one association to AppliedProfile
+	@OneToMany(mappedBy = "profile")
+	private List<AppliedProfile> appliedProfiles;
 
 	public Profile() {
 	}
@@ -285,4 +288,17 @@ public class Profile implements Serializable {
 		return skillList;
 	}
 
+	/**
+	 * @return the appliedProfiles
+	 */
+	public List<AppliedProfile> getAppliedProfiles() {
+		return appliedProfiles;
+	}
+
+	/**
+	 * @param appliedProfiles the appliedProfiles to set
+	 */
+	public void setAppliedProfiles(List<AppliedProfile> appliedProfiles) {
+		this.appliedProfiles = appliedProfiles;
+	}
 }

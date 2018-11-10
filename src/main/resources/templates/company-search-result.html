@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div th:replace="fragments/company-search-block :: search-block"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title col-12 col-lg-6"><i class="fe fe-magnifier"></i> Kết quả tìm kiếm</h3>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title" th:if="${page.totalPages == 0}">Không tìm thấy công ty nào phù hợp</h3>
+                                    <h3 class="card-title" th:if="${page.totalPages != 0}">Tìm thấy [[${page.totalElements}]] kết quả</h3>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 col-lg-4" th:each="company : ${page.content}">
+                                            <div class="card card-profile">
+                                                <div class="card-header" th:style="${company.poCompanies.isEmpty()} ? 'background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);' : 'background-image: url(/file/'+${company.poCompanies[0].photo}+');'"></div>
+                                                <div class="card-body text-center">
+                                                    <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                                                    <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT
+                                                            Software</a></h4>
+                                                    <p class="mb-4">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul th:if="${page.totalPages > 0}" class="pagination justify-content-center">
+                                            <li th:class="${page.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+                                                <a class="page-link" th:href="@{/company/search(keyword=${param.keyword},category=${param.category},location=${param.location},page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('companyId').getDirection()})}"
+                                                    tabindex="-1">Trang trước</a>
+                                            </li>
+                                            <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                                                <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link"
+                                                        th:href="@{/company/search(keyword=${param.keyword},category=${param.category},location=${param.location},page=${i},size=${page.size},sort=${page.sort.getOrderFor('companyId').getDirection()})}">[[${i}+1]]</a></li>
+                                            </th:block>
+                                            <li th:class="${page.hasNext()} ? 'page-item' : 'page-item disabled'">
+                                                <a class="page-link" th:href="@{/company/search(keyword=${param.keyword},category=${param.category},location=${param.location},page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('companyId').getDirection()})}">Trang
+                                                    sau</a>
+                                            </li>
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

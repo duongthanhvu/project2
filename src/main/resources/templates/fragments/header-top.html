@@ -7,10 +7,11 @@
 
 <body>
   <div class="header py-4" th:fragment="header-top">
+    <div th:replace="fragments/report-modal :: modal"></div>
     <div class="container">
       <div class="d-flex">
         <a class="header-brand" href="/index.html">
-          <img src="../static/demo/brand/tabler.svg" th:src="@{/demo/brand/tabler.svg}" class="header-brand-img" alt="tabler logo">
+          <img src="../static/demo/brand/tabler.svg" th:src="@{/assets/images/logo.svg}" class="header-brand-img" alt="tabler logo">
         </a>
         <div th:if="${#request.userPrincipal} == null" class="d-flex order-lg-2 ml-auto">
           <a href="/register" class="btn btn-secondary">Đăng ký</a>
@@ -57,11 +58,46 @@
       </div>
     </div>
   </div>
+  <div class="header py-4 bg-dark text-white" th:fragment="admin-header-top">
+    <div class="container">
+      <div class="d-flex">
+        <a class="header-brand d-flex" href="/index.html">
+          <img src="../static/demo/brand/tabler.svg" th:src="@{/assets/images/logo-reverse.svg}" class="header-brand-img" alt="tabler logo">
+          <h4 class="pt-1 text-white">| Trang dành cho quản trị viên</h4>
+        </a>
+        <div th:if="${#request.userPrincipal} == null" class="d-flex order-lg-2 ml-auto">
+          <a href="/register" class="btn btn-secondary">Đăng ký</a>
+          <a href="/login" class="btn btn-secondary ml-3">Đăng nhập</a>
+        </div>
+        <div th:if="${#request.userPrincipal} != null" class="d-flex order-lg-2 ml-auto">
+          <div class="dropdown">
+            <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+              <span class="avatar" th:style="${@loggedinuser.getUser().profile != null} ? 'background-image: url(/file/'+${@loggedinuser.getUser().profile.avatarPicture}+')' : ''"></span>
+              <span class="ml-2 d-none d-lg-block">
+                <span class="text-white" th:text="${#request.userPrincipal.name}">Jane Pearson</span>
+                <small class="text-muted d-block mt-1">Administrator</small>
+              </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+              <a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit();">
+                <i class="dropdown-icon fe fe-log-out"></i> Đăng xuất
+              </a>
+							<form th:action="@{/logout}" id="logout-form" method="post">
+							</form>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+          <span class="header-toggler-icon"></span>
+        </a>
+      </div>
+    </div>
+  </div>
   <div class="header py-4" th:fragment="ca-header-top">
     <div class="container">
       <div class="d-flex">
         <a class="header-brand" href="/index.html">
-          <img src="../static/demo/brand/tabler.svg" th:src="@{/demo/brand/tabler.svg}" class="header-brand-img" alt="tabler logo">
+          <img src="../static/demo/brand/tabler.svg" th:src="@{/assets/images/logo.svg}" class="header-brand-img" alt="tabler logo">
         </a>
         <div class="d-flex order-lg-2 ml-auto">
           <div class="dropdown">

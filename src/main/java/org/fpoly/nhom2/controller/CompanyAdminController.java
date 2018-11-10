@@ -12,6 +12,7 @@ import org.fpoly.nhom2.repository.CompanyCategoryRepository;
 import org.fpoly.nhom2.repository.CompanyRepository;
 import org.fpoly.nhom2.repository.POCRepository;
 import org.fpoly.nhom2.service.FileUtil;
+import org.fpoly.nhom2.service.ViewCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,9 @@ public class CompanyAdminController {
 
     @Autowired
     private FileUtil fileUtil;
+
+    @Autowired
+    private ViewCountService viewCountService;
 
     @Autowired
     private CompanyCategoryRepository compCatRepository;
@@ -89,6 +93,7 @@ public class CompanyAdminController {
         company.setLogo(fileUtil.saveFile(logo, FileUtil.LOGO));
         addressRepository.save(company.getAddress());
         company.setStatus(true);
+        company.setViewCount(viewCountService.addNew());
         companyRepository.save(company);
         for (Category category : categories) {
             compCatRepository.save(new CompanyCategory(company, category));

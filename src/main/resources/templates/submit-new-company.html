@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="vi" dir="ltr">
+
+<head th:replace="fragments/head :: head">
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" th:action="@{/submit-new-company}" th:object="${company}" method="post"
+                            enctype="multipart/form-data">
+                            <div class="card-body">
+                                <h3 class="card-title">Thêm công ty mới</h3>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-label">Tên công ty</label>
+                                            <input type="text" class="form-control" placeholder="Tên công ty" th:field="*{name}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Số điện thoại</label>
+                                            <input type="text" class="form-control" placeholder="Số điện thoại"
+                                                th:field="*{phone}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" placeholder="Email" th:field="*{email}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Trang web</label>
+                                            <input type="url" class="form-control" placeholder="Trang web" th:field="*{website}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Địa chỉ trang</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend" id="basic-addon3">
+                                                    <span class="input-group-text" th:text="${#httpServletRequest.serverName + '/company/'}"></span>
+                                                </span>
+                                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                                                    th:field="*{urlName}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-2">
+                                        <div class="form-group">
+                                            <label class="form-label">Năm thành lập</label>
+                                            <input type="number" class="form-control" placeholder="Năm công ty thành lập"
+                                                min="0" th:field="*{establishedYear}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-10">
+                                        <div class="form-group">
+                                            <label class="form-label">Địa chỉ</label>
+                                            <input type="text" class="form-control" placeholder="Số nhà và tên đường, vd. 27 Nguyễn Tất Thành"
+                                                required th:field="*{address.street}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Phường (xã)</label>
+                                            <select id="select-commune" class="form-control custom-select" th:field="*{address.commune.communeId}"
+                                                required placeholder="Chọn phường (xã)">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Quận (huyện)</label>
+                                            <select id="select-city" class="form-control custom-select" required
+                                                placeholder="Chọn quận (huyện)">
+                                                <option value="">Cần chọn một tỉnh (thành phố)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Tỉnh (thành phố)</label>
+                                            <select id="select-state" class="form-control custom-select" required
+                                                placeholder="Chọn tỉnh (thành phố)">
+                                                <option value="">Chọn tỉnh (thành phố)</option>
+                                                <option th:each="province : ${provinces}" th:text="${province.name}"
+                                                    th:value="${province.pocId}">Đăk Lăk</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        require(['jquery', 'selectize'], function ($, selectize) {
+                                            var xhr;
+                                            var select_state, $select_state;
+                                            var select_city, $select_city;
+                                            var select_commune, $select_commune;
+                                            $select_state = $('#select-state').selectize({
+                                                onChange: function (value) {
+                                                    if (!value.length) return;
+                                                    select_city.disable();
+                                                    select_city.clearOptions();
+                                                    select_city.load(function (callback) {
+                                                        xhr && xhr.abort();
+                                                        xhr = $.ajax({
+                                                            url: '/api/get-district',
+                                                            data: {
+                                                                provinceId: value,
+                                                            },
+                                                            success: function (results) {
+                                                                console.log(results);
+                                                                select_city.enable();
+                                                                callback(results);
+                                                            },
+                                                            error: function () {
+                                                                callback();
+                                                            }
+                                                        })
+                                                    });
+                                                }
+                                            });
+                                            $select_city = $('#select-city').selectize({
+                                                valueField: 'cityOrDistId',
+                                                labelField: 'name',
+                                                searchField: ['name'],
+                                                onChange: function (value) {
+                                                    if (!value.length) return;
+                                                    select_commune.disable();
+                                                    select_commune.clearOptions();
+                                                    select_commune.load(function (callback) {
+                                                        xhr && xhr.abort();
+                                                        xhr = $.ajax({
+                                                            url: '/api/get-commune',
+                                                            data: {
+                                                                distId: value,
+                                                            },
+                                                            success: function (results) {
+                                                                console.log(results);
+
+                                                                select_commune.enable();
+                                                                callback(results);
+                                                            },
+                                                            error: function () {
+                                                                callback();
+                                                            }
+                                                        })
+                                                    })
+                                                }
+                                            });
+                                            $select_commune = $('#select-commune').selectize({
+                                                valueField: 'communeId',
+                                                labelField: 'name',
+                                                searchField: ['name']
+                                            });
+                                            select_commune = $select_commune[0].selectize;
+                                            select_city = $select_city[0].selectize;
+                                            select_state = $select_state[0].selectize;
+                                            select_commune.disable();
+                                            select_city.disable();
+                                        });
+                                    </script>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label class="form-label">Giới thiệu về công ty</label>
+                                            <textarea rows="5" class="form-control" placeholder="Mô tả và giới thiệu về công ty"
+                                                th:field="*{description}"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Logo</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" onchange="readURL(this)"
+                                                    accept="image/jpeg,image/png" name="logo-file">
+                                                <label class="custom-file-label">
+                                                    Chọn file
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-4 mt-2">
+                                                    <img id="logo-preview" class="img-fluid img-thumbnail" src="/logo/blank.png"
+                                                        alt="logo">
+                                                </div>
+                                            </div>
+                                            <script>
+                                                function readURL(input) {
+                                                    if (input.files && input.files[0]) {
+                                                        var reader = new FileReader();
+
+                                                        reader.onload = function (e) {
+                                                            $('#logo-preview')
+                                                                .attr('src', e.target.result);
+                                                        };
+
+                                                        reader.readAsDataURL(input.files[0]);
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Lĩnh vực hoạt động</label>
+                                            <select class="form-control" multiple id="input-tags" value="" name="categories"
+                                                placeholder="Chọn tối đa 5 lĩnh vực mà doanh nghiệp tham gia">
+                                                <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                                    th:text="${category.name}"></option>
+                                            </select>
+                                        </div>
+                                        <script>
+                                            require(['jquery', 'selectize'], function ($, selectize) {
+                                                $(document).ready(function () {
+                                                    $('#input-tags').selectize({
+                                                        plugins: ['remove_button'],
+                                                        delimiter: ',',
+                                                        persist: false,
+                                                        create: false,
+                                                        maxItems: 5
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">Thông tin liên hệ</h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Tên người liên hệ</label>
+                                            <input type="text" class="form-control" th:field="*{contactName}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" th:field="*{contactEmail}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Số điện thoại</label>
+                                            <input type="tel" class="form-control" th:field="*{contactPhone}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-primary">Thêm công ty</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

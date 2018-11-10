@@ -8,8 +8,8 @@
 <body class="">
     <div class="page">
         <div class="page-main">
-            <div th:replace="fragments/header-top :: header-top"></div>
-            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div th:replace="fragments/header-top :: admin-header-top"></div>
+            <div th:replace="fragments/header-bottom :: admin-header-bottom"></div>
             <div class="my-3 my-md-5">
                 <div class="container">
                     <div class="page-header">
@@ -51,6 +51,7 @@
                                                 <th>Số điện thoại</th>
                                                 <th>Ngày sinh</th>
                                                 <th>Địa chỉ</th>
+                                                <th>Hoàn thiện</th>
                                                 <th class="text-center"><i class="icon-settings"></i></th>
                                             </tr>
                                         </thead>
@@ -81,6 +82,14 @@
                                                 </td>
                                                 <td>
                                                     <div th:text="${profile.address == null} ? '(Chưa bổ sung)' : ${profile.address.street}+', '+${profile.address.commune.name}+', '+${profile.address.commune.cityOrDist.name}+', '+${profile.address.commune.cityOrDist.provinceOrCity.name}"></div>
+                                                </td>
+                                                <td>
+                                                    <div class="mx-auto mb-2 chart-circle chart-circle-xs"
+                                                        th:data-value="${@scoreService.getScore(profile)}"
+                                                        data-thickness="3" data-color="blue">
+                                                        <div class="chart-circle-value">[[${#numbers.formatInteger(@scoreService.getScore(profile)
+                                                            * 100,1)}]]%</div>
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="item-action dropdown">

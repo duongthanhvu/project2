@@ -22,6 +22,7 @@ public class FileUtil {
 
     public static final int LOGO = 0;
     public static final int PHOTO = 1;
+    public static final int PDF = 2;
     @Autowired
     private Environment env;
     @Autowired

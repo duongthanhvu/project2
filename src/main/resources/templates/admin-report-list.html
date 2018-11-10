@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: admin-header-top"></div>
+            <div th:replace="fragments/header-bottom :: admin-header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="page-header">
+                        <h1 class="page-title">
+                            Các báo cáo đang chờ giải quyết
+                        </h1>
+                        <div class="page-subtitle" th:text="${page.number*page.size+1}+' - '+${page.number*page.size+page.size}+' trong tổng số ' +${page.totalElements}+ ' báo cáo'">1 - 12 trong
+                            tổng số 1713 công ty</div>
+                        <div class="page-options d-flex">
+                            <div class="dropdown ml-2">
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fe fe-list mr-2"></i><th:block th:text="${page.sort.getOrderFor('reportId').getDirection().toString() == 'ASC'} ? 'Cũ nhất' : 'Mới nhất'"></th:block>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="?sort=DESC">Mới nhất</a>
+                                    <a class="dropdown-item" href="?sort=ASC">Cũ nhất</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-outline table-vcenter card-table">
+                                        <thead class="text-nowrap">
+                                            <tr>
+                                                <th class="text-center w-1"><i class="icon-people"></i></th>
+                                                <th>User báo cáo</th>
+                                                <th>Mô tả</th>
+                                                <th>Đường dẫn</th>
+                                                <th class="text-center">Trạng thái</th>
+                                                <th class="text-center">Thời gian báo cáo</th>
+                                                <th class="text-center"><i class="icon-settings"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <script>
+                                                require(['jquery', 'timeago'], function ($, timeago) {
+                                                    jQuery(document).ready(function () {
+                                                        $("time.timeago").timeago();
+                                                    });
+                                                });
+                                            </script>
+                                            <tr th:each="report : ${page.content}">
+                                                <td class="text-center">
+                                                    <div class="avatar d-block" th:style="'background-image: url('+@{/file/}+${0}+')'">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>[[${report.user.username}]]</div>
+                                                </td>
+                                                <td>
+                                                    <div>[[${report.description}]]</div>
+                                                </td>
+                                                <td>
+                                                    <a th:ref="${report.url}">[[${report.url}]]</a>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div th:text="${report.status ? 'Đã giải quyết' : 'Chờ giải quyết'}"></div>
+                                                </td>
+                                                <td>
+                                                    <div class="small text-muted">Đã gửi</div>
+                                                    <div class="small"><time class="timeago" th:datetime="${report.dateCreated}" th:text="${report.dateCreated}"></time></div>
+                                                </td>
+                                                <td class="text-center">
+                                                    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <ul class="pagination justify-content-center">
+                                <li th:class="${page.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/admin/report/list(page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}" tabindex="-1">Trang trước</a>
+                                </li>
+                                <th:block  th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                                <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link" th:href="@{/admin/report/list(page=${i},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}">[[${i}+1]]</a></li>
+                                </th:block>
+                                <li th:class="${page.hasNext()} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/admin/report/list(page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}">Trang sau</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

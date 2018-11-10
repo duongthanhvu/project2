@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div th:replace="fragments/user-page-sidebar :: sidebar"></div>
+                        <div class="col-lg-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Các công ty đang theo dõi</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-4" th:each="fc : ${user.followedCompanies}">
+                                                <div class="card card-profile" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.09);">
+                                                    <div class="card-header" style="background-position: center; background-size: cover;"
+                                                        th:styleappend="${fc.company.poCompanies.isEmpty()} ? 'background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);' : 'background-image: url(/file/'+${fc.company.poCompanies[0].photo}+');'"></div>
+                                                    <div class="card-body text-center">
+                                                        <img class="card-profile-img" th:src="'/file/'+${fc.company.logo}"
+                                                            style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                                        <h4 class="mb-3"><a th:href="'/company/'+${fc.company.urlName}"
+                                                                th:text="${fc.company.name}">FPT
+                                                                Software</a></h4>
+                                                        <p class="mb-4">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

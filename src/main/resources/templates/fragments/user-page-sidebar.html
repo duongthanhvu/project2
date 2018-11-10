@@ -11,27 +11,28 @@
             <div class="card-body text-center">
                 <img class="card-profile-img" th:src="'/file/'+${user.profile.avatarPicture}">
                 <h3 class="mb-3" th:text="${user.profile != null} ? ${user.profile.fullname} : '(Chưa cập nhật hồ sơ)'"></h3>
-                <p class="mb-4">
-
-                </p>
+                <td class="text-center" th:if="${user.profile != null}">
+                    <div class="mx-auto mb-2 chart-circle chart-circle-xs" th:data-value="${@scoreService.getScore(user.profile)}"
+                        data-thickness="3" data-color="blue">
+                        <div class="chart-circle-value">[[${#numbers.formatInteger(@scoreService.getScore(user.profile)
+                            * 100,1)}]]%</div>
+                    </div>
+                </td>
                 <button class="btn btn-outline-primary btn-sm">
                     <span class="fa fa-plus"></span> Cập nhật hồ sơ
                 </button>
             </div>
         </div>
-        <!-- Getting started -->
-        <div class="list-group list-group-transparent mb-0">
-            <a th:href="'/user'" th:class="${#strings.endsWith(#httpServletRequest.requestURI,'/user')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
-                    class="icon mr-3"><i class="fe fe-flag"></i></span>Tổng quan</a>
-        </div>
         <!-- Components -->
         <div class="list-group list-group-transparent mb-0">
             <a th:href="'/user/profile'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/profile')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
-                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Hồ sơ</a>
+                    class="icon mr-3"><i class="fe fe-user"></i></span>Hồ sơ</a>
+            <a th:href="'/user/cv'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/cv')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
+                    class="icon mr-3"><i class="fe fe-file"></i></span>CV</a>
             <a th:href="'/user/job'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/job')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
-                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Việc làm</a>
+                    class="icon mr-3"><i class="fe fe-bookmark"></i></span>Việc làm</a>
             <a th:href="'/user/subcribe'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/subcribe')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
-                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Theo dõi</a>
+                    class="icon mr-3"><i class="fe fe-rss"></i></span>Theo dõi</a>
         </div>
     </div>
 </body>

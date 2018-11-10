@@ -22,10 +22,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="owl-carousel owl-theme">
-                                        <div class="card card-profile" th:each="company : ${companies}">
-                                            <div class="card-header" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg);"></div>
+                                        <div class="card card-profile" th:each="company : ${companies}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.09);">
+                                            <div class="card-header" style="background-position: center; background-size: cover;" th:styleappend="${company.poCompanies.isEmpty()} ? 'background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);' : 'background-image: url(/file/'+${company.poCompanies[0].photo}+');'"></div>
                                             <div class="card-body text-center">
-                                                <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                                                <img class="card-profile-img" th:src="'/file/'+${company.logo}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                                                 <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT
                                                         Software</a></h4>
                                                 <p class="mb-4">
@@ -41,8 +41,8 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="owl-carousel owl-theme">
-                                        <div class="card card-profile" th:each="company : ${companies}">
-                                            <div class="card-header" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg);"></div>
+                                        <div class="card card-profile" th:each="company : ${companies}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.09);">
+                                            <div class="card-header" style="background: linear-gradient(90deg, #d53369 0%, #daae51 100%);"></div>
                                             <div class="card-body text-center">
                                                 <img class="card-profile-img" th:src="'/file/'+${company.logo}">
                                                 <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT
@@ -60,8 +60,8 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="owl-carousel owl-theme">
-                                        <div class="card card-profile" th:each="company : ${companies}">
-                                            <div class="card-header" style="background-image: url(/assets/images/studio-republic-644339-unsplash.jpg);"></div>
+                                        <div class="card card-profile" th:each="company : ${companies}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.09);">
+                                            <div class="card-header" style="background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);"></div>
                                             <div class="card-body text-center">
                                                 <img class="card-profile-img" th:src="'/file/'+${company.logo}">
                                                 <h4 class="mb-3"><a th:href="'/company/'+${company.urlName}" th:text="${company.name}">FPT

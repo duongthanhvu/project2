@@ -11,7 +11,8 @@
                 <div class="row">
                     <div class="col col-login mx-auto">
                         <div class="text-center mb-6">
-                            <a href="/index.html"><img src="./demo/brand/tabler.svg" th:src="@{/demo/brand/tabler.svg}" class="h-6" alt=""></a>
+                            <a href="/index.html"><img src="./demo/brand/tabler.svg" th:src="@{/demo/brand/tabler.svg}"
+                                    class="h-6" alt=""></a>
                         </div>
                         <form class="card" action="/login-process" method="post">
                             <div class="card-body p-6">
@@ -24,9 +25,11 @@
                                 <div class="form-group">
                                     <label class="form-label">
                                         Mật khẩu
-                                        <a href="/forgot-password" class="float-right small" tabindex="-1">Tôi đã quên mật khẩu</a>
+                                        <a href="/forgot-password" class="float-right small" tabindex="-1">Tôi đã quên
+                                            mật khẩu</a>
                                     </label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Nhập vào mật khẩu" name="password">
+                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Nhập vào mật khẩu"
+                                        name="password">
                                 </div>
                                 <!-- <div class="form-group">
                                     <label class="custom-control custom-checkbox">
@@ -36,6 +39,12 @@
                                 </div> -->
                                 <div class="form-footer">
                                     <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+                                    <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/login-google&response_type=code
+                                    &client_id=599638690061-eqb4pglotqp9b7uqad097jnm5dj93n33.apps.googleusercontent.com&approval_prompt=force"
+                                        class="btn btn-google btn-block"><i class="fa fa-google mr-2"></i> Đăng nhập
+                                        với Google</a>
+                                    <a href="/login-facebook" class="btn btn-facebook btn-block"><i class="fa fa-facebook-f mr-2"></i>
+                                        Đăng nhập với Facebook</a>
                                 </div>
                             </div>
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

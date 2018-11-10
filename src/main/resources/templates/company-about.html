@@ -18,6 +18,56 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="text-wrap p-lg-6">
+                                        <script type="text/javascript">
+                                            function loadCSS(filename) {
+                                                var file = document.createElement("link");
+                                                file.setAttribute("rel", "stylesheet");
+                                                file.setAttribute("href", filename);
+                                                document.head.appendChild(file);
+                                            }
+                                            loadCSS("/assets/css/viewer.min.css");
+                                        </script>
+                                        <!--<div class="owl-carousel owl-theme">
+                                            <div class="card" th:each="pocompany : ${company.poCompanies}">
+                                                <div class="d-block" th:data-original="'/file/'+${pocompany.photo}"
+                                                    style="width:100%;height:10em;background-size:cover;background-position:center;"
+                                                    th:styleappend="'background-image: url(/file/'+${pocompany.photo}+')'">
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                        <div class="owl-carousel owl-theme" id="images">
+                                            <div th:each="pocompany : ${company.poCompanies}">
+                                                <img th:src="'/file/'+${pocompany.photo}" alt="Văn phòng" style="height: 10em;width: auto;">
+                                            </div>
+                                        </div>
+                                        <script>
+                                            require(['jquery', 'owl-carousel'], function ($) {
+                                                jQuery(document).ready(function () {
+                                                    $(".owl-carousel").owlCarousel({
+                                                        margin: 5,
+                                                        center:true,
+                                                        autoWidth:true,
+                                                        loop: true,
+                                                        autoplay: true,
+                                                        autoplayTimeout: 3000,
+                                                        responsive: {
+                                                            0: {
+                                                                items: 1
+                                                            },
+                                                            576: {
+                                                                item: 2
+                                                            },
+                                                            768: {
+                                                                items: 3
+                                                            },
+                                                        },
+                                                    });
+                                                });
+                                            });
+                                            require(['jquery', 'jquery-viewer'], function ($) {
+                                                $('#images').viewer();
+                                            });
+                                        </script>
                                         <h2 class="mt-0 mb-4">Giới thiệu về công ty</h2>
                                         <p th:text="${company.description}"></p>
                                         <h3>Thông tin chung</h3>
@@ -26,8 +76,9 @@
                                         <p th:text="'Email: ' + ${company.email}"></p>
                                         <p>Website: <a th:href="${company.website}" th:text="${company.website}"></a></p>
                                         <p th:text="'Năm thành lập: ' + ${company.establishedYear}"></p>
-                                        <p>Lĩnh vực hoạt động: 
-                                            <a class="tag ml-3" th:each="comcat : ${company.companyCategories}" th:text="${comcat.category.name}" th:href="'/company?category='+${comcat.category.name}"></a>
+                                        <p>Lĩnh vực hoạt động:
+                                            <a class="tag ml-3" th:each="comcat : ${company.companyCategories}" th:text="${comcat.category.name}"
+                                                th:href="'/company?category='+${comcat.category.name}"></a>
                                         </p>
                                         <hr>
                                         <h3>Thông tin liên hệ</h3>

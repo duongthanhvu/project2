@@ -11,32 +11,31 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the job database table.
  * 
  */
 @Entity
-@NamedQuery(name="Job.findAll", query="SELECT j FROM Job j")
+@NamedQuery(name = "Job.findAll", query = "SELECT j FROM Job j")
 public class Job implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="JOB_JOBID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="JOB_JOBID_GENERATOR")
-	@Column(name="job_id")
+	@SequenceGenerator(name = "JOB_JOBID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_JOBID_GENERATOR")
+	@Column(name = "job_id")
 	private int jobId;
 
 	@CreationTimestamp
-	@Column(name="date_created",updatable=false)
+	@Column(name = "date_created", updatable = false)
 	private Timestamp dateCreated;
 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@Column(name="date_expired")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "date_expired")
 	private Date dateExpired;
 
 	@UpdateTimestamp
-	@Column(name="date_updated")
+	@Column(name = "date_updated")
 	private Timestamp dateUpdated;
 
 	@Lob
@@ -49,30 +48,39 @@ public class Job implements Serializable {
 
 	private String title;
 
-	@Column(name="url_title")
+	@Column(name = "url_title")
 	private String urlTitle;
 
-	//bi-directional many-to-one association to BenefitOfJob
-	@OneToMany(mappedBy="job")
+	// bi-directional many-to-one association to BenefitOfJob
+	@OneToMany(mappedBy = "job")
 	private List<BenefitOfJob> benefitOfJobs;
 
-	//bi-directional many-to-one association to ProvinceOrCity
+	// bi-directional many-to-one association to ProvinceOrCity
 	@ManyToOne
-	@JoinColumn(name="location_id")
+	@JoinColumn(name = "location_id")
 	private ProvinceOrCity provinceOrCity;
 
-	//bi-directional many-to-one association to Company
+	// bi-directional many-to-one association to Company
 	@ManyToOne
-	@JoinColumn(name="company_id")
+	@JoinColumn(name = "company_id")
 	private Company company;
 
-	//bi-directional many-to-one association to SavedJob
-	@OneToMany(mappedBy="job")
+	// bi-directional many-to-one association to View Count
+	@ManyToOne
+	@JoinColumn(name = "view_count_id",updatable=false)
+	private ViewCount viewCount;
+
+	// bi-directional many-to-one association to SavedJob
+	@OneToMany(mappedBy = "job")
 	private List<SavedJob> savedJobs;
 
-	//bi-directional many-to-one association to TagOfJob
-	@OneToMany(mappedBy="job")
+	// bi-directional many-to-one association to TagOfJob
+	@OneToMany(mappedBy = "job")
 	private List<TagOfJob> tagOfJobs;
+
+	// bi-directional many-to-one association to AppliedProfile
+	@OneToMany(mappedBy = "job")
+	private List<AppliedProfile> appliedProfiles;
 
 	public Job() {
 	}
@@ -187,6 +195,20 @@ public class Job implements Serializable {
 		this.company = company;
 	}
 
+	/**
+	 * @return the viewCount
+	 */
+	public ViewCount getViewCount() {
+		return viewCount;
+	}
+
+	/**
+	 * @param viewCount the viewCount to set
+	 */
+	public void setViewCount(ViewCount viewCount) {
+		this.viewCount = viewCount;
+	}
+	
 	public List<SavedJob> getSavedJobs() {
 		return this.savedJobs;
 	}
@@ -231,4 +253,17 @@ public class Job implements Serializable {
 		return tagOfJob;
 	}
 
+	/**
+	 * @return the appliedProfiles
+	 */
+	public List<AppliedProfile> getAppliedProfiles() {
+		return appliedProfiles;
+	}
+
+	/**
+	 * @param appliedProfiles the appliedProfiles to set
+	 */
+	public void setAppliedProfiles(List<AppliedProfile> appliedProfiles) {
+		this.appliedProfiles = appliedProfiles;
+	}
 }

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-10">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-3 col-md-2">
+                                            <img th:src="'/file/'+${job.company.logo}">
+                                        </div>
+                                        <div class="text-wrap col-md-10 col-12">
+                                            <h3 class="my-1" th:text="${#strings.toUpperCase(job.title)}"></h3>
+                                            <h3 class="my-1 font-weight-light">
+                                                <a th:href="'/company/'+${job.company.urlName}">[[${#strings.toUpperCase(job.company.name)}]]</a>
+                                            </h3>
+                                            <p class="my-1"><span class="font-weight-bold">Địa điểm tuyển dụng:</span>
+                                                <span class="ml-3 badge badge-dark">[[${job.provinceOrCity.name}]]</span></p>
+                                            <p class="my-1"><span class="font-weight-bold">Ngành nghề:</span>
+                                                <span class="ml-3" th:each="toj : ${job.tagOfJobs}">[[${toj.tag.title}]]</span></p>
+                                            <p class="my-1"><span class="font-weight-bold">Mức lương:</span> <span
+                                                    class="text-red">[[${job.salary}]]</span></p>
+                                            <p class="my-1"><span class="font-weight-bold">Hạn nộp hồ sơ:</span>
+                                                [[${#calendars.format(job.dateExpired,"dd/MM/yyyy")}]]</p>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input th:value="${job.jobId}" id="jobId" class="d-none">
+                                                    <button id="save" class="btn mt-3 mr-3 d-none"><i class="fe fe-bookmark"></i>
+                                                        Lưu công việc</button>
+                                                    <a href="#" class="btn btn-info mt-3"><i class="fe fe-send"></i>
+                                                        Nộp hồ sơ</a>
+                                                </div>
+                                                <div class="col-md-6 text-md-right">
+                                                    <p class="my-1 text-muted"><i class="fe fe-clock"></i> <time class="timeago"
+                                                            th:datetime="${job.dateCreated}"></time></p>
+                                                    <p class="my-1 text-muted"><i class="fe fe-eye"></i>
+                                                        [[${job.viewCount.count}]] lượt xem</p>
+                                                </div>
+                                                <script>
+                                                    require(['jquery'], function ($) {
+                                                        jQuery(document).ready(function () {
+                                                            var jobId = document.getElementById("jobId").value;
+                                                            $.ajax({
+                                                                type: "get",
+                                                                url: "/save/status",
+                                                                data: "job=" + jobId,
+                                                                success: function (result) {
+                                                                    if (result == 'true') {
+                                                                        $("#save").addClass("btn-info");
+                                                                        $("#save").html('<span class="fe fe-check"></span> Đã lưu');
+                                                                        $("#save").removeClass("d-none btn-outline-info");
+                                                                    } else {
+                                                                        $("#save").addClass("btn-outline-info");
+                                                                        $("#save").html('<span class="fe fe-bookmark"></span> Lưu công việc');
+                                                                        $("#save").removeClass("d-none btn-info");
+                                                                    }
+                                                                }
+                                                            });
+                                                            document.getElementById("save").onclick = function () {
+                                                                $.ajax({
+                                                                    type: "get",
+                                                                    url: "/save",
+                                                                    data: "job=" + jobId,
+                                                                    success: function (result) {
+                                                                        if (result == 'true') {
+                                                                            $("#save").addClass("btn-info");
+                                                                            $("#save").html('<span class="fe fe-check"></span> Đã lưu');
+                                                                            $("#save").removeClass("d-none btn-outline-info");
+                                                                        } else {
+                                                                            $("#save").addClass("btn-outline-info");
+                                                                            $("#save").html('<span class="fe fe-bookmark"></span> Lưu công việc');
+                                                                            $("#save").removeClass("d-none btn-info");
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-toggle="tooltip" data-placement="top" title="Thông báo tin đăng sai sự thật" style="z-index: 500; position: fixed;bottom: 0px; right: 10px;">
+                                <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#reportModal"><i class="fe fe-flag mr-1"></i>Báo cáo</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-wrap">
+                                        <h3>QUYỀN LỢI ĐƯỢC HƯỞNG</h3>
+                                        <p th:each="boj : ${job.benefitOfJobs}"><i class="fe fe-award"></i>
+                                            [[${boj.benefit.title}]]</p>
+                                        <h3>MÔ TẢ CÔNG VIỆC</h3>
+                                        <div th:text="${job.description}"></div>
+                                        <h3>YÊU CẦU CÔNG VIỆC</h3>
+                                        <div th:text="${job.requirement}"></div>
+                                        <h4>Từ khóa:</h4>
+                                        <div><button class="btn btn-outline-secondary ml-3">[[${job.provinceOrCity.name}]]</button><button
+                                                class="btn btn-outline-secondary ml-3" th:each="toj : ${job.tagOfJobs}">[[${toj.tag.title}]]</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>VIỆC LÀM CÓ THỂ BẠN QUAN TÂM</h3>
+                            <div>
+                                <div class="owl-carousel owl-theme">
+                                    <div class="card card-aside" th:each="job : ${jobs}">
+                                        <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" th:style="'background-image: url(/file/'+${job.company.logo}+')'"></a>
+                                        <div class="card-body p-2 clearfix">
+                                            <h4><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h4>
+                                            <div class="text-muted" th:text="${job.company.name}"></div>
+                                            <div><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
+                                            <div class="float-left"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
+                                            <div class="float-right mr-3">
+                                                <i class="fe fe-clock"></i>
+                                                [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                require(['jquery', 'owl-carousel'], function ($) {
+                                    jQuery(document).ready(function () {
+                                        $(".owl-carousel").owlCarousel({
+                                            margin: 10,
+                                            responsive: {
+                                                0: {
+                                                    items: 1
+                                                },
+                                                768: {
+                                                    items: 2
+                                                },
+                                                1000: {
+                                                    items: 2
+                                                }
+                                            },
+                                        });
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <script>
+                            require(['jquery', 'timeago'], function ($, timeago) {
+                                jQuery(document).ready(function () {
+                                    $("time.timeago").timeago();
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

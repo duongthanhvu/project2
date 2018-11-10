@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    ...
+</head>
+
+<body>
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" th:fragment="modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Báo cáo thông tin sai</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="report-form" th:action="@{/report/submit}" method="post">
+                        <div class="form-group">
+                            <label for="url">Đường dẫn</label>
+                            <input type="text" class="form-control" id="url" name="url" placeholder="Example input"
+                                readonly th:value="${#httpServletRequest.requestURL}">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Nội dung</label>
+                            <textarea rows="5" class="form-control" id="description" name="description" placeholder="Nội dung bạn muốn báo cáo"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary w-25" id="send-report" data-dismiss="modal">Gửi</button>
+                </div>
+                <script>
+                    require(['jquery', 'sweetAlert'], function ($, swal) {
+                        jQuery(document).ready(function () {
+                            document.getElementById("send-report").onclick = function () {
+                                var form = $('#report-form');
+                                var url = form.attr('action');
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: form.serialize(),
+                                    success: function (result) {
+                                        if (result == 'success') {
+                                            swal("Cảm ơn bạn", "Báo cáo của bạn đã được gửi đến quản trị viên", "success");
+                                        } else {
+                                            swal("Thất bại", result, "error");
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

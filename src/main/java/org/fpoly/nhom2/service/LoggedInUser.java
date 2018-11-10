@@ -39,4 +39,13 @@ public class LoggedInUser {
         CustomUser user = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setDefaultCompanyId(id);
     }
+
+    public boolean isAnonymousUser(){
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

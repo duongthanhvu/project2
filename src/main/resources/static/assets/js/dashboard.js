@@ -8,6 +8,7 @@ require.config({
         'vector-map-world': ['vector-map', 'jquery'],
         'core': ['bootstrap', 'jquery'],
         'owl-carousel': ['jquery'],
+        'jquery-viewer': ['viewerjs', 'jquery'],
     },
     paths: {
         'core': 'assets/js/core',
@@ -22,6 +23,9 @@ require.config({
         'circle-progress': 'assets/js/vendors/circle-progress.min',
         'timeago': 'assets/js/vendors/jquery.timeago',
         'owl-carousel': 'assets/js/vendors/owl.carousel.min',
+        'viewerjs': 'assets/js/vendors/viewer.min',
+        'jquery-viewer': 'assets/js/vendors/jquery-viewer.min',
+        'sweetAlert': 'assets/js/vendors/sweetalert.min',
     }
 });
 window.tabler = {

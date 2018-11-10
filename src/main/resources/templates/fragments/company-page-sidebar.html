@@ -7,16 +7,115 @@
 <body>
     <div class="col-lg-3 mb-4" th:fragment="sidebar">
         <div class="card card-profile">
-            <div class="card-header" style="background-color: #467fcf"></div>
+            <div class="card-header" style="background-position: center; background-size: cover;" th:styleappend="${company.poCompanies.isEmpty()} ? 'background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);' : 'background-image: url(/file/'+${company.poCompanies[0].photo}+');'"></div>
             <div class="card-body text-center">
-                <img class="card-profile-img" th:src="'/file/'+${company.logo}">
+                <img class="card-profile-img" th:src="'/file/'+${company.logo}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <h3 class="mb-3" th:text="${company.name}">FPT Software</h3>
                 <p class="mb-4">
 
                 </p>
-                <button class="btn btn-outline-primary btn-sm">
-                    <span class="fa fa-plus"></span> Theo dõi
+                <input th:value="${company.companyId}" id="companyId" class="d-none">
+                <button class="d-none" id="follow">
                 </button>
+                <script>
+                    require(['jquery'], function ($) {
+                        jQuery(document).ready(function () {
+                            var companyId = document.getElementById("companyId").value;
+                            $.ajax({
+                                type: "get",
+                                url: "/follow/status",
+                                data: "company=" + companyId,
+                                success: function (result) {
+                                    if (result == 'true') {
+                                        $("#follow").addClass("btn btn-primary btn-sm");
+                                        $("#follow").html('<span class="fa fa-check"></span> Đang theo dõi');
+                                        $("#follow").removeClass("d-none");
+                                    } else {
+                                        $("#follow").addClass("btn btn-outline-primary btn-sm");
+                                        $("#follow").html('<span class="fa fa-plus"></span> Theo dõi');
+                                        $("#follow").removeClass("d-none");
+                                    }
+                                }
+                            });
+                            document.getElementById("follow").onclick = function () {
+                                $.ajax({
+                                    type: "get",
+                                    url: "/follow",
+                                    data: "company=" + companyId,
+                                    success: function (result) {
+                                        console.log(result);
+                                        if (result == 'true') {
+                                            $("#follow").addClass("btn-primary");
+                                            $("#follow").html('<span class="fa fa-check"></span> Đang theo dõi');
+                                            $("#follow").removeClass("btn-outline-primary d-none");
+                                        } else {
+                                            $("#follow").addClass("btn-outline-primary");
+                                            $("#follow").html('<span class="fa fa-plus"></span> Theo dõi');
+                                            $("#follow").removeClass("btn-primary d-none");
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                </script>
+                <!--
+                <th:block th:if="${followStatus == null}">
+                    <button class="btn btn-outline-primary btn-sm" id="follow">
+                        <span class="fa fa-plus"></span> Theo dõi
+                    </button>
+                    <div class="d-none" id="follow_option">
+                        <label class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="tuyen_dung"
+                                checked>
+                            <span class="custom-control-label">Tin tuyển dụng</span>
+                        </label>
+                        <label class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="bai_dang"
+                                checked>
+                            <span class="custom-control-label">Bài đăng</span>
+                        </label>
+                    </div>
+                </th:block>
+                <th:block th:if="${followStatus != null}">
+                    <button class="btn btn-primary btn-sm" id="follow">
+                        <span class="fa fa-check"></span> Đang theo dõi
+                    </button>
+                    <div class="d-none" id="follow_option">
+                        <label class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="tuyen_dung"
+                                checked>
+                            <span class="custom-control-label">Tin tuyển dụng</span>
+                        </label>
+                        <label class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="bai_dang"
+                                checked>
+                            <span class="custom-control-label">Bài đăng</span>
+                        </label>
+                    </div>
+                </th:block>
+                <script>
+                    require(['sweetAlert'], function (swal) {
+                        document.getElementById("follow").onclick = function () {
+                            var follow_option = document.getElementById("follow_option");
+                            follow_option.className = "d-block";
+                            swal({
+                                text: 'Chọn loại thông tin bạn muốn theo dõi:',
+                                content: follow_option,
+                                button: {
+                                    text: 'Lưu',
+                                    closeModal: false,
+                                },
+                            }).then(name => {
+                                if (!name) throw null;
+                                var option = document.getElementById("tuyen_dung");
+                                alert(option.checked);
+                                swal.stopLoading();
+                                swal.close();
+                            });
+                        }
+                    });
+                </script>-->
             </div>
         </div>
         <!-- Getting started -->
@@ -39,9 +138,11 @@
             <a th:href="'/company/'+${company.urlName}+'/review'" class="list-group-item list-group-item-action"
                 th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/company/'+company.urlName+'/review')} ? 'active'"><span
                     class="icon mr-3"><i class="fe fe-star"></i></span>Đánh giá</a>
-            <a href="javascript:void(0)" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Báo
+            <a href="javascript:void(0)" data-toggle="modal" data-target="#reportModal" id="report" class="list-group-item list-group-item-action"><span
+                    class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>Báo
                 cáo thông tin sai</a>
         </div>
+
     </div>
 </body>
 

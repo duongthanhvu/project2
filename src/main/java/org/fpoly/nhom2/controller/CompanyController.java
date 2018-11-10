@@ -2,10 +2,16 @@ package org.fpoly.nhom2.controller;
 
 import java.util.List;
 
+import org.fpoly.nhom2.entiry.Address;
+import org.fpoly.nhom2.entiry.Category;
 import org.fpoly.nhom2.entiry.Company;
+import org.fpoly.nhom2.entiry.ProvinceOrCity;
 import org.fpoly.nhom2.entiry.Review;
+import org.fpoly.nhom2.entiry.Tag;
 import org.fpoly.nhom2.repository.*;
+import org.fpoly.nhom2.service.FollowService;
 import org.fpoly.nhom2.service.LoggedInUser;
+import org.fpoly.nhom2.service.ViewCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * CompanyController
@@ -40,10 +47,14 @@ public class CompanyController {
     private CategoryRepository categoryRepository;
     @Autowired
     private LoggedInUser loggedInUser;
+    @Autowired
+    private ViewCountService viewCountService;
 
     @GetMapping(value = { "/company/{urlName}", "/company/{urlName}/about" })
     public String showCompanyPage(Model model, @PathVariable("urlName") String urlName) {
-        model.addAttribute("company", companyRepository.findFirstByUrlName(urlName));
+        Company company = companyRepository.findFirstByUrlName(urlName);
+        model.addAttribute("company", company);
+        viewCountService.increaseViewCount(company.getViewCount());
         return "company-about";
     }
 
@@ -161,9 +172,43 @@ public class CompanyController {
         return "company-list";
     }
 
+    @ResponseBody
+    @GetMapping(value = "/api/company/search")
+    public List<Company> searchForCompany(@RequestParam String q) {
+        if (q.equals("")) {
+            return null;
+        }
+        return companyRepository.findTop10ByNameContainingIgnoreCase(q);
+    }
+
     @GetMapping(value = "/company/search")
-    public String show(@RequestParam String q) {
+    public String searchForCompany(Model model,
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort,
+            @RequestParam(name = "location", required = false) Integer provinceId,
+            @RequestParam(name = "category", required = false) Integer categoryId,
+            @RequestParam(name = "keyword", required = false) String keyword) {
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by("companyId").ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by("companyId").descending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sortable);
+        model.addAttribute("page", companyRepository.searchCompany(categoryId, provinceId, keyword, keyword, pageable));
+        model.addAttribute("provinces", pOCRepository.findAll());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "company-search-result";
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/test/company")
+    public List<Company> getMethodName(@RequestParam Integer catid, @RequestParam Integer locid,
+            @RequestParam String name, @RequestParam String description) {
+
+        return null;
     }
 
 }

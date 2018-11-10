@@ -130,10 +130,12 @@
                                     </form>
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3 class="card-title"><i class="fe fe-star mr-2"></i>Đánh giá của người dùng</h3>
+                                            <h3 class="card-title"><i class="fe fe-star mr-2"></i>Đánh giá của người
+                                                dùng</h3>
                                         </div>
                                         <div class="card-body">
                                             <ul class="list-group card-list-group">
+                                                <li class="list-group-item py-5" th:if="${reviews.isEmpty()}">Chưa có đánh giá nào</li>
                                                 <li class="list-group-item py-5" th:each="review : ${reviews}">
                                                     <div class="media">
                                                         <div class="media-object avatar avatar-md mr-4" th:style="${review.user.profile != null} ? 'background-image: url(/file/'+${review.user.profile.avatarPicture}+')':''"></div>

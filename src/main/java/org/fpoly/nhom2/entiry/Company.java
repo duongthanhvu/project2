@@ -16,40 +16,41 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 
 /**
  * The persistent class for the company database table.
  * 
  */
 @Entity
-@NamedQuery(name="Company.findAll", query="SELECT c FROM Company c")
+@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
 public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="COMPANY_COMPANYID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="COMPANY_COMPANYID_GENERATOR")
-	@Column(name="company_id")
+	@SequenceGenerator(name = "COMPANY_COMPANYID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMPANY_COMPANYID_GENERATOR")
+	@Column(name = "company_id")
 	private int companyId;
 
-	@Column(name="contact_email")
+	@Column(name = "contact_email")
 	private String contactEmail;
 
-	@Column(name="contact_name")
+	@Column(name = "contact_name")
 	private String contactName;
 
-	@Column(name="contact_phone")
+	@Column(name = "contact_phone")
 	private String contactPhone;
 
 	@CreationTimestamp
-	@Column(name="date_added", updatable=false)
+	@Column(name = "date_added", updatable = false)
 	private Timestamp dateAdded;
 
 	@UpdateTimestamp
-	@Column(name="date_updated")
+	@Column(name = "date_updated")
 	private Timestamp dateUpdated;
 
 	@Lob
@@ -57,7 +58,7 @@ public class Company implements Serializable {
 
 	private String email;
 
-	@Column(name="established_year")
+	@Column(name = "established_year")
 	private int establishedYear;
 
 	private String logo;
@@ -68,46 +69,61 @@ public class Company implements Serializable {
 
 	private boolean status;
 
-	@Column(name="url_name")
+	@Column(name = "url_name")
 	private String urlName;
 
 	private String website;
 
-	//bi-directional many-to-one association to Address
+	// bi-directional many-to-one association to Address
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="address_id")
+	@JoinColumn(name = "address_id")
 	private Address address;
 
-	//bi-directional many-to-one association to CompanyAdmin
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to View Count
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "view_count_id",updatable=false)
+	private ViewCount viewCount;
+
+	// bi-directional many-to-one association to CompanyAdmin
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<CompanyAdmin> companyAdmins;
 
-	//bi-directional many-to-one association to CompanyCategory
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to CompanyCategory
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<CompanyCategory> companyCategories;
 
-	//bi-directional many-to-one association to FollowedCompany
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to FollowedCompany
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<FollowedCompany> followedCompanies;
 
-	//bi-directional many-to-one association to Job
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to Job
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<Job> jobs;
 
-	//bi-directional many-to-one association to Post
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to Post
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<Post> posts;
 
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to Product
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<Product> products;
 
-	//bi-directional many-to-one association to Review
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to Review
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<Review> reviews;
 
-	 //bi-directional many-to-one association to PoCompany
-	@OneToMany(mappedBy="company")
+	// bi-directional many-to-one association to PoCompany
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<PoCompany> poCompanies;
 
 	public Company() {
@@ -239,6 +255,20 @@ public class Company implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	/**
+	 * @return the viewCount
+	 */
+	public ViewCount getViewCount() {
+		return viewCount;
+	}
+
+	/**
+	 * @param viewCount the viewCount to set
+	 */
+	public void setViewCount(ViewCount viewCount) {
+		this.viewCount = viewCount;
 	}
 
 	public List<CompanyAdmin> getCompanyAdmins() {

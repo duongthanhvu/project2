@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi" dir="ltr">
+
+<head th:replace="fragments/head :: head">
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-single">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div th:if="${error != null}" class="col-9 text-center">
+                        <h4 th:text="${error}"></h4>
+                        <a href="/index.html">Trở về trang chủ</a>
+                    </div>
+                    <div th:if="${error == null}" class="col-9 text-center">
+                        <h4>Một email chứa liên kết reset mật khẩu đã được gửi đến [[${email}]]. Vui lòng kiểm tra hộp
+                            thư email và làm theo hướng dẫn trong email.</h4>
+                        <form class="row justify-content-center" th:action="@{/reset-password}" method="POST">
+                            <div class="form-group mb-2 col-4">
+                                <label for="staticEmail2">Không nhận được email?</label>
+                                <input type="text" class="form-control d-none" id="staticEmail2" name="mail" value="${email}">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2 col-2">Gửi lại liên kết</button>
+                        </form>
+                        <a href="/index.html">Trở về trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

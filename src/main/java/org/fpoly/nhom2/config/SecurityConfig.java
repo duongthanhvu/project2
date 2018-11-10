@@ -16,32 +16,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	UserDetailsService userDetailsService;
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
 		return bCryptEncoder;
 	}
-	
+
 	@Autowired
-	public void configGlobal(AuthenticationManagerBuilder auth) throws Exception{
+	public void configGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-	
+
 	@Override
-	public void configure(HttpSecurity http) throws Exception{
+	public void configure(HttpSecurity http) throws Exception {
+		/*
+		 * By default X-Frame-Options is set to denied, to prevent clickjacking attacks.
+		 * To override this, add the following into your spring security config
+		 */
+		http.headers().frameOptions().sameOrigin();
 		http.authorizeRequests().antMatchers("/admin/**").hasRole("admin");
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("admin, user");
 		http.authorizeRequests().antMatchers("/ca/**").hasRole("ca");
 		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-		http.authorizeRequests().and().formLogin().loginProcessingUrl("/login-process")
-		.loginPage("/login")
-		.defaultSuccessUrl("/")
-		.failureUrl("/login?message=error")
-		.usernameParameter("username")
-		.passwordParameter("password")
-		.and()
-		.logout().logoutUrl("/logout")
-		.logoutSuccessUrl("/login?message=logout");
+		http.authorizeRequests().and().formLogin().loginProcessingUrl("/login-process").loginPage("/login")
+				.defaultSuccessUrl("/").failureUrl("/login?message=error").usernameParameter("username")
+				.passwordParameter("password").and().logout().logoutUrl("/logout")
+				.logoutSuccessUrl("/login?message=logout");
 	}
 }

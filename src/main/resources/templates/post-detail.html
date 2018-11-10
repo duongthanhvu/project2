@@ -12,6 +12,10 @@
             <div th:replace="fragments/header-bottom :: header-bottom"></div>
             <div class="my-3 my-md-5">
                 <div class="container">
+                    <div data-toggle="tooltip" data-placement="top" title="Thông báo tin đăng sai sự thật" style="z-index: 500; position: fixed;bottom: 0px; right: 10px;">
+                        <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#reportModal"><i
+                                class="fe fe-flag mr-1"></i>Báo cáo</button>
+                    </div>
                     <div class="row justify-content-center">
                         <div class="col-12 col-lg-9">
                             <div class="card">
@@ -21,7 +25,8 @@
                                         <p class="text-muted my-0"><span class="avatar" th:style="'background-image: url(/file/'+${company.logo}+')'"></span>
                                             [[${company.name}]] </p>
                                         <small class="text-muted mb-5 d-block"><i class="fe fe-clock"></i> <time class="timeago"
-                                                th:datetime="${post.dateCreated}"></time></small>
+                                                th:datetime="${post.dateCreated}"></time> <i class="fe fe-eye ml-3"></i>
+                                            [[${post.viewCount.count}]] lượt xem</small>
                                         <p th:text="${post.content}"></p>
                                     </div>
                                 </div>

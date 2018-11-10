@@ -8,8 +8,8 @@
 <body class="">
     <div class="page">
         <div class="page-main">
-            <div th:replace="fragments/header-top :: header-top"></div>
-            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div th:replace="fragments/header-top :: admin-header-top"></div>
+            <div th:replace="fragments/header-bottom :: admin-header-bottom"></div>
             <div class="my-3 my-md-5">
                 <div class="container">
                     <div class="page-header">
@@ -90,11 +90,11 @@
                                                     <div class="small text-muted">Đã cập nhật</div>
                                                     <div class="small"><time class="timeago" th:datetime="${company.dateUpdated}" th:text="${company.dateUpdated}"></time></div>
                                                 </td>
-                                                <td class="text-center">
-                                                    <ul th:unless="${company.companyAdmins.isEmpty()}">
-                                                        <li th:each="ca : ${company.companyAdmins}" th:text="${ca.user.username}"></li>
-                                                    </ul>
-                                                    <div th:if="${company.companyAdmins.isEmpty()}">Chưa có quản trị viên</div>
+                                                <td>
+                                                    <th:block th:unless="${company.companyAdmins.isEmpty()}">
+                                                        <div th:each="ca : ${company.companyAdmins}"><i class="fe fe-user mr-1"></i> [[${ca.user.username}]]</div>
+                                                    </th:block>
+                                                    <div class="text-center small" th:if="${company.companyAdmins.isEmpty()}">Chưa có quản trị viên</div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="item-action dropdown">

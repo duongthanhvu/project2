@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: ca-header-top"></div>
+            <div th:replace="fragments/header-bottom :: ca-header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="page-header">
+                        <h1 class="page-title" th:text="${company.name}+ ' - Thư viện ảnh'">
+                        </h1>
+                        <div class="page-options d-flex">
+                            <form th:action="@{/ca/info/photo/upload}" method="post" enctype="multipart/form-data">
+                                <div class="input-group">
+                                    <input type="file" class="form-control" multiple required name="photo" accept="image/jpeg,image/png">
+                                    <span class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">Tải lên</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row row-cards">
+                        <div class="col-sm-6 col-lg-4" th:each="pocompany : ${company.poCompanies}">
+                            <div class="card p-3">
+                                <a href="javascript:void(0)" class="mb-3">
+                                    <img th:src="'/file/'+${pocompany.photo}" alt="Photo by Kathleen Harper" class="rounded">
+                                </a>
+                                <div class="d-flex align-items-center px-2">
+                                    <div class="ml-auto text-muted">
+                                        <a th:href="'/ca/info/photo/delete?photo='+${pocompany.poCompanyId}" class="icon d-none d-md-inline-block ml-3"><i
+                                                class="fe fe-trash mr-1"></i> xóa</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

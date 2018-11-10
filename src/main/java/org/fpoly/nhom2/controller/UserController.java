@@ -3,12 +3,14 @@ package org.fpoly.nhom2.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.fpoly.nhom2.entiry.Cv;
 import org.fpoly.nhom2.entiry.Education;
 import org.fpoly.nhom2.entiry.Profile;
 import org.fpoly.nhom2.entiry.Skill;
 import org.fpoly.nhom2.entiry.SkillList;
 import org.fpoly.nhom2.entiry.User;
 import org.fpoly.nhom2.repository.AddressRepository;
+import org.fpoly.nhom2.repository.CVRepository;
 import org.fpoly.nhom2.repository.EducationRepository;
 import org.fpoly.nhom2.repository.POCRepository;
 import org.fpoly.nhom2.repository.ProfileRepository;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 /**
  * UserController
@@ -51,6 +55,8 @@ public class UserController {
     private FileUtil fileUtil;
     @Autowired
     private LoggedInUser loggedInUser;
+    @Autowired
+    private CVRepository cvRepository;
 
     @ResponseBody
     @GetMapping(value = "/api/user/search")
@@ -118,4 +124,38 @@ public class UserController {
         return "user-job";
     }
 
+    @GetMapping(value = "/user/subcribe")
+    public String showUserFollow(Model model) {
+        model.addAttribute("user", userRepository.getOne(loggedInUser.getDefaultUserId()));
+        return "user-follow";
+    }
+
+    @GetMapping(value = "/user/cv")
+    public String showUserCV(Model model) {
+        model.addAttribute("user", userRepository.getOne(loggedInUser.getDefaultUserId()));
+        return "user-cv";
+    }
+
+    @PostMapping(value="/user/upload-cv")
+    public String uploadCv(@RequestBody MultipartFile pdf) {
+        if(pdf == null || pdf.isEmpty()){
+            return "redirect:/user/cv";
+        }
+        Cv cv = new Cv();
+        cv.setOriginalFilename(pdf.getOriginalFilename());
+        cv.setProfile(userRepository.getOne(loggedInUser.getDefaultUserId()).getProfile());
+        cv.setUniqueFilename(fileUtil.saveFile(pdf, FileUtil.PDF));
+        cvRepository.save(cv);
+        return "redirect:/user/cv";
+    }
+
+    @GetMapping(value="/user/cv/delete")
+    public String deleteCv(@RequestParam("cv") Cv cv) {
+        if(cv.getProfile().getProfileId() == loggedInUser.getDefaultUserId()){
+            cvRepository.delete(cv);
+        }
+        return "redirect:/user/cv";
+    }
+    
+    
 }

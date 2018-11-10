@@ -28,7 +28,7 @@ public class PhotoResizer {
 			x = (w - image.getWidth()) / 2;
 			y = 0;
 		}
-		BufferedImage combined = new BufferedImage(w, w, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage combined = new BufferedImage(w, w, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics g = combined.getGraphics();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, w, w);

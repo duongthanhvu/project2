@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: ca-header-top"></div>
+            <div th:replace="fragments/header-bottom :: ca-header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-xl-9">
+                            <form class="card my-3 my-md-5" th:action="@{/ca/search/profile}" method="GET">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 px-3">
+                                            <p><i class="fe fe-search"></i> Tìm kiếm ứng viên phù hợp trong tổng số
+                                                [[${pcount}]] hồ sơ hiện có</p>
+                                        </div>
+                                        <div class="col-lg-3 col-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Tên trường đại học, cao đẳng"
+                                                    name="school">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-12">
+                                            <div class="form-group">
+                                                <select class="form-control" name="job_level">
+                                                    <option value="">Cấp bậc hiện tại</option>
+                                                    <option value="Mới tốt nghiệp">Mới tốt nghiệp</option>
+                                                    <option value="Nhân viên">Nhân viên</option>
+                                                    <option value="Trưởng phòng">Trưởng phòng</option>
+                                                    <option value="Giám đốc và cấp cao hơn">Giám đốc và cấp cao hơn</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-12">
+                                            <div class="form-group">
+                                                <select class="form-control" multiple id="skill-input" value="" name="skills">
+                                                    <option value="">Kỹ năng</option>
+                                                </select>
+                                            </div>
+                                            <script>
+                                                require(['jquery', 'selectize'], function ($, selectize) {
+                                                    $(document).ready(function () {
+                                                        $('#skill-input').selectize({
+                                                            valueField: 'skillId',
+                                                            labelField: 'title',
+                                                            searchField: 'title',
+                                                            plugins: ['remove_button'],
+                                                            delimiter: ',',
+                                                            load: function (query, callback) {
+                                                                if (!query.length) return callback();
+                                                                $.ajax({
+                                                                    url: '/api/skill/search',
+                                                                    type: 'GET',
+                                                                    data: {
+                                                                        q: query
+                                                                    },
+                                                                    error: function () {
+                                                                        callback();
+                                                                    },
+                                                                    success: function (res) {
+                                                                        console.log(res);
+                                                                        callback(res);
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                        <div class="col-lg-2 col-12">
+                                            <div class="form-group">
+                                                <select class="form-control" name="location">
+                                                    <option value="">Địa phương</option>
+                                                    <option th:each="province : ${provinces}" th:value="${province.pocId}"
+                                                        th:text="${province.name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-12">
+                                            <div class="form-group">
+                                                <input type="submit" class="form-control btn btn-primary" value="Tìm kiếm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-outline table-vcenter card-table">
+                                        <thead class="text-nowrap">
+                                            <tr>
+                                                <th class="text-center w-1"><i class="icon-people"></i></th>
+                                                <th>Họ và tên</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Bằng cấp</th>
+                                                <th>Kỹ năng</th>
+                                                <th class="text-center"><i class="icon-settings"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <script>
+                                                require(['jquery', 'timeago'], function ($, timeago) {
+                                                    jQuery(document).ready(function () {
+                                                        $("time.timeago").timeago();
+                                                    });
+                                                });
+                                            </script>
+                                            <tr th:each="profile : ${page.content}">
+                                                <td class="text-center">
+                                                    <div class="avatar d-block" th:style="'background-image: url('+@{/file/}+${profile.avatarPicture}+')'">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <small class="text-muted">[[${profile.professionalTitle}]]</small>
+                                                    <div class="text-nowrap text-uppercase font-weight-bold" th:text="${profile.fullname}"></div>
+                                                    <small class="text-nowrap"><i class="fa fa-transgender mr-1 text-muted"></i>[[${profile.gender == 'M' ? 'Nam' : 'Nữ'}]]</small><br>
+                                                    <small class="text-nowrap"><i class="fa fa-birthday-cake mr-1 text-muted"></i>[[${#calendars.format(profile.dateOfBirth,'dd-MM-yyyy')}]]</small><br>
+                                                    <small><i class="fe fe-phone mr-1 text-muted"></i>[[${profile.phone}]]</small>
+                                                </td>
+                                                <td>
+                                                    <div th:text="${profile.address == null} ? '(Chưa bổ sung)' : ${profile.address.street}+', '+${profile.address.commune.name}+', '+${profile.address.commune.cityOrDist.name}+', '+${profile.address.commune.cityOrDist.provinceOrCity.name}"></div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-nowrap" th:each="education : ${profile.educations}">
+                                                        <div class="text-blue"><i class="fe fe-award"></i>[[${education.qualification}]] • [[${education.subject}]]</div>
+                                                        <small>[[${education.school}]]</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-nowrap text-cyan" th:each="sl : ${profile.skillLists}">
+                                                        <i class="fe fe-check-circle mr-1"></i>[[${sl.skill.title}]]
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="#" class="btn btn-secondary btn-sm">Xem hồ sơ</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <ul th:if="${page.totalPages > 0}" class="pagination justify-content-center">
+                                <li th:class="${page.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/ca/search/profile(location=${param.location},job_level=${param.job_level},school=${param.school},skills=${param.skills},page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('profileId').getDirection()})}"
+                                        tabindex="-1">Trang trước</a>
+                                </li>
+                                <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                                    <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link"
+                                            th:href="@{/ca/search/profile(location=${param.location},job_level=${param.job_level},school=${param.school},skills=${param.skills},page=${i},size=${page.size},sort=${page.sort.getOrderFor('profileId').getDirection()})}">[[${i}+1]]</a></li>
+                                </th:block>
+                                <li th:class="${page.hasNext()} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/ca/search/profile(location=${param.location},job_level=${param.job_level},school=${param.school},skills=${param.skills},page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('profileId').getDirection()})}">Trang
+                                        sau</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>

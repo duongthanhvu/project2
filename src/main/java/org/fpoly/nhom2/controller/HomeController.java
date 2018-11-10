@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class HomeController {
@@ -31,11 +34,16 @@ public class HomeController {
 		if (request.isUserInRole("ROLE_admin")) {
 			return "redirect:/admin";
 		}
-		if (loggedInUser.getCA() == null || loggedInUser.getCA().isEmpty()) {
+		if (request.isUserInRole("ROLE_ca")) {
+			return "redirect:/ca/home";
+		}
+		if (request.isUserInRole("ROLE_user") && loggedInUser.getUser().getProfile() != null) {
 			model.addAttribute("provinces", pOCRepository.findAll());
 			model.addAttribute("tags", tagRepository.findAll());
 			return "home";
+		}else{
+			return "choose-account-type";
 		}
-		return "redirect:/ca/home";
 	}
+	
 }

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="vi" dir="ltr">
+
+<head th:replace="fragments/head :: head">
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-login mx-auto">
+                        <div class="text-center mb-6">
+                            <a href="/index.html"><img src="./demo/brand/tabler.svg" th:src="@{/demo/brand/tabler.svg}"
+                                    class="h-6" alt=""></a>
+                        </div>
+                        <div class="card">
+                            <div class="card-body p-6">
+                                <div class="card-title"></div>
+                                <div class="card-body">
+                                    <form th:action="@{/claim-company}" autocomplete="off" method="POST">
+                                        <div class="control-group">
+                                            <label for="select-company">Chọn doanh nghiệp mà bạn đại diện:</label>
+                                            <select id="select-company" name="companyId" class="form-control" placeholder="Nhập vào từ khóa..."></select>
+                                        </div>
+                                        <script>
+                                            require(['jquery', 'selectize'], function ($, selectize) {
+                                                $(document).ready(function () {
+                                                    $('#select-company').selectize({
+                                                        valueField: 'companyId',
+                                                        labelField: 'name',
+                                                        searchField: 'name',
+                                                        options: [],
+                                                        create: false,
+                                                        load: function (query, callback) {
+                                                            if (!query.length) return callback();
+                                                            $.ajax({
+                                                                url: '/api/company/search?q=' + query,
+                                                                type: 'GET',
+                                                                error: function () {
+                                                                    callback();
+                                                                },
+                                                                success: function (res) {
+                                                                    callback(res.slice(0, 10));
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                        <div class="form-group">
+                                            <label class="custom-switch">
+                                                <input id="field_terms" type="checkbox" class="custom-switch-input"
+                                                    required onchange="this.setCustomValidity(validity.valueMissing ? 'Vui lòng xác nhận bạn là đại diện của doanh nghiệp này' : '');" />
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="custom-switch-description">Tôi xác nhận là người đại diện
+                                                    doanh nghiệp này</a></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group text-right">
+                                            <button class="btn btn-primary" type="submit">Tiếp tục <i class="fe fe-arrow-right"></i></button>
+                                        </div>
+                                        <script type="text/javascript">
+                                            document.getElementById("field_terms").setCustomValidity("Vui lòng xác nhận bạn là đại diện của doanh nghiệp này");
+                                        </script>
+                                    </form>
+                                </div>
+                                <div class="card-body">
+                                    <p>Không tìm thấy doanh nghiệp của bạn?</p>
+                                    <a class="btn btn-outline-primary btn-block" href="/submit-new-company">Tạo trang
+                                        doanh nghiệp mới</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

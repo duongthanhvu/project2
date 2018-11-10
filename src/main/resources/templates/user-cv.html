@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+
+</head>
+
+<body class="">
+    <div class="page">
+        <div class="page-main">
+            <div th:replace="fragments/header-top :: header-top"></div>
+            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    <div class="row">
+                        <div th:replace="fragments/user-page-sidebar :: sidebar"></div>
+                        <div class="col-lg-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h3 class="card-title">CV</h3>
+                                        <div class="card-options">
+                                            <form th:action="@{/user/upload-cv}" method="POST" enctype="multipart/form-data">
+                                                <div class="input-group">
+                                                    <input class="form-control form-control-sm" type="file" accept="application/pdf"
+                                                        name="pdf" required>
+                                                    <button class="btn btn-info" type="submit"><span class="fe fe-upload"></span>
+                                                        Tải lên</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" th:if="${user.profile.cvs.isEmpty()}">
+                                        <p class="h4 text-muted font-weight-normal">Chưa có cv nào</p>
+                                    </div>
+                                    <div class="card-body" th:unless="${user.profile.cvs.isEmpty()}">
+                                        <div class="owl-carousel owl-theme">
+                                            <div class="card p-3" th:each="cv,iterStat : ${user.profile.cvs}">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="stamp stamp-md bg-blue mr-3">
+                                                        <i class="fe fe-file"></i>
+                                                    </span>
+                                                    <div>
+                                                        <h4 class="m-0"><a th:href="@{/user/cv(cv=${iterStat.index})}">
+                                                                [[${cv.originalFilename}]]</a></h4>
+                                                        <small class="text-muted">Tải lên:  [[${#calendars.format(cv.dateUploaded,'dd-MM-yyyy')}]]</small>
+                                                    </div>
+                                                    <div class="d-block" style="z-index: 500; position: absolute; top: 0px; right: 0px;">
+                                                        <a data-toggle="tooltip" data-placement="right" title="xóa cv" th:href="@{/user/cv/delete(cv=${cv.cvId})}"><span class="stamp stamp-sm bg-transparent text-dark"><i class="fe fe-x"></i></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            require(['jquery', 'owl-carousel'], function ($) {
+                                                jQuery(document).ready(function () {
+                                                    $(".owl-carousel").owlCarousel({
+                                                        margin: 10,
+                                                        responsive: {
+                                                            0: {
+                                                                items: 1
+                                                            },
+                                                            768: {
+                                                                items: 2
+                                                            },
+                                                            1000: {
+                                                                items: 3
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                        <div id="pdf" style="width: 100%; height: 100vh;">
+                                            <iframe th:with="numb=${param.cv == null ? 0 : param.cv}" th:src="'/file/cv/'+${user.profile.cvs[numb].uniqueFilename}"
+                                                style="width: 100%; height: 100%;" frameborder="0">
+                                                <p>Có vẻ trình duyệt của bạn không hỗ trợ iframe. Bạn nên sử dụng
+                                                    chrome.</p>
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer-top :: footer-top"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</body>
+
+</html>
