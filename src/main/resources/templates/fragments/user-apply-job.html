@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    ...
+</head>
+
+<body>
+    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" th:fragment="modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nộp hồ sơ ứng tuyển</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="apply-form" th:action="@{/user/apply}" method="post" enctype="multipart/form-data">
+                        <input hidden type="text" name="job" th:value="${job.jobId}">
+                        <div class="form-group">
+                            <label for="cover_letter">Đơn xin việc</label>
+                            <input type="file" class="form-control" id="cover_letter" name="cover_letter" accept="application/pdf"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cv">CV</label>
+                            <select class="form-control" id="cv" name="cv" required>
+                                <option value="">Chọn một cv</option>
+                                <option th:each="cv : ${profile.cvs}" th:value="${cv.cvId}">[[${cv.originalFilename}]]</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary w-25" id="send-apply" data-dismiss="modal">Gửi</button>
+                </div>
+                <script>
+                    require(['jquery', 'sweetAlert'], function ($, swal) {
+                        jQuery(document).ready(function () {
+                            document.getElementById("send-apply").onclick = function () {
+                                var form = $('#apply-form');
+                                form.submit();
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

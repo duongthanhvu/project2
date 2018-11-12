@@ -33,13 +33,17 @@
                                                     class="text-red">[[${job.salary}]]</span></p>
                                             <p class="my-1"><span class="font-weight-bold">Hạn nộp hồ sơ:</span>
                                                 [[${#calendars.format(job.dateExpired,"dd/MM/yyyy")}]]</p>
+                                            <th:block th:if="${#request.userPrincipal} != null">
+                                                <div th:replace="fragments/user-apply-job :: modal"></div>
+                                            </th:block>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <input th:value="${job.jobId}" id="jobId" class="d-none">
                                                     <button id="save" class="btn mt-3 mr-3 d-none"><i class="fe fe-bookmark"></i>
                                                         Lưu công việc</button>
-                                                    <a href="#" class="btn btn-info mt-3"><i class="fe fe-send"></i>
-                                                        Nộp hồ sơ</a>
+                                                    <button class="btn btn-info mt-3" data-toggle="modal" data-target="#applyModal"><i
+                                                            class="fe fe-send"></i>
+                                                        Nộp hồ sơ</button>
                                                 </div>
                                                 <div class="col-md-6 text-md-right">
                                                     <p class="my-1 text-muted"><i class="fe fe-clock"></i> <time class="timeago"
@@ -93,8 +97,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div data-toggle="tooltip" data-placement="top" title="Thông báo tin đăng sai sự thật" style="z-index: 500; position: fixed;bottom: 0px; right: 10px;">
-                                <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#reportModal"><i class="fe fe-flag mr-1"></i>Báo cáo</button>
+                            <div data-toggle="tooltip" data-placement="top" title="Thông báo tin đăng sai sự thật"
+                                style="z-index: 500; position: fixed;bottom: 0px; right: 10px;">
+                                <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#reportModal"><i
+                                        class="fe fe-flag mr-1"></i>Báo cáo</button>
                             </div>
                             <div class="card">
                                 <div class="card-body">

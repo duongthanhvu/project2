@@ -66,6 +66,8 @@ public class CAController {
     private ViewCountService viewCountService;
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private AppliedProfileRepository appliedProfileRepository;
 
     @GetMapping(value = { "/ca/home", "/ca" })
     public String showCAHome(Model model) {
@@ -353,4 +355,26 @@ public class CAController {
         model.addAttribute("pcount", profileRepository.count());
         return "ca-search-profile-result";
     }
+
+    @GetMapping(value = { "/ca/application", "/ca/application/list" })
+    public String showApplication(Model model,
+            @RequestParam("job") Job job,
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by("apId").ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by("apId").descending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sortable);
+        Company company = companyRepository.getOne(loggedInUser.getDefaultCompanyId());
+        model.addAttribute("job", job);
+        model.addAttribute("company", company);
+        model.addAttribute("page", appliedProfileRepository.findByJob(job, pageable));
+        return "ca-application";
+    }
+    
 }

@@ -3,7 +3,9 @@ package org.fpoly.nhom2.controller;
 import org.fpoly.nhom2.entiry.Job;
 import org.fpoly.nhom2.repository.JobRepository;
 import org.fpoly.nhom2.repository.POCRepository;
+import org.fpoly.nhom2.repository.ProfileRepository;
 import org.fpoly.nhom2.repository.TagRepository;
+import org.fpoly.nhom2.service.LoggedInUser;
 import org.fpoly.nhom2.service.ViewCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,10 @@ public class JobController {
     private TagRepository tagRepository;
     @Autowired
     private ViewCountService viewCountService;
+    @Autowired
+    private LoggedInUser loggedInUser;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     @GetMapping(value = "/job")
     public String getMethodName(Model model,
@@ -54,6 +60,9 @@ public class JobController {
         Job job = jobRepository.findByUrlTitle(urlTitle);
         model.addAttribute("job", job);
         model.addAttribute("jobs", jobRepository.findAll());
+        if (loggedInUser.isAnonymousUser() == false) {
+            model.addAttribute("profile", profileRepository.getOne(loggedInUser.getDefaultUserId()));
+        }
         viewCountService.increaseViewCount(job.getViewCount());
         return "job-detail";
     }

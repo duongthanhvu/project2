@@ -32,7 +32,7 @@
                                         <p th:text="'Họ và tên:' + ${user.profile.fullname}"></p>
                                         <p th:text="'Chức vụ:' + ${user.profile.professionalTitle}"></p>
                                         <p th:text="'Cấp bậc:' + ${user.profile.jobLevel}"></p>
-                                        <p th:text="'Địa chỉ: ' + ${user.profile.address.street}+', '+${user.profile.address.commune.name}+', '+${user.profile.address.commune.cityOrDist.name}+', '+${user.profile.address.commune.cityOrDist.provinceOrCity.name}"></p>
+                                        <p th:if="${user.profile.address != null}" th:text="'Địa chỉ: ' + ${user.profile.address.street}+', '+${user.profile.address.commune.name}+', '+${user.profile.address.commune.cityOrDist.name}+', '+${user.profile.address.commune.cityOrDist.provinceOrCity.name}"></p>
                                         <p th:text="'Số điện thoại: ' + ${user.profile.phone}"></p>
                                         <p th:text="'Email: ' + ${user.email}"></p>
                                         <p>Giới tính: [[${user.profile.gender == 'M'} ? 'Nam' : 'Nữ']]</p>
