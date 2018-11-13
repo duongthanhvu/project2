@@ -73,8 +73,9 @@ public class GoogleCloudStorage {
      */
     // [START doGet]
     @GetMapping({ "/file/{filename}", "/file/cv/{filename}" })
-    public void doGet(@PathVariable("filename") String filename, HttpServletResponse resp)
-            throws IOException {
+    public void getImage(@PathVariable("filename") String filename, HttpServletResponse resp) throws IOException {
+
+        resp.setContentType(getMIME(filename));
         GcsFilename fileName = new GcsFilename(BUCKET_NAME, filename);
         if (SERVE_USING_BLOBSTORE_API) {
             BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
@@ -86,6 +87,19 @@ public class GoogleCloudStorage {
             copy(Channels.newInputStream(readChannel), resp.getOutputStream());
         }
     }
+
+    private String getMIME(String fileName) {
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        if (extension.equals("jpg")) {
+            return "image/jpeg";
+        } else if (extension.equals("pdf")) {
+            return "application/pdf";
+        } else if (extension.equals("png")) {
+            return "image/png";
+        } else {
+            return "application/octet-stream";
+        }
+    }
     // [END doGet]
 
     /**
@@ -94,14 +108,14 @@ public class GoogleCloudStorage {
      * create a GCS file named Bar in bucket Foo.
      */
     // [START doPost]
-    @PostMapping("/gcs")
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        GcsFileOptions instance = GcsFileOptions.getDefaultInstance();
-        GcsFilename fileName = new GcsFilename(BUCKET_NAME, null);
-        GcsOutputChannel outputChannel;
-        outputChannel = gcsService.createOrReplace(fileName, instance);
-        copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
-    }
+    // @PostMapping("/gcs")
+    // public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    //     GcsFileOptions instance = GcsFileOptions.getDefaultInstance();
+    //     GcsFilename fileName = new GcsFilename(BUCKET_NAME, null);
+    //     GcsOutputChannel outputChannel;
+    //     outputChannel = gcsService.createOrReplace(fileName, instance);
+    //     copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
+    // }
     // [END doPost]
 
     // private GcsFilename getFileName(HttpServletRequest req) {
