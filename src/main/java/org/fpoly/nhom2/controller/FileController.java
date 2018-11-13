@@ -21,7 +21,7 @@ public class FileController {
     @Autowired
     private FileUtil fileUtil;
 
-    @RequestMapping(value = "/file/{fileName}", method = RequestMethod.GET)
+    /* @RequestMapping(value = "/file/{fileName}", method = RequestMethod.GET)
     public ResponseEntity<InputStreamResource> getImage(@PathVariable("fileName") String fileName) {
         HttpHeaders responseHeader = new HttpHeaders();
         responseHeader.setContentType(MediaType.IMAGE_JPEG);
@@ -43,5 +43,5 @@ public class FileController {
         } catch (Exception e) {
             return new ResponseEntity<InputStreamResource>(null, responseHeader, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    } */
 }
