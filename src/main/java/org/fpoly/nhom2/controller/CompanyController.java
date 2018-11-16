@@ -2,14 +2,9 @@ package org.fpoly.nhom2.controller;
 
 import java.util.List;
 
-import org.fpoly.nhom2.entiry.Address;
-import org.fpoly.nhom2.entiry.Category;
 import org.fpoly.nhom2.entiry.Company;
-import org.fpoly.nhom2.entiry.ProvinceOrCity;
 import org.fpoly.nhom2.entiry.Review;
-import org.fpoly.nhom2.entiry.Tag;
 import org.fpoly.nhom2.repository.*;
-import org.fpoly.nhom2.service.FollowService;
 import org.fpoly.nhom2.service.LoggedInUser;
 import org.fpoly.nhom2.service.ViewCountService;
 import org.springframework.beans.factory.annotation.Autowired;

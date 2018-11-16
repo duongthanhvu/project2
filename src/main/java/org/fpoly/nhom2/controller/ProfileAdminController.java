@@ -1,13 +1,11 @@
 package org.fpoly.nhom2.controller;
 
-import org.fpoly.nhom2.entiry.Education;
-import org.fpoly.nhom2.entiry.Profile;
-import org.fpoly.nhom2.repository.AddressRepository;
-import org.fpoly.nhom2.repository.EducationRepository;
-import org.fpoly.nhom2.repository.POCRepository;
-import org.fpoly.nhom2.repository.ProfileRepository;
-import org.fpoly.nhom2.repository.SkillRepository;
-import org.fpoly.nhom2.repository.UserRepository;
+import java.util.Arrays;
+import java.util.List;
+
+import org.fpoly.nhom2.entiry.*;
+import org.fpoly.nhom2.repository.*;
+import org.fpoly.nhom2.service.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * ProfileAdminController
@@ -37,6 +36,10 @@ public class ProfileAdminController {
     private AddressRepository addressRepository;
     @Autowired
     private EducationRepository educationRepository;
+    @Autowired
+    private FileUtil fileUtil;
+    @Autowired
+    private SkillListRepository skillListRepository;
 
     @RequestMapping(value = { "/admin/profile/list", "/admin/profile" }, method = RequestMethod.GET)
     public String showProfileList(Model model,
@@ -56,8 +59,8 @@ public class ProfileAdminController {
     }
 
     @RequestMapping(value = "/admin/profile/detail", method = RequestMethod.GET)
-    public String showProfileDetail(@RequestParam("profile") Integer profileId) {
-        // TODO hiển thị chi tiết hồ sơ
+    public String showProfileDetail(Model model, @RequestParam("profile") Integer profileId) {
+        model.addAttribute("profile", profileRepository.getOne(profileId));
         return "admin-profile-detail";
     }
 
@@ -79,15 +82,31 @@ public class ProfileAdminController {
     }
 
     @RequestMapping(value = "/admin/profile/add", method = RequestMethod.POST)
-    public String addNewProfileProcess(@ModelAttribute("profile") Profile profile) {
-        profile.setProfileId(profile.getUser().getUserId());
+    public String addNewProfileProcess(@ModelAttribute("profile") Profile profile,
+    @RequestParam("avatar-file") MultipartFile avatar, @RequestParam("skills") String str,
+    @RequestParam("userId") User user) {
+        profile.setProfileId(user.getUserId());
         addressRepository.save(profile.getAddress());
+        profile.setAvatarPicture(fileUtil.saveFile(avatar, FileUtil.LOGO));
+        profile.setUrlName(user.getUsername());
         profileRepository.save(profile);
-        for(Education edu : profile.getEducations()){
+        for (Education edu : profile.getEducations()) {
             edu.setProfile(profile);
             educationRepository.save(edu);
         }
-        //TODO Thiếu
+        List<String> skills = Arrays.asList(str.split("\\s*,\\s*"));
+        for (String skillName : skills) {
+            Skill skill = skillRepository.findFirstByTitleIgnoreCase(skillName);
+            if (skill == null) {
+                skill = new Skill();
+                skill.setTitle(skillName);
+                skillRepository.save(skill);
+            }
+            SkillList sl = new SkillList();
+            sl.setProfile(profile);
+            sl.setSkill(skill);
+            skillListRepository.save(sl);
+        }
         return "redirect:/admin/profile/list";
     }
 

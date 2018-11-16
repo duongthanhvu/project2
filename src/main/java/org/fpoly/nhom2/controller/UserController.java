@@ -20,6 +20,7 @@ import org.fpoly.nhom2.repository.UserRepository;
 import org.fpoly.nhom2.service.FileUtil;
 import org.fpoly.nhom2.service.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 /**
  * UserController
@@ -136,9 +136,9 @@ public class UserController {
         return "user-cv";
     }
 
-    @PostMapping(value="/user/upload-cv")
+    @PostMapping(value = "/user/upload-cv")
     public String uploadCv(@RequestBody MultipartFile pdf) {
-        if(pdf == null || pdf.isEmpty()){
+        if (pdf == null || pdf.isEmpty()) {
             return "redirect:/user/cv";
         }
         Cv cv = new Cv();
@@ -149,13 +149,34 @@ public class UserController {
         return "redirect:/user/cv";
     }
 
-    @GetMapping(value="/user/cv/delete")
+    @GetMapping(value = "/user/cv/delete")
     public String deleteCv(@RequestParam("cv") Cv cv) {
-        if(cv.getProfile().getProfileId() == loggedInUser.getDefaultUserId()){
+        if (cv.getProfile().getProfileId() == loggedInUser.getDefaultUserId()) {
             cvRepository.delete(cv);
         }
         return "redirect:/user/cv";
     }
-    
-    
+
+    @ResponseBody
+    @GetMapping(value = "/user/check_password")
+    public String chheckOldPassword(@RequestParam("old_password") String password) {
+        User user = userRepository.getOne(loggedInUser.getDefaultUserId());
+        if (BCrypt.checkpw(password, user.getPassword())) {
+            return "true";
+        }
+        return "false";
+    }
+
+    @PostMapping(value = "/user/change_password")
+    public String changeUserPassword(@RequestParam("old_password") String oldPassword,
+            @RequestParam("new_password") String newPassword) {
+        User user = userRepository.getOne(loggedInUser.getDefaultUserId());
+        if (BCrypt.checkpw(oldPassword, user.getPassword())) {
+            return "redirect:/user";
+        }
+        user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+        userRepository.save(user);
+        return "redirect:/user";
+    }
+
 }

@@ -1,7 +1,6 @@
 package org.fpoly.nhom2.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.fpoly.nhom2.entiry.CompanyAdmin;

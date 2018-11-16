@@ -68,7 +68,6 @@ public class CompanyAdminController {
         Pageable pageable = PageRequest.of(page, size, sortable);
         model.addAttribute("page", companyRepository.findAll(pageable));
         return "admin-company-list";
-        //TODO Thêm thông báo khi thêm hoặc chỉnh sửa thành công
     }
 
     @RequestMapping(value = "/admin/company/detail", method = RequestMethod.GET)
@@ -125,7 +124,12 @@ public class CompanyAdminController {
         }
         addressRepository.save(company.getAddress());
         companyRepository.save(company);
-        // TODO update CompanyCategory
+        for(CompanyCategory comcat : company.getCompanyCategories()){
+            compCatRepository.delete(comcat);
+        }
+        for (Category category : categories) {
+            compCatRepository.save(new CompanyCategory(company, category));
+        }
         return "redirect:/admin/company/list";
     }
 

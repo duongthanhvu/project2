@@ -25,6 +25,8 @@
         </div>
         <!-- Components -->
         <div class="list-group list-group-transparent mb-0">
+            <a th:href="'/user'" th:class="${#strings.endsWith(#httpServletRequest.requestURI,'user')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
+                    class="icon mr-3"><i class="fe fe-settings"></i></span>Tài khoản</a>
             <a th:href="'/user/profile'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/profile')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span
                     class="icon mr-3"><i class="fe fe-user"></i></span>Hồ sơ</a>
             <a th:href="'/user/cv'" th:class="${#strings.startsWith(#httpServletRequest.requestURI,'/user/cv')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'"><span

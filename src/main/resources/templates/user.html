@@ -16,8 +16,124 @@
                         <div th:replace="fragments/user-page-sidebar :: sidebar"></div>
                         <div class="col-lg-9">
                             <div class="card">
-                                <div class="card-body">
-                                    
+                                <div class="card-body" id="account_info">
+                                    <div class="card-header">
+                                        <h3 class="card-title font-weight-bold"><i class="fe fe-settings mr-1"></i>Thông
+                                            tin tài khoản</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class=""><i>Ngày đăng ký:
+                                                [[${#calendars.format(user.dateRegistered,'dd-MM-yyyy')}]]</i></p>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-muted h5">
+                                                        <div class="my-3 mr-3">
+                                                            Tên đăng nhập
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="h5 my-3">
+                                                            [[${user.username}]]
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-muted h5">
+                                                        <div class="my-3 mr-3">
+                                                            Email
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="h5 my-3">
+                                                            [[${user.email}]] <span class="text-green small"><i class="fe fe-check-circle mx-1"></i>
+                                                                Đã xác thực</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-muted h5">
+                                                        <div class="my-3 mr-3">
+                                                            Mật khẩu
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button id="show_change_password" class="btn btn-primary btn-sm btn-pill">Thay
+                                                            đổi mật
+                                                            khẩu</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.getElementById("show_change_password").onclick = function () {
+                                        document.getElementById("account_info").classList.add("d-none");
+                                        document.getElementById("change_password_form").classList.remove("d-none");
+                                    }
+                                </script>
+                                <div class="card-body d-none" id="change_password_form">
+                                    <div class="card-header">
+                                        <h3 class="card-title font-weight-bold"><i class="fe fe-lock mr-1"></i>Thay
+                                            đổi mật khẩu</h3>
+                                    </div>
+                                    <form class="card-body" th:action="@{/user/change_password}" id="form" method="POST">
+                                        <div class="form-group">
+                                            <label class="form-label">Mật khẩu cũ</label>
+                                            <input id="old_password" type="password" class="form-control" placeholder="Nhập vào mật khẩu cũ"
+                                                name="old_password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Mật khẩu mới</label>
+                                            <input id="password" type="password" class="form-control" placeholder="Nhập vào mật khẩu mới"
+                                                name="new_password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Nhập lại mật khẩu mới</label>
+                                            <input id="confirm_password" type="password" class="form-control"
+                                                placeholder="Xác nhận mật khẩu mới vừa nhập" required>
+                                        </div>
+                                        <script>
+                                            var password = document.getElementById("password")
+                                                , confirm_password = document.getElementById("confirm_password");
+                                            function validatePassword() {
+                                                if (password.value != confirm_password.value) {
+                                                    confirm_password.setCustomValidity("Mật khẩu không khớp");
+                                                } else {
+                                                    confirm_password.setCustomValidity('');
+                                                }
+                                            }
+                                            password.onchange = validatePassword;
+                                            confirm_password.onkeyup = validatePassword;
+                                        </script>
+                                        <input type="submit" hidden id="submit">
+                                        <div class="form-footer">
+                                            <button id="change_password" class="btn btn-primary btn-pill">Thay đổi mật
+                                                khẩu</button>
+                                            <button id="cancel" type="button" class="btn btn-secondary btn-pill ml-3">Hủy</button>
+                                        </div>
+                                        <script>
+                                            document.getElementById("change_password").onclick = function () {
+                                                var xhr = new XMLHttpRequest();
+                                                var old_password = document.getElementById('old_password').value;
+                                                xhr.open('GET', '/user/check_password?old_password=' + old_password);
+                                                xhr.onload = function () {
+                                                    if (xhr.status === 200 && xhr.responseText === "true") {
+                                                        document.getElementById("submit").click();
+                                                    }
+                                                    else {
+                                                        alert('Mật khẩu cũ không chính xác');
+                                                    }
+                                                };
+                                                xhr.send();
+                                            }
+                                            document.getElementById("cancel").onclick = function () {
+                                                document.getElementById("change_password_form").classList.add("d-none");
+                                                document.getElementById("account_info").classList.remove("d-none");
+                                            }
+                                        </script>
+                                    </form>
                                 </div>
                             </div>
                         </div>
