@@ -14,18 +14,22 @@
                 <div class="container">
                     <div class="page-header">
                         <h1 class="page-title">
-                            Các báo cáo đang chờ giải quyết
+                            [[${#strings.equals(param.status,'false') ? 'Các báo cáo đang chờ giải quyết' : 'Các báo cáo đã giải quyết'}]]
                         </h1>
-                        <div class="page-subtitle" th:text="${page.number*page.size+1}+' - '+${page.number*page.size+page.size}+' trong tổng số ' +${page.totalElements}+ ' báo cáo'">1 - 12 trong
+                        <div class="page-subtitle" th:text="${page.number*page.size+1}+' - '+${page.number*page.size+page.size}+' trong tổng số ' +${page.totalElements}+ ' báo cáo'">1
+                            - 12 trong
                             tổng số 1713 công ty</div>
                         <div class="page-options d-flex">
                             <div class="dropdown ml-2">
                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fe fe-list mr-2"></i><th:block th:text="${page.sort.getOrderFor('reportId').getDirection().toString() == 'ASC'} ? 'Cũ nhất' : 'Mới nhất'"></th:block>
+                                    <i class="fe fe-list mr-2"></i>
+                                    <th:block th:text="${page.sort.getOrderFor('reportId').getDirection().toString() == 'ASC'} ? 'Cũ nhất' : 'Mới nhất'"></th:block>
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="?sort=DESC">Mới nhất</a>
                                     <a class="dropdown-item" href="?sort=ASC">Cũ nhất</a>
+                                    <a class="dropdown-item" href="?status=false">Chưa giải quyết</a>
+                                    <a class="dropdown-item" href="?status=true">Đã giải quyết</a>
                                 </div>
                             </div>
                         </div>
@@ -41,8 +45,8 @@
                                                 <th>User báo cáo</th>
                                                 <th>Mô tả</th>
                                                 <th>Đường dẫn</th>
+                                                <th class="text-center">Thời gian</th>
                                                 <th class="text-center">Trạng thái</th>
-                                                <th class="text-center">Thời gian báo cáo</th>
                                                 <th class="text-center"><i class="icon-settings"></i></th>
                                             </tr>
                                         </thead>
@@ -56,7 +60,7 @@
                                             </script>
                                             <tr th:each="report : ${page.content}">
                                                 <td class="text-center">
-                                                    <div class="avatar d-block" th:style="'background-image: url('+@{/file/}+${0}+')'">
+                                                    <div class="avatar d-block" th:style="${report.user.profile != null} ? 'background-image: url('+@{/file/}+${report.user.profile.avatarPicture}+')'">
                                                     </div>
                                                 </td>
                                                 <td>
@@ -66,32 +70,47 @@
                                                     <div>[[${report.description}]]</div>
                                                 </td>
                                                 <td>
-                                                    <a th:ref="${report.url}">[[${report.url}]]</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div th:text="${report.status ? 'Đã giải quyết' : 'Chờ giải quyết'}"></div>
+                                                    <a th:href="${report.url}">[[${report.url}]]</a>
                                                 </td>
                                                 <td>
-                                                    <div class="small text-muted">Đã gửi</div>
-                                                    <div class="small"><time class="timeago" th:datetime="${report.dateCreated}" th:text="${report.dateCreated}"></time></div>
+                                                    <div class="small text-muted">Đã báo cáo</div>
+                                                    <div class="small text-nowrap"><time class="timeago" th:datetime="${report.dateCreated}"
+                                                            th:text="${report.dateCreated}"></time></div>
                                                 </td>
                                                 <td class="text-center">
-                                                    
+                                                    <div class="text-nowrap" th:classappend="${report.status ? 'text-green' : 'text-red'}">
+                                                        <i class="fe mr-1" th:classappend="${report.status ? 'fe-check-circle' : 'fe-alert-circle'}">
+                                                        </i>[[${report.status ? 'Đã giải quyết' : 'Chờ giải quyết'}]]
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="item-action dropdown">
+                                                        <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i
+                                                                class="fe fe-more-vertical"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a th:href="'/admin/report/solve?report='+${report.reportId}"
+                                                                class="dropdown-item"><i class="dropdown-icon fe" th:classappend="${report.status ? 'fe-x' : 'fe-check'}"></i>
+                                                                [[${report.status ? 'Cần giải quyết' : 'Đã giải quyết'}]] </a>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <ul class="pagination justify-content-center">
+                            <ul th:if="${page.totalPages > 0}" class="pagination justify-content-center">
                                 <li th:class="${page.hasPrevious()} ? 'page-item' : 'page-item disabled'">
-                                    <a class="page-link" th:href="@{/admin/report/list(page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}" tabindex="-1">Trang trước</a>
+                                    <a class="page-link" th:href="@{/admin/report/list(status=${param.status},page=${page.number-1},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}"
+                                        tabindex="-1">Trang trước</a>
                                 </li>
-                                <th:block  th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
-                                <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link" th:href="@{/admin/report/list(page=${i},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}">[[${i}+1]]</a></li>
+                                <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                                    <li th:class="${page.number == i} ? 'page-item active' : 'page-item'"><a class="page-link"
+                                            th:href="@{/admin/report/list(status=${param.status},page=${i},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}">[[${i}+1]]</a></li>
                                 </th:block>
                                 <li th:class="${page.hasNext()} ? 'page-item' : 'page-item disabled'">
-                                    <a class="page-link" th:href="@{/admin/report/list(page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}">Trang sau</a>
+                                    <a class="page-link" th:href="@{/admin/report/list(status=${param.status},page=${page.number+1},size=${page.size},sort=${page.sort.getOrderFor('reportId').getDirection()})}">Trang
+                                        sau</a>
                                 </li>
                             </ul>
                         </div>

@@ -5,24 +5,19 @@ import java.util.List;
 
 import org.fpoly.nhom2.entiry.*;
 import org.fpoly.nhom2.repository.*;
-import org.fpoly.nhom2.service.EmailService;
-import org.fpoly.nhom2.service.FileUtil;
-import org.fpoly.nhom2.service.LoggedInUser;
-import org.fpoly.nhom2.service.UrlCreator;
-import org.fpoly.nhom2.service.ViewCountService;
+import org.fpoly.nhom2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * CAController
@@ -34,6 +29,8 @@ public class CAController {
     private LoggedInUser loggedInUser;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyCategoryRepository companyCategoryRepository;
     @Autowired
     private POCRepository pOCRepository;
     @Autowired
@@ -120,7 +117,12 @@ public class CAController {
         }
         addressRepository.save(company.getAddress());
         companyRepository.save(company);
-        // TODO update CompanyCategory
+        for (CompanyCategory comcat : company.getCompanyCategories()) {
+            companyCategoryRepository.delete(comcat);
+        }
+        for (Category category : categories) {
+            companyCategoryRepository.save(new CompanyCategory(company, category));
+        }
         return "redirect:/ca/info";
     }
 
@@ -357,8 +359,7 @@ public class CAController {
     }
 
     @GetMapping(value = { "/ca/application", "/ca/application/list" })
-    public String showApplication(Model model,
-            @RequestParam("job") Job job,
+    public String showApplication(Model model, @RequestParam("job") Job job,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
@@ -376,5 +377,12 @@ public class CAController {
         model.addAttribute("page", appliedProfileRepository.findByJob(job, pageable));
         return "ca-application";
     }
-    
+
+    @GetMapping(value = "/ca/view_profile/{urlName}")
+    public String viewProfile(Model model, @PathVariable("urlName") String urlName) {
+        model.addAttribute("profile", profileRepository.findByUrlName(urlName));
+        model.addAttribute("company", companyRepository.getOne(loggedInUser.getDefaultCompanyId()));
+        return "ca-view-profile";
+    }
+
 }

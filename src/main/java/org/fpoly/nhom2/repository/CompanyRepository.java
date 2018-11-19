@@ -20,5 +20,13 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     Page<Company> searchCompany(Integer categoryId, Integer locationId, String name, String description, Pageable pageable);
 
     @Query(value="SELECT COUNT(c) FROM Company c WHERE YEAR(c.dateAdded) = 2018 GROUP BY MONTH(c.dateAdded) ORDER BY MONTH(c.dateAdded)")
-	List<Long> getCompanyQuantityPerMonth();
+    List<Long> getCompanyQuantityPerMonth();
+    
+    List<Company> findTop10ByOrderByDateAddedDesc();
+
+    @Query(value="SELECT c FROM Company c JOIN c.viewCount vc ORDER BY vc.count DESC")
+    Page<Company> getMostFollowedCompanies(Pageable pageable);
+
+    @Query(value="SELECT c FROM Company c JOIN c.jobs j GROUP BY c.companyId ORDER BY j.dateCreated DESC")
+    Page<Company> getHiringCompanies(Pageable pageable);
 }

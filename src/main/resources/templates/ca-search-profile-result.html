@@ -126,7 +126,7 @@
                                                 <td>
                                                     <small class="text-muted">[[${profile.professionalTitle}]]</small>
                                                     <div class="text-nowrap text-uppercase font-weight-bold" th:text="${profile.fullname}"></div>
-                                                    <small class="text-nowrap"><i class="fa fa-transgender mr-1 text-muted"></i>[[${profile.gender == 'M' ? 'Nam' : 'Nữ'}]]</small><br>
+                                                    <small class="text-nowrap"><i class="fa mr-1 text-muted" th:classappend="${profile.gender == 'M' ? 'fa-mars' : 'fa-venus'}"></i>[[${profile.gender == 'M' ? 'Nam' : 'Nữ'}]]</small><br>
                                                     <small class="text-nowrap"><i class="fa fa-birthday-cake mr-1 text-muted"></i>[[${#calendars.format(profile.dateOfBirth,'dd-MM-yyyy')}]]</small><br>
                                                     <small><i class="fe fe-phone mr-1 text-muted"></i>[[${profile.phone}]]</small>
                                                 </td>
@@ -145,7 +145,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="#" class="btn btn-secondary btn-sm">Xem hồ sơ</a>
+                                                    <a th:href="'/ca/view_profile/' + ${profile.urlName}" class="btn btn-secondary btn-sm">Xem hồ sơ</a>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -8,28 +8,23 @@
 <body class="">
     <div class="page">
         <div class="page-main">
-            <div th:replace="fragments/header-top :: header-top"></div>
-            <div th:replace="fragments/header-bottom :: header-bottom"></div>
+            <div th:replace="fragments/header-top :: admin-header-top"></div>
+            <div th:replace="fragments/header-bottom :: admin-header-bottom"></div>
             <div class="my-3 my-md-5">
                 <div class="container">
-                    <div class="row">
-                        <div th:replace="fragments/user-page-sidebar :: sidebar"></div>
-                        <div class="col-lg-9">
+                    <div class="page-header">
+                        <h1 class="page-title">Chi tiết hồ sơ
+                        </h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-9">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="text-wrap p-lg-6">
-                                        <h2 class="mt-0 mb-4">Hồ sơ <span class="small text-muted">- đã hoàn thành
-                                                [[${#numbers.formatInteger(@scoreService.getScore(user.profile)
-                                                * 100,1)}]]%</span><a class="btn btn-info btn-sm ml-3" href="/user/profile/edit">Cập
-                                                nhật</a></h2>
-                                        <div class="progress mb-1">
-                                            <div class="progress-bar bg-blue" th:style="'width: '+${#numbers.formatInteger(@scoreService.getScore(user.profile) * 100,1)}+'%'">[[${#numbers.formatInteger(@scoreService.getScore(user.profile)
-                                                * 100,1)}+'%']]</div>
-                                        </div>
                                         <p class="text-muted">(Ngày tạo:
-                                            [[${#calendars.format(user.profile.dateCreated,'dd/MM/yyyy HH:ssa')}]], đã
+                                            [[${#calendars.format(profile.dateCreated,'dd/MM/yyyy HH:ssa')}]], đã
                                             cập nhật
-                                            <time class="timeago" th:datetime="${user.profile.dateUpdated}" th:text="${user.profile.dateUpdated}"></time>)</p>
+                                            <time class="timeago" th:datetime="${profile.dateUpdated}" th:text="${profile.dateUpdated}"></time>)</p>
                                         <table>
                                             <tbody>
                                                 <tr>
@@ -37,7 +32,12 @@
                                                         Họ và tên
                                                     </td>
                                                     <td class="h5 font-weight-bold">
-                                                        [[${user.profile.fullname}]]
+                                                        [[${profile.fullname}]]
+                                                    </td>
+                                                    <td rowspan="3" style="width: 10rem;">
+
+                                                        <img class="img-fluid rounded" th:src="${profile.avatarPicture != null} ? '/file/'+${profile.avatarPicture}">
+
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -45,7 +45,7 @@
                                                         Chức vụ
                                                     </td>
                                                     <td>
-                                                        [[${user.profile.professionalTitle}]]
+                                                        [[${profile.professionalTitle}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -53,42 +53,42 @@
                                                         Cấp bậc hiện tại
                                                     </td>
                                                     <td>
-                                                        [[${user.profile.jobLevel}]]
+                                                        [[${profile.jobLevel}]]
                                                     </td>
                                                 </tr>
-                                                <tr th:if="${user.profile.address != null}">
+                                                <tr th:if="${profile.address != null}">
                                                     <td class="text-muted h5">
                                                         Địa chỉ
                                                     </td>
-                                                    <td>
-                                                        [[${user.profile.address.street}+',
-                                                        '+${user.profile.address.commune.name}+',
-                                                        '+${user.profile.address.commune.cityOrDist.name}+',
-                                                        '+${user.profile.address.commune.cityOrDist.provinceOrCity.name}]]
+                                                    <td colspan="2">
+                                                        [[${profile.address.street}+',
+                                                        '+${profile.address.commune.name}+',
+                                                        '+${profile.address.commune.cityOrDist.name}+',
+                                                        '+${profile.address.commune.cityOrDist.provinceOrCity.name}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted h5">
                                                         Số điện thoại
                                                     </td>
-                                                    <td>
-                                                        [[${user.profile.phone}]]
+                                                    <td colspan="2">
+                                                        [[${profile.phone}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted h5">
                                                         Email
                                                     </td>
-                                                    <td>
-                                                        [[${user.email}]]
+                                                    <td colspan="2">
+                                                        [[${email}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted h5">
                                                         Giới tính
                                                     </td>
-                                                    <td>
-                                                        <i class="fa mr-2" th:classappend="${user.profile.gender == 'M'} ? 'fa-mars' : 'fa-venus'"></i>[[${user.profile.gender
+                                                    <td colspan="2">
+                                                        <i class="fa mr-2" th:classappend="${profile.gender == 'M'} ? 'fa-mars' : 'fa-venus'"></i>[[${profile.gender
                                                         == 'M'} ? 'Nam' : 'Nữ']]
                                                     </td>
                                                 </tr>
@@ -96,8 +96,8 @@
                                                     <td class="text-muted h5">
                                                         Tình trạng hôn nhân
                                                     </td>
-                                                    <td>
-                                                        [[${user.profile.martialStatus} ? 'Đã kết hôn' : 'Độc
+                                                    <td colspan="2">
+                                                        [[${profile.martialStatus} ? 'Đã kết hôn' : 'Độc
                                                         thân']]
                                                     </td>
                                                 </tr>
@@ -105,33 +105,33 @@
                                                     <td class="text-muted h5">
                                                         Ngày sinh
                                                     </td>
-                                                    <td>
-                                                        [[${#calendars.format(user.profile.dateOfBirth,'dd-MM-yyyy')}]]
+                                                    <td colspan="2">
+                                                        [[${#calendars.format(profile.dateOfBirth,'dd-MM-yyyy')}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted h5">
                                                         Giới thiệu bản thân
                                                     </td>
-                                                    <td>
-                                                        [[${user.profile.summary}]]
+                                                    <td colspan="2">
+                                                        [[${profile.summary}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted h5">
                                                         Giáo dục
                                                     </td>
-                                                    <td>
+                                                    <td colspan="2">
 
                                                     </td>
                                                 </tr>
-                                                <tr th:each="education : ${user.profile.educations}">
+                                                <tr th:each="education : ${profile.educations}">
                                                     <td>
                                                         <p class="font-weight-light">([[${#calendars.format(education.fromMonth,'MM/yyyy')}]]
                                                             -
                                                             [[${#calendars.format(education.toMonth,'MM/yyyy')}]])</p>
                                                     </td>
-                                                    <td>
+                                                    <td colspan="2">
                                                         <h5><i class="fe fe-award mr-3"></i>[[${education.qualification}]]
                                                             <span class="mx-3">•</span> [[${education.subject}]]</h5>
                                                         <p>[[${education.school}]]</p>
@@ -141,17 +141,17 @@
                                                     <td class="text-muted h5">
                                                         Kinh nghiệm làm việc
                                                     </td>
-                                                    <td>
-                                                        [[${user.profile.employmentHistory}]]
+                                                    <td colspan="2">
+                                                        [[${profile.employmentHistory}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted h5">
                                                         Kỹ năng nghề nghiệp
                                                     </td>
-                                                    <td>
+                                                    <td colspan="2">
                                                         <div class="tags">
-                                                            <span class="tag font-weight-bold" th:each="skillList : ${user.profile.skillLists}">[[${skillList.skill.title}]]</span>
+                                                            <span class="tag font-weight-bold" th:each="skillList : ${profile.skillLists}">[[${skillList.skill.title}]]</span>
                                                         </div>
                                                     </td>
                                                 </tr>

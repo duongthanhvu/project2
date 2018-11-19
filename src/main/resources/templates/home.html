@@ -19,68 +19,23 @@
                                 <div class="card-header">
                                     <h3 class="card-title col-12 col-lg-6"><i class="fe fe-zap"></i> Việc làm mới</h3>
                                     <i class="card-title col-12 col-lg-6 d-none d-md-block text-right"><span class="text-muted">Hôm
-                                            nay có </span><strong>1233</strong> <span class="text-muted">công việc mới
-                                        </span><a href="#" class="text-primary">>> Bấm xem ngay</a></i>
+                                            nay có </span><strong>[[${jobs_created_today}]]</strong> <span class="text-muted">công việc mới
+                                        </span><a href="/job" class="text-primary">>> Bấm xem ngay</a></i>
                                 </div>
                                 <div class="card-body">
                                     <div class="row row-cards">
-                                        <div class="col-lg-6 col-sm-12">
+                                        <div class="col-lg-6 col-sm-12" th:each="job : ${recommend_jobs.content}">
                                             <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
+                                                <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" th:style="'background-image: url(/file/'+${job.company.logo}+')'"></a>
+                                                <div class="card-body p-2 clearfix">
+                                                    <h4><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h4>
+                                                    <div class="text-muted" th:text="${job.company.name}"></div>
+                                                    <div><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
+                                                    <div class="float-left"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
+                                                    <div class="float-right mr-3">
+                                                        <i class="fe fe-clock"></i>
+                                                        [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -88,59 +43,19 @@
                                 </div>
                                 <div class="card-footer d-lg-none">
                                     <i><span class="text-muted">Hôm
-                                            nay có </span><strong>1233</strong> <span class="text-muted">công việc mới
-                                        </span><a href="#" class="text-primary">>> Bấm xem ngay</a></i>
+                                            nay có </span><strong>[[${jobs_created_today}]]</strong> <span class="text-muted">công việc mới
+                                        </span><a href="/job" class="text-primary">>> Bấm xem ngay</a></i>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <h4 class="dy-1">Công ty nổi bật</h4>
                             <div class="row row-cards">
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-6" th:each="company : ${recommend_companies}">
                                     <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/Cotec_con.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Xây dựng Coteccons</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/vin.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Tập đoàn Vingroup</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/vinamilk.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Sữa Việt Nam</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/NH_VNThinhvuong.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Ngân hàng TMCP Việt Nam Thịnh Vượng</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/hobinh.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Xây dựng Hòa Bình</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/Doji.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Vàng bạc đá quý Doji</a></small>
+                                        <a th:href="'/company/'+${company.urlName}"><img class="card-img-top" src="/logo/Cotec_con.jpg" th:src="'/file/'+${company.logo}"></a>
+                                        <div class="card-body p-1 text-center text-truncate">
+                                            <a th:href="'/company/'+${company.urlName}" class="text-muted">[[${company.name}]]</a>
                                         </div>
                                     </div>
                                 </div>
@@ -262,17 +177,35 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-blue-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 col-12 py-5">
-                            <h2 class="text-center text-white">
+            <div style="background-image: linear-gradient(rgb(61, 181, 236), rgba(12, 161, 232, 0.21)), url(/assets/images/peter-nguyen-594832-unsplash.jpg); background-position: center;background-size: cover;">
+                <div class="container mx-0 px-0">
+                    <div class="row mx-0">
+                        <div class="col-sm-4 col-12 py-5">
+                            <h2 class="text-center text-white" style="text-shadow: 2px 2px 4px #000000;">
                                 Đăng ký ngay
                             </h2>
                         </div>
-                        <div class="col-md-6 col-12 py-5 text-center">
-                            <a class="btn btn-lg btn-pill btn-secondary" href="/register">Đăng ký</a>
-                            <a class="btn btn-lg btn-pill btn-secondary ml-5" href="/login">Đăng nhập</a>
+                        <div class="d-none d-sm-block col-sm-8 col-12 px-0">
+                            <div class="row justify-content-center mx-0 h-100">
+                                <div class="col-12 col-md-10 col-lg-8 text-center w-100" style="transform: skew(-25deg);background-color: rgba(255, 255, 255, 0.3)">
+                                    <div class="mx-0 mx-md-5 h-100" style="background-color: rgba(255, 255, 255, 0.5)">
+                                        <div class="mx-0 mx-md-5 py-5 h-100 bg-white">
+                                            <a class="btn btn-lg btn-pill text-white font-weight-bold" style="transform: skew(25deg);background: linear-gradient(60deg,#26c6da,#00acc1);box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,188,212,.4);"
+                                                href="/register">Đăng ký</a>
+                                            <a class="btn btn-lg btn-pill text-white ml-5 font-weight-bold" style="transform: skew(25deg);background: linear-gradient(60deg,#26c6da,#00acc1);box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,188,212,.4);"
+                                                href="/login">Đăng nhập</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-sm-none col-12 px-0">
+                            <div class="py-5 h-100 bg-white text-center">
+                                <a class="btn btn-lg btn-pill text-white font-weight-bold" style="background: linear-gradient(60deg,#26c6da,#00acc1);box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,188,212,.4);"
+                                    href="/register">Đăng ký</a>
+                                <a class="btn btn-lg btn-pill text-white ml-5 font-weight-bold" style="background: linear-gradient(60deg,#26c6da,#00acc1);box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,188,212,.4);"
+                                    href="/login">Đăng nhập</a>
+                            </div>
                         </div>
                     </div>
                 </div>

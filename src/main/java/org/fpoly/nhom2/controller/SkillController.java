@@ -3,9 +3,7 @@ package org.fpoly.nhom2.controller;
 import java.util.List;
 
 import org.fpoly.nhom2.entiry.Skill;
-import org.fpoly.nhom2.entiry.Tag;
 import org.fpoly.nhom2.repository.SkillRepository;
-import org.fpoly.nhom2.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
