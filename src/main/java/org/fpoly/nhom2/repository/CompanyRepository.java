@@ -27,6 +27,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Query(value="SELECT c FROM Company c JOIN c.viewCount vc ORDER BY vc.count DESC")
     Page<Company> getMostFollowedCompanies(Pageable pageable);
 
-    @Query(value="SELECT c FROM Company c JOIN c.jobs j GROUP BY c.companyId ORDER BY j.dateCreated DESC")
+    @Query(value="SELECT DISTINCT c FROM Company c JOIN c.jobs j WHERE j.dateExpired > CURRENT_DATE")
     Page<Company> getHiringCompanies(Pageable pageable);
 }
