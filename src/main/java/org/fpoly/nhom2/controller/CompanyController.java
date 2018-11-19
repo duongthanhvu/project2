@@ -161,7 +161,9 @@ public class CompanyController {
 
     @GetMapping(value = "/company")
     public String showCompanyList(Model model) {
-        model.addAttribute("companies", companyRepository.findAll());
+        model.addAttribute("latest_companies", companyRepository.findTop10ByOrderByDateAddedDesc());
+        model.addAttribute("most_followed_companies", companyRepository.getMostFollowedCompanies(PageRequest.of(0, 10)));
+        model.addAttribute("hiring_companies", companyRepository.getHiringCompanies(PageRequest.of(0, 10)));
         model.addAttribute("provinces", pOCRepository.findAll());
         model.addAttribute("categories", categoryRepository.findAll());
         return "company-list";

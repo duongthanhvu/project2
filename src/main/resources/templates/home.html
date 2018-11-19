@@ -19,68 +19,23 @@
                                 <div class="card-header">
                                     <h3 class="card-title col-12 col-lg-6"><i class="fe fe-zap"></i> Việc làm mới</h3>
                                     <i class="card-title col-12 col-lg-6 d-none d-md-block text-right"><span class="text-muted">Hôm
-                                            nay có </span><strong>1233</strong> <span class="text-muted">công việc mới
-                                        </span><a href="#" class="text-primary">>> Bấm xem ngay</a></i>
+                                            nay có </span><strong>[[${jobs_created_today}]]</strong> <span class="text-muted">công việc mới
+                                        </span><a href="/job" class="text-primary">>> Bấm xem ngay</a></i>
                                 </div>
                                 <div class="card-body">
                                     <div class="row row-cards">
-                                        <div class="col-lg-6 col-sm-12">
+                                        <div class="col-lg-6 col-sm-12" th:each="job : ${recommend_jobs.content}">
                                             <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="card card-aside">
-                                                <a href="#" class="card-aside-column" style="background-image: url(/logo/vin.jpg)"></a>
-                                                <div class="card-body p-2">
-                                                    <h4><a href="#">Tổ Trưởng Sản Xuất (Xưởng Hàn, Sơn,</a></h4>
-                                                    <div class="text-muted">Công ty THNH SX Vinfast</div>
-                                                    <div><i class="fe fe-map-pin"></i> Hà Nội</div>
+                                                <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" th:style="'background-image: url(/file/'+${job.company.logo}+')'"></a>
+                                                <div class="card-body p-2 clearfix">
+                                                    <h4><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h4>
+                                                    <div class="text-muted" th:text="${job.company.name}"></div>
+                                                    <div><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
+                                                    <div class="float-left"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
+                                                    <div class="float-right mr-3">
+                                                        <i class="fe fe-clock"></i>
+                                                        [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -88,59 +43,19 @@
                                 </div>
                                 <div class="card-footer d-lg-none">
                                     <i><span class="text-muted">Hôm
-                                            nay có </span><strong>1233</strong> <span class="text-muted">công việc mới
-                                        </span><a href="#" class="text-primary">>> Bấm xem ngay</a></i>
+                                            nay có </span><strong>[[${jobs_created_today}]]</strong> <span class="text-muted">công việc mới
+                                        </span><a href="/job" class="text-primary">>> Bấm xem ngay</a></i>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <h4 class="dy-1">Công ty nổi bật</h4>
                             <div class="row row-cards">
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-6" th:each="company : ${recommend_companies}">
                                     <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/Cotec_con.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Xây dựng Coteccons</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/vin.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Tập đoàn Vingroup</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/vinamilk.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Sữa Việt Nam</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/NH_VNThinhvuong.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Ngân hàng TMCP Việt Nam Thịnh Vượng</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/hobinh.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Xây dựng Hòa Bình</a></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                    <div class="card">
-                                        <a href="#"><img class="card-img-top" src="/logo/Doji.jpg" style="height: 100px"></a>
-                                        <div class="card-body p-1" style="height: 3rem;">
-                                            <small><a href="#" class="text-muted">Công ty CP Vàng bạc đá quý Doji</a></small>
+                                        <a th:href="'/company/'+${company.urlName}"><img class="card-img-top" src="/logo/Cotec_con.jpg" th:src="'/file/'+${company.logo}"></a>
+                                        <div class="card-body p-1 text-center text-truncate">
+                                            <a th:href="'/company/'+${company.urlName}" class="text-muted">[[${company.name}]]</a>
                                         </div>
                                     </div>
                                 </div>

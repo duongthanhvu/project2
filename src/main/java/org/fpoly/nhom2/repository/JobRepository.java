@@ -18,5 +18,8 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     Page<Job> searchJob(Integer locationId, Integer tagId, String keyword, Pageable pageable);
 
     @Query(value="SELECT COUNT(j) FROM Job j WHERE YEAR(j.dateCreated) = 2018 GROUP BY MONTH(j.dateCreated) ORDER BY MONTH(j.dateCreated)")
-	List<Long> getJobQuantityPerMonth();
+    List<Long> getJobQuantityPerMonth();
+    
+    @Query(value="SELECT COUNT (j) FROM Job j WHERE j.dateCreated > CURRENT_DATE")
+    Long numberOfJobsCreatedToday();
 }
