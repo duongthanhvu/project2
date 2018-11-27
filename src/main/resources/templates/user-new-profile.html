@@ -120,7 +120,7 @@
                                                 <div class="form-group">
                                                     <label class="form-label">Điện thoại</label>
                                                     <input type="text" class="form-control" placeholder="Số điện thoại"
-                                                        th:field="*{phone}">
+                                                        th:field="*{phone}" maxlength="11">
                                                 </div>
                                             </div>
                                         </div>
@@ -252,7 +252,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <select class="form-control" multiple id="input-tags" value="" name="skills"
-                                                        placeholder="Chọn kỹ năng">
+                                                        placeholder="Chọn kỹ năng" required>
                                                     </select>
                                                 </div>
                                                 <script>

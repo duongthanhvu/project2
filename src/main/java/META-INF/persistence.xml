@@ -31,5 +31,6 @@
 		<class>org.fpoly.nhom2.entiry.PoCompany</class>
 		<class>org.fpoly.nhom2.entiry.Token</class>
 		<class>org.fpoly.nhom2.entiry.ViewCount</class>
+		<class>org.fpoly.nhom2.entiry.AppliedProfile</class>
 	</persistence-unit>
 </persistence>
