@@ -44,7 +44,7 @@ public class ProfileAdminController {
     @RequestMapping(value = { "/admin/profile/list", "/admin/profile" }, method = RequestMethod.GET)
     public String showProfileList(Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {

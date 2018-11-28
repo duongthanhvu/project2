@@ -1,6 +1,11 @@
 package org.fpoly.nhom2.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.fpoly.nhom2.entiry.Job;
+import org.fpoly.nhom2.entiry.Tag;
+import org.fpoly.nhom2.entiry.TagOfJob;
 import org.fpoly.nhom2.repository.JobRepository;
 import org.fpoly.nhom2.repository.POCRepository;
 import org.fpoly.nhom2.repository.ProfileRepository;
@@ -39,7 +44,7 @@ public class JobController {
     @GetMapping(value = "/job")
     public String getMethodName(Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "12") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -59,7 +64,11 @@ public class JobController {
     public String showJobDetail(Model model, @PathVariable("urlTitle") String urlTitle) {
         Job job = jobRepository.findByUrlTitle(urlTitle);
         model.addAttribute("job", job);
-        model.addAttribute("jobs", jobRepository.findAll());
+        List<Tag> tags = new ArrayList<>();
+        for(TagOfJob toj : job.getTagOfJobs()){
+            tags.add(toj.getTag());
+        }
+        model.addAttribute("jobs", jobRepository.findSimilarJob(tags, PageRequest.of(0, 10)));
         if (loggedInUser.isAnonymousUser() == false) {
             model.addAttribute("profile", profileRepository.getOne(loggedInUser.getDefaultUserId()));
         }
@@ -70,7 +79,7 @@ public class JobController {
     @GetMapping(value = "/job/search")
     public String searchForCompany(Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "12") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort,
             @RequestParam(name = "location", required = false) Integer provinceId,
             @RequestParam(name = "tag", required = false) Integer tagId,

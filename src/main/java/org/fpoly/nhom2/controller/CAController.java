@@ -183,7 +183,7 @@ public class CAController {
 
     @GetMapping(value = { "/ca/job", "/ca/job/list" })
     public String showJob(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -242,7 +242,7 @@ public class CAController {
 
     @GetMapping(value = { "/ca/post", "/ca/post/list" })
     public String showPost(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "12") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {

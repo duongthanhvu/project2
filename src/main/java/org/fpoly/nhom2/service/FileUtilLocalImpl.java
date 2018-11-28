@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 
 @Service
-public class FileUtilLocalImpl {
+public class FileUtilLocalImpl implements FileUtil{
 
     public static final int LOGO = 0;
     public static final int PHOTO = 1;

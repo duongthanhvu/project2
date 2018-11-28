@@ -23,16 +23,16 @@
                                         </span><a href="/job" class="text-primary">>> Bấm xem ngay</a></i>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row row-cards">
+                                    <div class="row row-cards row-deck">
                                         <div class="col-lg-6 col-sm-12" th:each="job : ${recommend_jobs.content}">
                                             <div class="card card-aside">
-                                                <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" th:style="'background-image: url(/file/'+${job.company.logo}+')'"></a>
+                                                <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" style="background-size: contain; background-position: center;" th:styleappend="'background-image: url(/file/'+${job.company.logo}+')'"></a>
                                                 <div class="card-body p-2 clearfix">
-                                                    <h4><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h4>
+                                                    <h5><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h5>
                                                     <div class="text-muted" th:text="${job.company.name}"></div>
                                                     <div><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
-                                                    <div class="float-left"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
-                                                    <div class="float-right mr-3">
+                                                    <div class="float-left small text-red"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
+                                                    <div class="float-right small mr-3">
                                                         <i class="fe fe-clock"></i>
                                                         [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
                                                     </div>

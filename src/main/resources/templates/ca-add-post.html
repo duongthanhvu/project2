@@ -22,14 +22,26 @@
                                             <div class="form-group">
                                                 <label class="form-label">Tiêu đề</label>
                                                 <input type="text" class="form-control" placeholder="Tiêu đề của bài đăng"
-                                                    th:field="*{title}" required>
+                                                    th:field="*{title}" required maxlength="250">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label class="form-label">Mô tả</label>
-                                                <textarea rows="10" class="form-control" placeholder="Nội dung" th:field="*{content}"
-                                                    required></textarea>
+                                                <input id="content" type="hidden" th:field="*{content}">
+                                                <div class="form-control" style="overflow: hidden;">
+                                                    <trix-editor input="content" placeholder="Nội dung"></trix-editor>
+                                                </div>
+                                                <script>
+                                                    function loadCSS(filename) {
+                                                        var file = document.createElement("link");
+                                                        file.setAttribute("rel", "stylesheet");
+                                                        file.setAttribute("href", filename);
+                                                        document.head.appendChild(file);
+                                                    }
+                                                    loadCSS("/assets/css/trix.css");
+                                                    require(['trix']);
+                                                </script>
                                             </div>
                                         </div>
                                     </div>

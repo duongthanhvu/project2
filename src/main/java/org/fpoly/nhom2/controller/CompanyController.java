@@ -56,7 +56,7 @@ public class CompanyController {
     @GetMapping(value = { "/company/{urlName}/product", "/company/{urlName}/product/list" })
     public String showProduct(Model model, @PathVariable("urlName") String urlName,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -75,7 +75,7 @@ public class CompanyController {
     @GetMapping(value = { "/company/{urlName}/career", "/company/{urlName}/career/list" })
     public String showCareer(Model model, @PathVariable("urlName") String urlName,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -94,7 +94,7 @@ public class CompanyController {
     @GetMapping(value = { "/company/{urlName}/post", "/company/{urlName}/post/list" })
     public String showPost(Model model, @PathVariable("urlName") String urlName,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "6") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
