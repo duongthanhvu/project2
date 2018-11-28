@@ -3,6 +3,8 @@ package org.fpoly.nhom2.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.fpoly.nhom2.entiry.*;
 import org.fpoly.nhom2.repository.*;
 import org.fpoly.nhom2.service.*;
@@ -73,10 +75,13 @@ public class CAController {
     }
 
     @GetMapping(value = "/ca/switch-default")
-    public String switchDefaulCA(@RequestParam int company) {
+    public String switchDefaulCA(@RequestParam int company, HttpServletRequest request) {
         for (CompanyAdmin ca : loggedInUser.getCA()) {
             if (ca.getCompany().getCompanyId() == company) {
                 loggedInUser.setDefaultCompanyId(company);
+                //Không có dòng dưới thì vẫn chạy ngon trên local nhưng đem lên app engine thì phải có dòng dưới để force session serialization
+                //Giải thích ở đây https://stackoverflow.com/a/19272761/3133713
+                request.getSession().setAttribute("CURRENT_TIME", System.currentTimeMillis());
                 return "redirect:/ca/home";
             }
         }
@@ -178,7 +183,7 @@ public class CAController {
 
     @GetMapping(value = { "/ca/job", "/ca/job/list" })
     public String showJob(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -237,7 +242,7 @@ public class CAController {
 
     @GetMapping(value = { "/ca/post", "/ca/post/list" })
     public String showPost(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "12") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort) {
         Sort sortable = null;
         if (sort.equals("ASC")) {

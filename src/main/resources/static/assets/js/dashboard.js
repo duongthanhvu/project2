@@ -26,6 +26,7 @@ require.config({
         'viewerjs': 'assets/js/vendors/viewer.min',
         'jquery-viewer': 'assets/js/vendors/jquery-viewer.min',
         'sweetAlert': 'assets/js/vendors/sweetalert.min',
+        'trix': 'assets/js/vendors/trix',
     }
 });
 window.tabler = {

@@ -118,6 +118,26 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @GetMapping(value = "/user/profile/edit")
+    public String showProfileUpdate(Model model) {
+        model.addAttribute("user", userRepository.getOne(loggedInUser.getDefaultUserId()));
+        Profile profile = profileRepository.getOne(loggedInUser.getDefaultUserId());
+        if (profile.getEducations().isEmpty()) {
+            profile.addEducation(new Education());
+        }
+        model.addAttribute("profile", profile);
+        model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("provinces", provinceRepository.findAll());
+        return "user-edit-profile";
+    }
+
+    @PostMapping(value = "/user/profile/edit")
+    public String processProfileEdit(@ModelAttribute Profile profile) {
+        // TODO: process POST request
+
+        return "redirect:/user";
+    }
+
     @GetMapping(value = "/user/job")
     public String showUserJob(Model model) {
         model.addAttribute("user", userRepository.getOne(loggedInUser.getDefaultUserId()));

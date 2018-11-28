@@ -30,6 +30,7 @@ public class ApplyJobController {
             @RequestParam("job") Job job) {
         AppliedProfile ap = new AppliedProfile();
         ap.setCoverLetter(fileUtil.saveFile(coverLetter, FileUtil.PDF));
+        //TODO cho phép người dùng upload file cv khi chưa có cv
         ap.setCv(cv.getUniqueFilename());
         ap.setJob(job);
         ap.setProfile(loggedInUser.getUser().getProfile());

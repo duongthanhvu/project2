@@ -109,9 +109,9 @@
                                         <p th:each="boj : ${job.benefitOfJobs}"><i class="fe fe-award"></i>
                                             [[${boj.benefit.title}]]</p>
                                         <h3>MÔ TẢ CÔNG VIỆC</h3>
-                                        <div th:text="${job.description}"></div>
+                                        <div th:utext="${job.description}"></div>
                                         <h3>YÊU CẦU CÔNG VIỆC</h3>
-                                        <div th:text="${job.requirement}"></div>
+                                        <div th:utext="${job.requirement}"></div>
                                         <h4>Từ khóa:</h4>
                                         <div><button class="btn btn-outline-secondary ml-3">[[${job.provinceOrCity.name}]]</button><button
                                                 class="btn btn-outline-secondary ml-3" th:each="toj : ${job.tagOfJobs}">[[${toj.tag.title}]]</button></div>
@@ -121,16 +121,16 @@
                             <h3>VIỆC LÀM CÓ THỂ BẠN QUAN TÂM</h3>
                             <div>
                                 <div class="owl-carousel owl-theme">
-                                    <div class="card card-aside" th:each="job : ${jobs}">
-                                        <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" th:style="'background-image: url(/file/'+${job.company.logo}+')'"></a>
+                                    <div class="card card-aside" style="height: 10em;" th:each="similar_job : ${jobs}" th:if="${similar_job.jobId != job.jobId}">
+                                        <a th:href="'/job/'+${similar_job.urlTitle}" class="card-aside-column" style="background-size: contain; background-position: center;" th:styleappend="'background-image: url(/file/'+${similar_job.company.logo}+')'"></a>
                                         <div class="card-body p-2 clearfix">
-                                            <h4><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h4>
-                                            <div class="text-muted" th:text="${job.company.name}"></div>
-                                            <div><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
-                                            <div class="float-left"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
-                                            <div class="float-right mr-3">
+                                            <h5><a th:href="'/job/'+${similar_job.urlTitle}" th:text="${similar_job.title}"></a></h5>
+                                            <div class="text-muted" th:text="${similar_job.company.name}"></div>
+                                            <div class="small"><i class="fe fe-map-pin"></i> [[${similar_job.provinceOrCity.name}]]</div>
+                                            <div class="float-left small text-red"><i class="fe fe-dollar-sign"></i> [[${similar_job.salary}]]</div>
+                                            <div class="float-right mr-3 small">
                                                 <i class="fe fe-clock"></i>
-                                                [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
+                                                [[${#calendars.format(similar_job.dateExpired,'dd/MM/yyyy')}]]
                                             </div>
                                         </div>
                                     </div>
