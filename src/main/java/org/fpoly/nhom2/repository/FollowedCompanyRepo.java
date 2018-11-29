@@ -1,5 +1,7 @@
 package org.fpoly.nhom2.repository;
 
+import java.util.List;
+
 import org.fpoly.nhom2.entiry.Company;
 import org.fpoly.nhom2.entiry.FollowedCompany;
 import org.fpoly.nhom2.entiry.User;
@@ -13,4 +15,6 @@ public interface FollowedCompanyRepo extends JpaRepository<FollowedCompany, Inte
 
     @Nullable
     FollowedCompany findByUserAndCompany(User user, Company company);
+
+    List<FollowedCompany> findByUser(User user);
 }

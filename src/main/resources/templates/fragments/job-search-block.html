@@ -19,17 +19,46 @@
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Nhập chức danh, vị trí, kỹ năng" name="keyword">
+                                        <input type="text" class="form-control" placeholder="Nhập chức danh, vị trí, kỹ năng"
+                                            name="keyword">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-12">
                                     <div class="form-group">
-                                        <select class="form-control" name="tag">
+                                        <select class="form-control" multiple id="tag_input" value="" name="tag">
                                             <option value="">Tất cả ngành nghề</option>
-                                            <option th:each="tag : ${tags}" th:value="${tag.tagId}"
-                                                th:text="${tag.title}"></option>
                                         </select>
                                     </div>
+                                    <script>
+                                        require(['jquery', 'selectize'], function ($, selectize) {
+                                            $(document).ready(function () {
+                                                $('#tag_input').selectize({
+                                                    valueField: 'tagId',
+                                                    labelField: 'title',
+                                                    searchField: 'title',
+                                                    plugins: ['remove_button'],
+                                                    delimiter: ',',
+                                                    load: function (query, callback) {
+                                                        if (!query.length) return callback();
+                                                        $.ajax({
+                                                            url: '/api/tag/search',
+                                                            type: 'GET',
+                                                            data: {
+                                                                q: query
+                                                            },
+                                                            error: function () {
+                                                                callback();
+                                                            },
+                                                            success: function (res) {
+                                                                console.log(res);
+                                                                callback(res);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>
                                 </div>
                                 <div class="col-md-3 col-sm-12">
                                     <div class="form-group">

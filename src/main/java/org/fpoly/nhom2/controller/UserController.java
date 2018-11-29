@@ -132,9 +132,16 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/profile/edit")
-    public String processProfileEdit(@ModelAttribute Profile profile) {
-        // TODO: process POST request
-
+    public String processProfileEdit(@ModelAttribute Profile profile,
+            @RequestParam(value = "avatar-file") MultipartFile avatar) {
+        profile.setProfileId(loggedInUser.getDefaultUserId());
+        if (!avatar.isEmpty()) {
+            profile.setAvatarPicture(fileUtil.saveFile(avatar, FileUtil.LOGO));
+        }
+        System.out.println(profile.getAddress().getAddressId());
+        addressRepository.save(profile.getAddress());
+        profile.setUrlName(loggedInUser.getUser().getUsername());
+        profileRepository.save(profile);
         return "redirect:/user";
     }
 

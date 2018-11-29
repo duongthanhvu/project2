@@ -20,7 +20,7 @@
                                             công ty theo dõi)</span></h3>
                                 </div>
                             </div>
-                            <div class="card mb-1 mb-md-3" th:each="post : ${posts}">
+                            <div class="card mb-1 mb-md-3" th:each="post,iterStat : ${posts}" th:if="${iterStat.index < 3}">
                                 <div class="card-body d-flex flex-column">
                                     <h4><a th:href="'/post/'+${post.urlTitle}" th:text="${post.title}"></a></h4>
                                     <div class="text-muted">[[${#strings.length(post.content) > 152} ?
@@ -44,7 +44,7 @@
                                     });
                                 });
                             </script>
-                            <th:block th:each="job : ${recommend_jobs}">
+                            <th:block th:each="job : ${jobs}">
                                 <p class="text-muted"><span class="avatar mr-1" th:style="'background-image: url(/file/'+${job.company.logo}+')'"></span>
                                     [[${job.company.name}]] đã đăng 1 việc làm mới</p>
                                 <div class="card card-aside mb-1 mb-md-3">
@@ -52,15 +52,32 @@
                                     <div class="card-body p-2 clearfix">
                                         <h4><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h4>
                                         <div class="text-muted" th:text="${job.company.name}"></div>
-                                        <div><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
-                                        <div class="float-left"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
-                                        <div class="float-right mr-3">
+                                        <div class="small"><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
+                                        <div class="float-left small text-red"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
+                                        <div class="float-right mr-3 small">
                                             <i class="fe fe-clock"></i>
                                             [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
                                         </div>
                                     </div>
                                 </div>
                             </th:block>
+                            <div class="card mb-1 mb-md-3" th:each="post,iterStat : ${posts}" th:if="${iterStat.index >= 3}">
+                                <div class="card-body d-flex flex-column">
+                                    <h4><a th:href="'/post/'+${post.urlTitle}" th:text="${post.title}"></a></h4>
+                                    <div class="text-muted">[[${#strings.length(post.content) > 152} ?
+                                        ${#strings.substring(post.content,0,150)} + '...' : ${post.content}]]<a th:href="'/post/'+${post.urlTitle}">(chi
+                                            tiết)</a></div>
+                                    <div class="d-flex align-items-center pt-5 mt-auto">
+                                        <div class="avatar avatar-md mr-3" th:style="'background-image: url(/file/'+${post.company.logo}+')'"></div>
+                                        <div>
+                                            <a th:href="'/company/'+${post.company.urlName}" class="text-default"
+                                                th:text="${post.company.name}"></a>
+                                            <small class="d-block text-muted"><time class="timeago" th:datetime="${post.dateCreated}"
+                                                    th:text="${post.dateCreated}"></time></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-12 col-lg-3 order-lg-first">
                             <div class="card mb-1 mb-md-3">

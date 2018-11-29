@@ -65,7 +65,7 @@ public class JobController {
         Job job = jobRepository.findByUrlTitle(urlTitle);
         model.addAttribute("job", job);
         List<Tag> tags = new ArrayList<>();
-        for(TagOfJob toj : job.getTagOfJobs()){
+        for (TagOfJob toj : job.getTagOfJobs()) {
             tags.add(toj.getTag());
         }
         model.addAttribute("jobs", jobRepository.findSimilarJob(tags, PageRequest.of(0, 10)));
@@ -82,7 +82,7 @@ public class JobController {
             @RequestParam(name = "size", required = false, defaultValue = "12") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "DESC") String sort,
             @RequestParam(name = "location", required = false) Integer provinceId,
-            @RequestParam(name = "tag", required = false) Integer tagId,
+            @RequestParam(name = "tag", required = false) List<Integer> tagIds,
             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -91,10 +91,15 @@ public class JobController {
         if (sort.equals("DESC")) {
             sortable = Sort.by("jobId").descending();
         }
+        int isEmpty = 0;
+        if (tagIds == null || tagIds.isEmpty()) {
+            isEmpty = 1;
+        }
         Pageable pageable = PageRequest.of(page, size, sortable);
-        model.addAttribute("page", jobRepository.searchJob(provinceId, tagId, keyword, pageable));
+        model.addAttribute("page", jobRepository.searchJob(provinceId, tagIds, keyword, pageable, isEmpty));
         model.addAttribute("provinces", pOCRepository.findAll());
         model.addAttribute("tags", tagRepository.findAll());
+        model.addAttribute("new_jobs", jobRepository.findAll(PageRequest.of(0, 12, Sort.by("jobId").descending())));
         return "job-search-result";
     }
 

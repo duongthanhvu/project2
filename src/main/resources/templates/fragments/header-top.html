@@ -12,6 +12,7 @@
       <div class="d-flex">
         <a class="header-brand" href="/index.html">
           <img src="../static/demo/brand/tabler.svg" th:src="@{/assets/images/logo.svg}" class="header-brand-img" alt="tabler logo">
+          <h5 class="d-none d-md-block ml-3 py-0 my-0 text-muted float-right font-weight-normal">Thông tin doanh nghiệp <br>Tuyển dụng</h5>
         </a>
         <div th:if="${#request.userPrincipal} == null" class="d-flex order-lg-2 ml-auto">
           <a href="/register" class="btn btn-secondary">Đăng ký</a>
@@ -93,19 +94,19 @@
       </div>
     </div>
   </div>
-  <div class="header py-4" th:fragment="ca-header-top">
+  <div class="header py-4 bg-blue text-white" th:fragment="ca-header-top">
     <div class="container">
       <div class="d-flex">
         <a class="header-brand" href="/index.html">
-          <img src="../static/demo/brand/tabler.svg" th:src="@{/assets/images/logo.svg}" class="header-brand-img" alt="tabler logo">
+          <img src="../static/demo/brand/tabler.svg" th:src="@{/assets/images/logo-reverse.svg}" class="header-brand-img" alt="tabler logo">
         </a>
         <div class="d-flex order-lg-2 ml-auto">
           <div class="dropdown">
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
               <span class="avatar" th:style="'background-image: url(/file/'+${company.logo}+')'"></span>
               <span class="ml-2 d-none d-lg-block">
-                <span class="text-default" th:text="${company.name}">Jane Pearson</span>
-                <small class="text-muted d-block mt-1" th:text="${#request.userPrincipal.name}">Administrator</small>
+                <span class="text-white" th:text="${company.name}">Jane Pearson</span>
+                <small class="text-white d-block mt-1" th:text="${#request.userPrincipal.name}">Administrator</small>
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">

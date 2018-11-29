@@ -17,15 +17,18 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     Job findByUrlTitle(String urlTitle);
 
-    @Query(value="SELECT j FROM Job j LEFT JOIN j.tagOfJobs toj JOIN j.provinceOrCity p WHERE (?1 is null OR p.pocId = ?1) AND (?2 is null OR toj.tag.tagId = ?2) AND j.title LIKE CONCAT('%',?3,'%') GROUP BY j.jobId")
-    Page<Job> searchJob(Integer locationId, Integer tagId, String keyword, Pageable pageable);
+    @Query(value = "SELECT j FROM Job j LEFT JOIN j.tagOfJobs toj JOIN j.provinceOrCity p WHERE (?1 is null OR p.pocId = ?1) AND (?4 = 1 OR toj.tag.tagId IN ?2) AND j.title LIKE CONCAT('%',?3,'%') GROUP BY j.jobId")
+    Page<Job> searchJob(Integer locationId, List<Integer> tagIds, String keyword, Pageable pageable, int isTagIdEmpty);
 
-    @Query(value="SELECT COUNT(j) FROM Job j WHERE YEAR(j.dateCreated) = 2018 GROUP BY MONTH(j.dateCreated) ORDER BY MONTH(j.dateCreated)")
+    @Query(value = "SELECT COUNT(j) FROM Job j WHERE YEAR(j.dateCreated) = 2018 GROUP BY MONTH(j.dateCreated) ORDER BY MONTH(j.dateCreated)")
     List<Long> getJobQuantityPerMonth();
-    
-    @Query(value="SELECT COUNT (j) FROM Job j WHERE j.dateCreated > CURRENT_DATE")
+
+    @Query(value = "SELECT COUNT (j) FROM Job j WHERE j.dateCreated > CURRENT_DATE")
     Long numberOfJobsCreatedToday();
 
-    @Query(value="SELECT j FROM Job j LEFT JOIN j.tagOfJobs toj WHERE toj.tag IN ?1 GROUP BY j.jobId")
+    @Query(value = "SELECT j FROM Job j LEFT JOIN j.tagOfJobs toj WHERE toj.tag IN ?1 GROUP BY j.jobId")
     Page<Job> findSimilarJob(List<Tag> tags, Pageable pageable);
+
+    @Query(value = "SELECT j FROM Job j WHERE j.company IN ?1")
+    Page<Job> findJobFromFollowedC(List<Company> companies, int quantity, Pageable pageable);
 }
