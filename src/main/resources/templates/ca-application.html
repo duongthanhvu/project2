@@ -43,7 +43,7 @@
                                                 <th>Họ và tên</th>
                                                 <th>Đơn xin việc</th>
                                                 <th>CV</th>
-                                                <th class="text-center">Thời gian nộp hồ sơ</th>
+                                                <th>Thời gian nộp hồ sơ</th>
                                                 <th class="text-center"><i class="icon-settings"></i></th>
                                             </tr>
                                         </thead>
@@ -64,10 +64,12 @@
                                                     <div>[[${ap.profile.fullname}]]</div>
                                                 </td>
                                                 <td>
-                                                    <div><a target="_blank" class="btn btn-secondary btn-sm" th:href="'/file/cv/'+${ap.coverLetter}">Xem tập tin</a></div>
+                                                    <div><a target="_blank" class="btn btn-secondary btn-sm" th:href="'/file/cv/'+${ap.coverLetter}">Xem
+                                                            tập tin</a></div>
                                                 </td>
                                                 <td>
-                                                        <div><a target="_blank" class="btn btn-secondary btn-sm" th:href="'/file/cv/'+${ap.cv}">Xem tập tin</a></div>
+                                                    <div><a target="_blank" class="btn btn-secondary btn-sm" th:href="'/file/cv/'+${ap.cv}">Xem
+                                                            tập tin</a></div>
                                                 </td>
                                                 <td>
                                                     <div class="small text-muted">Đã gửi</div>
@@ -75,7 +77,7 @@
                                                             th:text="${ap.dateApplied}"></time></div>
                                                 </td>
                                                 <td class="text-center">
-
+                                                    <a th:href="'/ca/view_profile/'+${ap.profile.urlName}" class="btn btn-secondary btn-sm">Xem hồ sơ</a>
                                                 </td>
                                             </tr>
                                         </tbody>

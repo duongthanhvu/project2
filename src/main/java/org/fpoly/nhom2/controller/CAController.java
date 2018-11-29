@@ -122,7 +122,8 @@ public class CAController {
         }
         addressRepository.save(company.getAddress());
         companyRepository.save(company);
-        for (CompanyCategory comcat : company.getCompanyCategories()) {
+        List<CompanyCategory> comcats = companyCategoryRepository.findByCompany(company);
+        for (CompanyCategory comcat : comcats) {
             companyCategoryRepository.delete(comcat);
         }
         for (Category category : categories) {

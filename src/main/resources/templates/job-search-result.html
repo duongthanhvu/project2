@@ -25,13 +25,13 @@
                                         phù hợp</h3>
                                     <h3 class="card-title" th:if="${page.totalPages != 0}">Tìm thấy
                                         [[${page.totalElements}]] kết quả</h3>
-                                    <div class="row row-cards">
+                                    <div class="row row-cards row-deck">
                                         <div class="col-12 col-md-6 col-xl-4" th:each="job : ${page.content}">
-                                            <div class="card card-aside h-100">
+                                            <div class="card card-aside">
                                                 <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" style="background-size: contain; background-position: center;" th:styleappend="'background-image: url(/file/'+${job.company.logo}+')'"></a>
                                                 <div class="card-body p-2 clearfix">
                                                     <h5><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h5>
-                                                    <div class="text-muted text-truncate" th:text="${job.company.name}"></div>
+                                                    <div class="text-muted" th:text="${job.company.name}"></div>
                                                     <div class="small"><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
                                                     <div class="float-left small text-red"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
                                                     <div class="float-right mr-3 small">
@@ -56,6 +56,30 @@
                                                 sau</a>
                                         </li>
                                     </ul>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Việc làm mới</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row row-cards row-deck">
+                                        <div class="col-12 col-md-6 col-xl-4" th:each="job : ${new_jobs.content}">
+                                            <div class="card card-aside">
+                                                <a th:href="'/job/'+${job.urlTitle}" class="card-aside-column" style="background-size: contain; background-position: center;" th:styleappend="'background-image: url(/file/'+${job.company.logo}+')'"></a>
+                                                <div class="card-body p-2 clearfix">
+                                                    <h5><a th:href="'/job/'+${job.urlTitle}" th:text="${job.title}"></a></h5>
+                                                    <div class="text-muted" th:text="${job.company.name}"></div>
+                                                    <div class="small"><i class="fe fe-map-pin"></i> [[${job.provinceOrCity.name}]]</div>
+                                                    <div class="float-left small text-red"><i class="fe fe-dollar-sign"></i> [[${job.salary}]]</div>
+                                                    <div class="float-right mr-3 small">
+                                                        <i class="fe fe-clock"></i>
+                                                        [[${#calendars.format(job.dateExpired,'dd/MM/yyyy')}]]
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

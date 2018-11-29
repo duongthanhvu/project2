@@ -25,6 +25,7 @@
                                                         <img id="logo-preview" class="img-fluid img-thumbnail" th:src="${profile.avatarPicture != null} ? '/file/'+${profile.avatarPicture} : '/assets/images/avatar.jpg'">
                                                     </div>
                                                     <div class="custom-file">
+                                                        <input type="hidden" th:field="*{avatarPicture}">
                                                         <input type="file" class="custom-file-input" onchange="readURL(this)"
                                                             accept="image/jpeg,image/png" name="avatar-file">
                                                         <label class="custom-file-label">
@@ -53,7 +54,7 @@
                                                         <div class="form-group">
                                                             <label class="form-label">Tên đầy đủ</label>
                                                             <input type="text" class="form-control" placeholder="Tên đầy đủ"
-                                                                th:field="*{fullname}">
+                                                                th:field="*{fullname}" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
@@ -131,9 +132,9 @@
                                                     <label class="form-label">Tỉnh (thành phố)</label>
                                                     <select id="select-state" class="form-control custom-select"
                                                         required placeholder="Chọn tỉnh (thành phố)">
-                                                        <option value="">Chọn tỉnh (thành phố)</option>
                                                         <option th:each="province : ${provinces}" th:text="${province.name}"
-                                                            th:value="${province.pocId}">Đăk Lăk</option>
+                                                            th:value="${province.pocId}" th:selected="${profile.address.commune.cityOrDist.provinceOrCity.pocId == province.pocId}">Đăk
+                                                            Lăk</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -142,7 +143,9 @@
                                                     <label class="form-label">Quận (huyện)</label>
                                                     <select id="select-city" class="form-control custom-select"
                                                         required placeholder="Chọn quận (huyện)">
-                                                        <option value="">Cần chọn một tỉnh (thành phố)</option>
+                                                        <option th:each="cityOrDist : ${profile.address.commune.cityOrDist.provinceOrCity.cityOrDists}"
+                                                            th:value="${cityOrDist.cityOrDistId}" th:text="${cityOrDist.name}"
+                                                            th:selected="${profile.address.commune.cityOrDist.cityOrDistId == cityOrDist.cityOrDistId}"></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -151,12 +154,15 @@
                                                     <label class="form-label">Phường (xã)</label>
                                                     <select id="select-commune" class="form-control custom-select"
                                                         th:field="*{address.commune.communeId}" required placeholder="Chọn phường (xã)">
+                                                        <option th:each="commune : ${profile.address.commune.cityOrDist.communes}"
+                                                            th:value="${commune.communeId}" th:text="${commune.name}"></option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label class="form-label">Địa chỉ</label>
+                                                    <input type="text" class="d-none" th:field="*{address.addressId}">
                                                     <input type="text" class="form-control" placeholder="Số nhà và tên đường. Ví dụ: 27 Nguyễn Tất Thành"
                                                         required th:field="*{address.street}">
                                                 </div>
@@ -227,8 +233,6 @@
                                                     select_commune = $select_commune[0].selectize;
                                                     select_city = $select_city[0].selectize;
                                                     select_state = $select_state[0].selectize;
-                                                    select_commune.disable();
-                                                    select_city.disable();
                                                 });
                                             </script>
                                         </div>
@@ -253,13 +257,15 @@
                                                 <div class="form-group">
                                                     <select class="form-control" multiple id="input-tags" value="" name="skills"
                                                         placeholder="Chọn kỹ năng" required>
+                                                        <option selected th:each="sl : ${profile.skillLists}" th:value="${sl.skill.skillId}"
+                                                            th:text="${sl.skill.title}"></option>
                                                     </select>
                                                 </div>
                                                 <script>
                                                     require(['jquery', 'selectize'], function ($, selectize) {
                                                         $(document).ready(function () {
                                                             $('#input-tags').selectize({
-                                                                valueField: 'title',
+                                                                valueField: 'skillId',
                                                                 labelField: 'title',
                                                                 searchField: 'title',
                                                                 plugins: ['remove_button'],
@@ -294,47 +300,49 @@
                                         <h3 class="card-title">Học vấn và bằng cấp</h3>
                                         <div>
                                             <div class="row" id="hocvan">
-                                                <div class="col-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Chuyên ngành</label>
-                                                        <input type="text" class="form-control" placeholder="Ví dụ: Công Nghệ Thông Tin"
-                                                            th:field="*{educations[0].subject}">
+                                                <th:block th:each="education,iterStat : ${profile.educations}">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Chuyên ngành</label>
+                                                            <input type="text" class="form-control" placeholder="Ví dụ: Công Nghệ Thông Tin"
+                                                                th:field="*{educations[__${iterStat.index}__].subject}">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Trường</label>
-                                                        <input type="text" class="form-control" placeholder="Ví dụ: Đại học Tôn Đức Thắng"
-                                                            th:field="*{educations[0].school}">
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Trường</label>
+                                                            <input type="text" class="form-control" placeholder="Ví dụ: Đại học Tôn Đức Thắng"
+                                                                th:field="*{educations[__${iterStat.index}__].school}">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Bằng cấp</label>
-                                                        <select class="form-control" th:field="*{educations[0].qualification}">
-                                                            <option value="">-- Vui lòng chọn --</option>
-                                                            <option value="Trung học">Trung học</option>
-                                                            <option value="Trung cấp">Trung cấp</option>
-                                                            <option value="Cao đẳng">Cao đẳng</option>
-                                                            <option value="Cử nhân">Cử nhân</option>
-                                                            <option value="Thạc sĩ">Thạc sĩ</option>
-                                                            <option value="Tiến sĩ">Tiến sĩ</option>
-                                                            <option value="Khác">Khác</option>
-                                                        </select>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Bằng cấp</label>
+                                                            <select class="form-control" th:field="*{educations[__${iterStat.index}__].qualification}">
+                                                                <option value="">-- Vui lòng chọn --</option>
+                                                                <option value="Trung học">Trung học</option>
+                                                                <option value="Trung cấp">Trung cấp</option>
+                                                                <option value="Cao đẳng">Cao đẳng</option>
+                                                                <option value="Cử nhân">Cử nhân</option>
+                                                                <option value="Thạc sĩ">Thạc sĩ</option>
+                                                                <option value="Tiến sĩ">Tiến sĩ</option>
+                                                                <option value="Khác">Khác</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Từ tháng</label>
-                                                        <input type="month" class="form-control" th:field="*{educations[0].fromMonth}">
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Từ tháng</label>
+                                                            <input type="month" class="form-control" th:field="*{educations[__${iterStat.index}__].fromMonth}">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Đến tháng</label>
-                                                        <input type="month" class="form-control" th:field="*{educations[0].toMonth}">
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Đến tháng</label>
+                                                            <input type="month" class="form-control" th:field="*{educations[__${iterStat.index}__].toMonth}">
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </th:block>
                                             </div>
                                         </div>
                                         <input type="button" class="btn btn-primary btn-sm" id="btnAddressAdd" value="Thêm học vấn và bằng cấp" />
